@@ -9,9 +9,9 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "header/instance.hpp"
+#include "../include/vlcinstance.hpp"
 #include <vlc/libvlc.h>
-#include "header/utity.hpp"
+#include "../include/utity.hpp"
 static libvlc_instance_t* VLCInstance;
 bool Initialized = false;
 int InitVLCInstance(void)

@@ -9,12 +9,13 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "header/instance.hpp"
-#include "header/utity.hpp"
-#include "header/gui.hpp"
+#include "../include/vlcinstance.hpp"
+#include "../include/utity.hpp"
+#include "../include/gui.hpp"
 
 #include <iostream>
 #include <stdio.h>
+
 int RunMainLoop(void)
 {
 	while(1)

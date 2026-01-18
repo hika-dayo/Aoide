@@ -67,6 +67,7 @@ bool ProcessMessage(void)
 
 		}
 	}
+
 	return Quit;
 }
 

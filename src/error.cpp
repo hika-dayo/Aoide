@@ -9,7 +9,7 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "header/utity.hpp"
+#include "../include/utity.hpp"
 #include <iostream>
 #include <time.h>
 int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE)

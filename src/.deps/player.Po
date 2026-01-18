@@ -1,10 +1,10 @@
 player.o: player.cpp /usr/include/stdc-predef.h header/playerclass.hpp \
- /usr/local/include/vlc/vlc.h /usr/local/include/vlc/libvlc.h \
- /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
- /usr/include/features.h /usr/include/features-time64.h \
- /usr/include/bits/wordsize.h /usr/include/bits/timesize.h \
- /usr/include/sys/cdefs.h /usr/include/bits/long-double.h \
- /usr/include/gnu/stubs.h /usr/include/gnu/stubs-64.h \
+ /usr/include/vlc/vlc.h /usr/include/vlc/libvlc.h /usr/include/stdio.h \
+ /usr/include/bits/libc-header-start.h /usr/include/features.h \
+ /usr/include/features-time64.h /usr/include/bits/wordsize.h \
+ /usr/include/bits/timesize.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/long-double.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stddef.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
@@ -19,17 +19,15 @@ player.o: player.cpp /usr/include/stdc-predef.h header/playerclass.hpp \
  /usr/include/stdint.h /usr/include/bits/wchar.h \
  /usr/include/bits/stdint-intn.h /usr/include/bits/stdint-uintn.h \
  /usr/include/bits/stdint-least.h \
- /usr/local/include/vlc/libvlc_renderer_discoverer.h \
- /usr/local/include/vlc/libvlc_media.h \
- /usr/local/include/vlc/libvlc_media_player.h \
- /usr/local/include/vlc/libvlc_media_list.h \
- /usr/local/include/vlc/libvlc_media_list_player.h \
- /usr/local/include/vlc/libvlc_media_library.h \
- /usr/local/include/vlc/libvlc_media_discoverer.h \
- /usr/local/include/vlc/libvlc_events.h \
- /usr/local/include/vlc/libvlc_dialog.h \
+ /usr/include/vlc/libvlc_renderer_discoverer.h \
+ /usr/include/vlc/libvlc_media.h /usr/include/vlc/libvlc_media_player.h \
+ /usr/include/vlc/libvlc_media_list.h \
+ /usr/include/vlc/libvlc_media_list_player.h \
+ /usr/include/vlc/libvlc_media_library.h \
+ /usr/include/vlc/libvlc_media_discoverer.h \
+ /usr/include/vlc/libvlc_events.h /usr/include/vlc/libvlc_dialog.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
- /usr/local/include/vlc/libvlc_vlm.h /usr/local/include/vlc/deprecated.h \
+ /usr/include/vlc/libvlc_vlm.h /usr/include/vlc/deprecated.h \
  /usr/include/c++/15.2.1/string \
  /usr/include/c++/15.2.1/bits/requires_hosted.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -118,8 +116,8 @@ player.o: player.cpp /usr/include/stdc-predef.h header/playerclass.hpp \
  /usr/include/c++/15.2.1/tuple header/instance.hpp
 /usr/include/stdc-predef.h:
 header/playerclass.hpp:
-/usr/local/include/vlc/vlc.h:
-/usr/local/include/vlc/libvlc.h:
+/usr/include/vlc/vlc.h:
+/usr/include/vlc/libvlc.h:
 /usr/include/stdio.h:
 /usr/include/bits/libc-header-start.h:
 /usr/include/features.h:
@@ -152,18 +150,18 @@ header/playerclass.hpp:
 /usr/include/bits/stdint-intn.h:
 /usr/include/bits/stdint-uintn.h:
 /usr/include/bits/stdint-least.h:
-/usr/local/include/vlc/libvlc_renderer_discoverer.h:
-/usr/local/include/vlc/libvlc_media.h:
-/usr/local/include/vlc/libvlc_media_player.h:
-/usr/local/include/vlc/libvlc_media_list.h:
-/usr/local/include/vlc/libvlc_media_list_player.h:
-/usr/local/include/vlc/libvlc_media_library.h:
-/usr/local/include/vlc/libvlc_media_discoverer.h:
-/usr/local/include/vlc/libvlc_events.h:
-/usr/local/include/vlc/libvlc_dialog.h:
+/usr/include/vlc/libvlc_renderer_discoverer.h:
+/usr/include/vlc/libvlc_media.h:
+/usr/include/vlc/libvlc_media_player.h:
+/usr/include/vlc/libvlc_media_list.h:
+/usr/include/vlc/libvlc_media_list_player.h:
+/usr/include/vlc/libvlc_media_library.h:
+/usr/include/vlc/libvlc_media_discoverer.h:
+/usr/include/vlc/libvlc_events.h:
+/usr/include/vlc/libvlc_dialog.h:
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h:
-/usr/local/include/vlc/libvlc_vlm.h:
-/usr/local/include/vlc/deprecated.h:
+/usr/include/vlc/libvlc_vlm.h:
+/usr/include/vlc/deprecated.h:
 /usr/include/c++/15.2.1/string:
 /usr/include/c++/15.2.1/bits/requires_hosted.h:
 /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h:
