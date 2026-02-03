@@ -9,8 +9,8 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "header/playerclass.hpp"
-#include "header/instance.hpp"
+#include "../include/player.hpp"
+#include "../include/vlcinstance.hpp"
 #include <vlc/libvlc.h>
 #include <vlc/libvlc_media.h>
 #include <vlc/libvlc_media_player.h>

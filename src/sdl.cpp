@@ -9,13 +9,13 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "header/gui.hpp"
+#include "../include/gui.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
-#include "header/utity.hpp"
+#include "../include/utity.hpp"
 
 static SDL_Event E;
 static SDL_Window *Window;

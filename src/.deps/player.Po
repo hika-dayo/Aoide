@@ -1,4 +1,4 @@
-player.o: player.cpp /usr/include/stdc-predef.h header/playerclass.hpp \
+player.o: player.cpp /usr/include/stdc-predef.h ../include/player.hpp \
  /usr/include/vlc/vlc.h /usr/include/vlc/libvlc.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -113,9 +113,9 @@ player.o: player.cpp /usr/include/stdc-predef.h header/playerclass.hpp \
  /usr/include/c++/15.2.1/cstddef \
  /usr/include/c++/15.2.1/bits/uses_allocator.h \
  /usr/include/c++/15.2.1/bits/uses_allocator_args.h \
- /usr/include/c++/15.2.1/tuple header/instance.hpp
+ /usr/include/c++/15.2.1/tuple ../include/vlcinstance.hpp
 /usr/include/stdc-predef.h:
-header/playerclass.hpp:
+../include/player.hpp:
 /usr/include/vlc/vlc.h:
 /usr/include/vlc/libvlc.h:
 /usr/include/stdio.h:
@@ -275,4 +275,4 @@ header/playerclass.hpp:
 /usr/include/c++/15.2.1/bits/uses_allocator.h:
 /usr/include/c++/15.2.1/bits/uses_allocator_args.h:
 /usr/include/c++/15.2.1/tuple:
-header/instance.hpp:
+../include/vlcinstance.hpp:

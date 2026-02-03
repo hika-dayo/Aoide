@@ -101,8 +101,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) instance.$(OBJEXT) \
-	loop.$(OBJEXT) error.$(OBJEXT) gui.$(OBJEXT) sdl.$(OBJEXT)
+am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) \
+	vlcinstance.$(OBJEXT) loop.$(OBJEXT) error.$(OBJEXT) \
+	gui.$(OBJEXT) sdl.$(OBJEXT)
 aoide_OBJECTS = $(am_aoide_OBJECTS)
 aoide_DEPENDENCIES =
 AM_V_P = $(am__v_P_$(V))
@@ -121,8 +122,8 @@ DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/error.Po ./$(DEPDIR)/gui.Po \
-	./$(DEPDIR)/instance.Po ./$(DEPDIR)/loop.Po \
-	./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po ./$(DEPDIR)/sdl.Po
+	./$(DEPDIR)/loop.Po ./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po \
+	./$(DEPDIR)/sdl.Po ./$(DEPDIR)/vlcinstance.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -253,7 +254,7 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-aoide_SOURCES = main.cpp player.cpp instance.cpp loop.cpp error.cpp gui.cpp sdl.cpp 
+aoide_SOURCES = main.cpp player.cpp vlcinstance.cpp loop.cpp error.cpp gui.cpp sdl.cpp 
 aoide_LDADD = -lvlc -lSDL3
 all: all-am
 
@@ -343,11 +344,11 @@ distclean-compile:
 
 include ./$(DEPDIR)/error.Po # am--include-marker
 include ./$(DEPDIR)/gui.Po # am--include-marker
-include ./$(DEPDIR)/instance.Po # am--include-marker
 include ./$(DEPDIR)/loop.Po # am--include-marker
 include ./$(DEPDIR)/main.Po # am--include-marker
 include ./$(DEPDIR)/player.Po # am--include-marker
 include ./$(DEPDIR)/sdl.Po # am--include-marker
+include ./$(DEPDIR)/vlcinstance.Po # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -498,11 +499,11 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 distclean: distclean-am
 	-rm -f ./$(DEPDIR)/error.Po
 	-rm -f ./$(DEPDIR)/gui.Po
-	-rm -f ./$(DEPDIR)/instance.Po
 	-rm -f ./$(DEPDIR)/loop.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/player.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
+	-rm -f ./$(DEPDIR)/vlcinstance.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -550,11 +551,11 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/error.Po
 	-rm -f ./$(DEPDIR)/gui.Po
-	-rm -f ./$(DEPDIR)/instance.Po
 	-rm -f ./$(DEPDIR)/loop.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/player.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
+	-rm -f ./$(DEPDIR)/vlcinstance.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

@@ -1,4 +1,4 @@
-loop.o: loop.cpp /usr/include/stdc-predef.h header/instance.hpp \
+loop.o: loop.cpp /usr/include/stdc-predef.h ../include/vlcinstance.hpp \
  /usr/include/vlc/vlc.h /usr/include/vlc/libvlc.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -28,7 +28,7 @@ loop.o: loop.cpp /usr/include/stdc-predef.h header/instance.hpp \
  /usr/include/vlc/libvlc_events.h /usr/include/vlc/libvlc_dialog.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
  /usr/include/vlc/libvlc_vlm.h /usr/include/vlc/deprecated.h \
- header/utity.hpp header/gui.hpp /usr/include/SDL3/SDL.h \
+ ../include/utity.hpp ../include/gui.hpp /usr/include/SDL3/SDL.h \
  /usr/include/SDL3/SDL_stdinc.h /usr/include/SDL3/SDL_platform_defines.h \
  /usr/include/string.h /usr/include/bits/types/locale_t.h \
  /usr/include/bits/types/__locale_t.h /usr/include/strings.h \
@@ -189,7 +189,7 @@ loop.o: loop.cpp /usr/include/stdc-predef.h header/instance.hpp \
  /usr/include/c++/15.2.1/bits/ostream.tcc /usr/include/c++/15.2.1/istream \
  /usr/include/c++/15.2.1/bits/istream.tcc
 /usr/include/stdc-predef.h:
-header/instance.hpp:
+../include/vlcinstance.hpp:
 /usr/include/vlc/vlc.h:
 /usr/include/vlc/libvlc.h:
 /usr/include/stdio.h:
@@ -236,8 +236,8 @@ header/instance.hpp:
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h:
 /usr/include/vlc/libvlc_vlm.h:
 /usr/include/vlc/deprecated.h:
-header/utity.hpp:
-header/gui.hpp:
+../include/utity.hpp:
+../include/gui.hpp:
 /usr/include/SDL3/SDL.h:
 /usr/include/SDL3/SDL_stdinc.h:
 /usr/include/SDL3/SDL_platform_defines.h:

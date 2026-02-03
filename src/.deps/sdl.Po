@@ -1,4 +1,4 @@
-sdl.o: sdl.cpp /usr/include/stdc-predef.h header/gui.hpp \
+sdl.o: sdl.cpp /usr/include/stdc-predef.h ../include/gui.hpp \
  /usr/include/SDL3/SDL.h /usr/include/SDL3/SDL_stdinc.h \
  /usr/include/SDL3/SDL_platform_defines.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
@@ -49,9 +49,9 @@ sdl.o: sdl.cpp /usr/include/stdc-predef.h header/gui.hpp \
  /usr/include/SDL3/SDL_storage.h /usr/include/SDL3/SDL_system.h \
  /usr/include/SDL3/SDL_time.h /usr/include/SDL3/SDL_timer.h \
  /usr/include/SDL3/SDL_tray.h /usr/include/SDL3/SDL_version.h \
- /usr/include/SDL3/SDL_oldnames.h header/utity.hpp
+ /usr/include/SDL3/SDL_oldnames.h ../include/utity.hpp
 /usr/include/stdc-predef.h:
-header/gui.hpp:
+../include/gui.hpp:
 /usr/include/SDL3/SDL.h:
 /usr/include/SDL3/SDL_stdinc.h:
 /usr/include/SDL3/SDL_platform_defines.h:
@@ -149,4 +149,4 @@ header/gui.hpp:
 /usr/include/SDL3/SDL_tray.h:
 /usr/include/SDL3/SDL_version.h:
 /usr/include/SDL3/SDL_oldnames.h:
-header/utity.hpp:
+../include/utity.hpp:

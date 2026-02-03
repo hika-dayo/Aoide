@@ -1,4 +1,4 @@
-error.o: error.cpp /usr/include/stdc-predef.h header/utity.hpp \
+error.o: error.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
  /usr/include/c++/15.2.1/iostream \
  /usr/include/c++/15.2.1/bits/requires_hosted.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -145,7 +145,7 @@ error.o: error.cpp /usr/include/stdc-predef.h header/utity.hpp \
  /usr/include/c++/15.2.1/bits/ostream.tcc /usr/include/c++/15.2.1/istream \
  /usr/include/c++/15.2.1/bits/istream.tcc
 /usr/include/stdc-predef.h:
-header/utity.hpp:
+../include/utity.hpp:
 /usr/include/c++/15.2.1/iostream:
 /usr/include/c++/15.2.1/bits/requires_hosted.h:
 /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h:
