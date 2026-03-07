@@ -145,11 +145,11 @@ main.o: main.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
  /usr/include/SDL3/SDL_storage.h /usr/include/SDL3/SDL_system.h \
  /usr/include/SDL3/SDL_time.h /usr/include/SDL3/SDL_timer.h \
  /usr/include/SDL3/SDL_tray.h /usr/include/SDL3/SDL_version.h \
- /usr/include/SDL3/SDL_oldnames.h /usr/include/unistd.h \
- /usr/include/bits/posix_opt.h /usr/include/bits/environments.h \
- /usr/include/bits/confname.h /usr/include/bits/getopt_posix.h \
- /usr/include/bits/getopt_core.h /usr/include/bits/unistd_ext.h \
- /usr/include/linux/close_range.h
+ /usr/include/SDL3/SDL_oldnames.h /usr/local/include/SDL3_ttf/SDL_ttf.h \
+ /usr/include/unistd.h /usr/include/bits/posix_opt.h \
+ /usr/include/bits/environments.h /usr/include/bits/confname.h \
+ /usr/include/bits/getopt_posix.h /usr/include/bits/getopt_core.h \
+ /usr/include/bits/unistd_ext.h /usr/include/linux/close_range.h
 /usr/include/stdc-predef.h:
 ../include/utity.hpp:
 ../include/player.hpp:
@@ -376,6 +376,7 @@ main.o: main.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
 /usr/include/SDL3/SDL_tray.h:
 /usr/include/SDL3/SDL_version.h:
 /usr/include/SDL3/SDL_oldnames.h:
+/usr/local/include/SDL3_ttf/SDL_ttf.h:
 /usr/include/unistd.h:
 /usr/include/bits/posix_opt.h:
 /usr/include/bits/environments.h:

@@ -14,12 +14,14 @@
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_render.h>
+#include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
 #include "../include/utity.hpp"
 
 static SDL_Event E;
-static SDL_Window *Window;
-static SDL_Renderer *Renderer;
+static SDL_Window *Window = NULL;
+static SDL_Renderer *Renderer = NULL;
+static SDL_Surface *Surface = NULL;
 bool Initilized = false;
 int GUIInit(void)
 {
@@ -48,9 +50,20 @@ int GUIInit(void)
 		ReportError("SDLのレンダラーを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
 		return 1;
 	}
+	Surface = SDL_GetWindowSurface(Window);
+	if(!Surface)
+	{
+		SDL_Log("Failed to create surface: %s", SDL_GetError());
+		ReportError("ウィンドウのサーフェスを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
+		return 1;
+	}
 	Initilized = true;
 	ProcessMessage();
 	return 0;
+}
+SDL_Surface* GetGUISurface(void)
+{
+	return Surface;
 }
 SDL_Renderer* GetGUIRenderer(void)
 {
@@ -59,6 +72,7 @@ SDL_Renderer* GetGUIRenderer(void)
 bool ProcessMessage(void)
 {
 	bool Quit = false;
+	SDL_UpdateWindowSurface(Window);
 	while(SDL_PollEvent(&E))
 	{
 		if(E.type == SDL_EVENT_QUIT)
@@ -73,7 +87,6 @@ bool ProcessMessage(void)
 
 
 
-
 int GUIRelease(void)
 {
 	SDL_DestroyRenderer(Renderer);
@@ -81,4 +94,19 @@ int GUIRelease(void)
 	SDL_Quit();
 	Initilized = false;
 	return 0;
+}
+
+SDL_Color ToSDLPixel(Color Arg)
+{
+	SDL_Color Color;
+	Color.a = 0;
+	Color.r = 0xff;
+	Color.g = 0xff;
+	Color.b = 0xff;
+	
+	Color.a = 0;
+	Color.r = (Arg / 0x00010000) % 0x100;
+	Color.g = (Arg / 0x00000100) % 0x100;
+	Color.b = Arg % 0x100;
+	return Color;
 }

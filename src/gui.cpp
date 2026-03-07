@@ -10,4 +10,33 @@
   */
 
 #include "../include/gui.hpp"
-
+#include <SDL3_ttf/SDL_ttf.h>
+SDL_Surface* Image;
+TTF_Font* InitFont(int Size)
+{	
+	TTF_Font* Font;
+	TTF_Init();
+	Font = TTF_OpenFont(FontPath.c_str(),Size);
+	return Font;	
+}
+int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y)
+{
+	SDL_Rect Rect, Scr_Rect;
+	SDL_Color SDLColor = ToSDLPixel(FontColor);
+	Image = TTF_RenderText_Shaded(Font, Str, strlen(Str), SDLColor, SDLColor);
+	Rect.x = 0;
+	Rect.y = 0;
+	Rect.w = Image->w;
+	Rect.h = Image->h;
+	Scr_Rect.x = X;
+	Scr_Rect.y = Y;	
+	SDL_BlitSurface(Image, &Rect, GetGUISurface(), &Scr_Rect);
+	
+	return 0;
+}
+int QuitFont(TTF_Font* Font)
+{
+	TTF_CloseFont(Font);
+	TTF_Quit();
+	return 0;
+}

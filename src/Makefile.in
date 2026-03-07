@@ -255,7 +255,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 aoide_SOURCES = main.cpp player.cpp vlcinstance.cpp loop.cpp error.cpp gui.cpp sdl.cpp 
-aoide_LDADD = -lvlc -lSDL3
+aoide_LDADD = -lvlc -lSDL3 -lSDL3_ttf
 all: all-am
 
 .SUFFIXES:

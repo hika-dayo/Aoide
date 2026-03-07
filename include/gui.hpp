@@ -11,6 +11,14 @@
 
 #pragma once
 #include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
+#include <string>
+
+#define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
+#define SDL_VIDEO_DRIVER_X11 1
+
+
+const std::string FontPath = "/your/font/file";//フォントファイルの場所
 
 const int WINDOW_RES_X = 480;//解像度をここで設定
 const int WINDOW_RES_Y = 320;
@@ -19,6 +27,7 @@ int GUIRelease(void);//
 bool ProcessMessage(void);//ウィンドウのメッセージを処理。
 						  //この関数を定期的に呼びだす必要があります。目安はフレームの更新の時です。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Renderer* GetGUIRenderer(void);//レンダラーを取得する。
+SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
 
 
 //色ゾーン
@@ -29,7 +38,12 @@ enum COLOR
 	BLUE,
 };
 
-typedef unsigned int Color;//符号無し32bit整数(000000~FFFFFF)の範囲で色を表現する
-int GetPrimaryColors(COLOR Color);
-int SetRenderColor(Color AugColor);//レンダラーの色を変更する
-Color SetRenderColor(void);//レンダラーの色を変更する
+typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する
+
+SDL_Color ToSDLPixel(Color Arg);//符号無し32bit整数で表現された色をSDL用の表現に変換する
+
+//終わり
+
+TTF_Font* InitFont(int Size);//FontPathのフォントと引数のサイズの大きさに
+
+int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する

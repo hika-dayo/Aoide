@@ -13,13 +13,19 @@
 #include "../include/utity.hpp"
 #include "../include/gui.hpp"
 
+#include <SDL3/SDL_pixels.h>
 #include <iostream>
 #include <stdio.h>
 
 int RunMainLoop(void)
 {
+	TTF_Font* Font = InitFont(16);
+	Color FontColor = 0x00ff0000;
+	SDL_Color tmp = ToSDLPixel(FontColor);
 	while(1)
 	{
+		DrawText(Font, "我輩は猫である。", FontColor, 0, 0);
+		DrawText(Font, "名前はまだ無い。", FontColor, 0, 16);
 		if(ProcessMessage())
 		{
 			break;
