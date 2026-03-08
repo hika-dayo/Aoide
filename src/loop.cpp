@@ -19,7 +19,7 @@
 
 int RunMainLoop(void)
 {
-	TTF_Font* Font = InitFont(16);
+	TTF_Font* Font = InitFont(16, FontPath);
 	Color FontColor = 0x00ff0000;
 	SDL_Color tmp = ToSDLPixel(FontColor);
 	while(1)

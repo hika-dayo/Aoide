@@ -1,8 +1,9 @@
 概要  
   
-本ソフトウェアは、LibVLCを利用して作成した音楽再生ソフトウェアです。
-音楽を再生する機能のみならず、音楽の情報を表示する、音楽再生用のファイラなどの機能が存在します。
-VLC上で再生可能な音楽ファイルならば、そのほとんどが再生可能です。  
+本ソフトウェアは、LibVLCを利用して作成したまだ未完成の音楽再生ソフトウェアです。 
+音楽を再生する機能が実装されています。 
+VLC上で再生可能な音楽ファイルならばそのほとんどが再生可能です。
+音楽の情報を表示する、音楽再生用のファイラなどの機能を追加する予定です。 
 使用したライブラリ・言語等
 - C++
 - make
@@ -83,7 +84,7 @@ $ sudo make uninstall
 
 このソフトウェアはGNU General Public License v3.0 or laterの下でライセンスされています。
 
-使用したライブラリはlibraries/ディレクトリに未改変のアーカイブとして収録されています。各ライブラリのライセンスは、それぞれのアーカイブに含まれています。
+使用したライブラリはlibraries/ディレクトリに未改変のアーカイブとして収録されています。各ライブラリのライセンスは、それぞれのアーカイブとlicensesディレクトリ内に存在します。
 
 
 使用したライブラリのライセンス  
@@ -91,19 +92,24 @@ $ sudo make uninstall
 libVLCはLGPLv2.1 or laterでライセンスされています。  
 VLCメディアプレーヤーのソースコードは、以下のリンクから入手できます：    
 [VLC公式のソースダウンロードリンク](https://www.videolan.org/vlc/download-sources.html)  
+詳細、全文は/licenses/libVLC-COPYING.LIBを参照するか、/libraries/vlc/vlc-3.0.23.tar.xz 内にあるCOPYING.LIBを参照してください。 
 
 - SDL3 -Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org> - zlib License  
 SDL3はzlib Licenseの下でライセンスされています。  
 SDL3のソースコードは以下のリンクから入手できます。:  
 [SDL3公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL/releases/)  
+詳細、全文は/licenses/SDL3を参照するか、/libraries/sdl3/SDL3-3.2.28.tar.gz 内にあるLICENSE.txtを参照してください。 
+
 - SDL3_ttf Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> - zlib License  
 SDL3_ttfはzlib Licenseの下でライセンスされています。  
 SDL3_ttfのソースコードは以下のリンクから入手できます。:  
 [SDL3_ttf公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL_ttf)  
+詳細、全文は/licenses/SDL_ttfを参照するか、/libraries/sdl3/SDL3_ttf-3.2.2.tar.gz 内にあるLICENSE.txtを参照してください。 
+
 - SDL3_image Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> - zlib License  
 SDL3_imageはzlib Licenseの下でライセンスされています。  
 SDL3_imageのソースコードは以下のリンクから入手できます。:  
-
 [SDL3_image公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL_image)
+詳細、全文は/licenses/SDL_imageを参照するか、/libraries/sdl3/SDL3_image-3.4.0.tar.gz 内にあるLICENSE.txtを参照してください。 
 
 

@@ -43,13 +43,13 @@ int GUIInit(void)
 		ReportError("SDLのウィンドウを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
 		return 1;
 	}
-	Renderer = SDL_CreateRenderer(Window, NULL);
-	if(!Renderer)
+//	Renderer = SDL_CreateRenderer(Window, NULL);
+/*	if(!Renderer)
 	{
 		SDL_Log("Failed to create renderer: %s", SDL_GetError());
 		ReportError("SDLのレンダラーを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
 		return 1;
-	}
+	}*/
 	Surface = SDL_GetWindowSurface(Window);
 	if(!Surface)
 	{
@@ -58,7 +58,7 @@ int GUIInit(void)
 		return 1;
 	}
 	Initilized = true;
-	ProcessMessage();
+//	ProcessMessage();
 	return 0;
 }
 SDL_Surface* GetGUISurface(void)

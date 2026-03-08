@@ -19,3 +19,6 @@ enum ERROR_SCALE
 int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE);//エラー発生時に呼び出し 引数FILEには__FILE__、引数LINEには__LINE__を指定
 int RunMainLoop(void);//ループ処理
 int WriteLog(const char* Context);
+bool isFileExists(const char* Path);//そのファイルが存在しているか確認する
+
+
