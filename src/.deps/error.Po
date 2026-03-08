@@ -1,4 +1,4 @@
-error.o: error.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
+error.o: error.cpp /usr/include/stdc-predef.h ../includes/utility.hpp \
  /usr/include/c++/15.2.1/iostream \
  /usr/include/c++/15.2.1/bits/requires_hosted.h \
  /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h \
@@ -143,7 +143,7 @@ error.o: error.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
  /usr/include/c++/15.2.1/bits/locale_facets.tcc \
  /usr/include/c++/15.2.1/bits/basic_ios.tcc \
  /usr/include/c++/15.2.1/bits/ostream.tcc /usr/include/c++/15.2.1/istream \
- /usr/include/c++/15.2.1/bits/istream.tcc ../include/gui.hpp \
+ /usr/include/c++/15.2.1/bits/istream.tcc ../includes/gui.hpp \
  /usr/include/SDL3/SDL.h /usr/include/SDL3/SDL_stdinc.h \
  /usr/include/SDL3/SDL_platform_defines.h /usr/include/string.h \
  /usr/include/strings.h \
@@ -180,7 +180,7 @@ error.o: error.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
  /usr/include/SDL3/SDL_version.h /usr/include/SDL3/SDL_oldnames.h \
  /usr/local/include/SDL3_ttf/SDL_ttf.h
 /usr/include/stdc-predef.h:
-../include/utity.hpp:
+../includes/utility.hpp:
 /usr/include/c++/15.2.1/iostream:
 /usr/include/c++/15.2.1/bits/requires_hosted.h:
 /usr/include/c++/15.2.1/x86_64-pc-linux-gnu/bits/c++config.h:
@@ -382,7 +382,7 @@ error.o: error.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
 /usr/include/c++/15.2.1/bits/ostream.tcc:
 /usr/include/c++/15.2.1/istream:
 /usr/include/c++/15.2.1/bits/istream.tcc:
-../include/gui.hpp:
+../includes/gui.hpp:
 /usr/include/SDL3/SDL.h:
 /usr/include/SDL3/SDL_stdinc.h:
 /usr/include/SDL3/SDL_platform_defines.h:

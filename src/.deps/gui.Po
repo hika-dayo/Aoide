@@ -1,5 +1,5 @@
-gui.o: gui.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
- ../include/gui.hpp /usr/include/SDL3/SDL.h \
+gui.o: gui.cpp /usr/include/stdc-predef.h ../includes/utility.hpp \
+ ../includes/gui.hpp /usr/include/SDL3/SDL.h \
  /usr/include/SDL3/SDL_stdinc.h /usr/include/SDL3/SDL_platform_defines.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
  /usr/include/string.h /usr/include/bits/libc-header-start.h \
@@ -185,8 +185,8 @@ gui.o: gui.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
  /usr/include/c++/15.2.1/bits/ostream.tcc /usr/include/c++/15.2.1/istream \
  /usr/include/c++/15.2.1/bits/istream.tcc
 /usr/include/stdc-predef.h:
-../include/utity.hpp:
-../include/gui.hpp:
+../includes/utility.hpp:
+../includes/gui.hpp:
 /usr/include/SDL3/SDL.h:
 /usr/include/SDL3/SDL_stdinc.h:
 /usr/include/SDL3/SDL_platform_defines.h:

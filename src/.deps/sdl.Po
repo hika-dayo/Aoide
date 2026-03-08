@@ -1,4 +1,4 @@
-sdl.o: sdl.cpp /usr/include/stdc-predef.h ../include/gui.hpp \
+sdl.o: sdl.cpp /usr/include/stdc-predef.h ../includes/gui.hpp \
  /usr/include/SDL3/SDL.h /usr/include/SDL3/SDL_stdinc.h \
  /usr/include/SDL3/SDL_platform_defines.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdarg.h \
@@ -136,9 +136,9 @@ sdl.o: sdl.cpp /usr/include/stdc-predef.h ../include/gui.hpp \
  /usr/include/c++/15.2.1/cstddef \
  /usr/include/c++/15.2.1/bits/uses_allocator.h \
  /usr/include/c++/15.2.1/bits/uses_allocator_args.h \
- /usr/include/c++/15.2.1/tuple ../include/utity.hpp
+ /usr/include/c++/15.2.1/tuple ../includes/utility.hpp
 /usr/include/stdc-predef.h:
-../include/gui.hpp:
+../includes/gui.hpp:
 /usr/include/SDL3/SDL.h:
 /usr/include/SDL3/SDL_stdinc.h:
 /usr/include/SDL3/SDL_platform_defines.h:
@@ -347,4 +347,4 @@ sdl.o: sdl.cpp /usr/include/stdc-predef.h ../include/gui.hpp \
 /usr/include/c++/15.2.1/bits/uses_allocator.h:
 /usr/include/c++/15.2.1/bits/uses_allocator_args.h:
 /usr/include/c++/15.2.1/tuple:
-../include/utity.hpp:
+../includes/utility.hpp:
