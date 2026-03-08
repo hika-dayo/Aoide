@@ -9,10 +9,10 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../include/utity.hpp"
-#include "../include/player.hpp"
-#include "../include/vlcinstance.hpp"
-#include "../include/gui.hpp"
+#include "../includes/utility.hpp"
+#include "../includes/player.hpp"
+#include "../includes/vlcinstance.hpp"
+#include "../includes/gui.hpp"
 #include <stdio.h>
 #include <unistd.h>
 int main(int argc, char *argv[])

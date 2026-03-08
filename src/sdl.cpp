@@ -9,7 +9,7 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../include/gui.hpp"
+#include "../includes/gui.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
