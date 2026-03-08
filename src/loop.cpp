@@ -9,9 +9,9 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../include/vlcinstance.hpp"
-#include "../include/utity.hpp"
-#include "../include/gui.hpp"
+#include "../includes/vlcinstance.hpp"
+#include "../includes/utility.hpp"
+#include "../includes/gui.hpp"
 
 #include <SDL3/SDL_pixels.h>
 #include <iostream>

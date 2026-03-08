@@ -1,5 +1,5 @@
 vlcinstance.o: vlcinstance.cpp /usr/include/stdc-predef.h \
- ../include/vlcinstance.hpp /usr/include/vlc/vlc.h \
+ ../includes/vlcinstance.hpp /usr/include/vlc/vlc.h \
  /usr/include/vlc/libvlc.h /usr/include/stdio.h \
  /usr/include/bits/libc-header-start.h /usr/include/features.h \
  /usr/include/features-time64.h /usr/include/bits/wordsize.h \
@@ -29,9 +29,9 @@ vlcinstance.o: vlcinstance.cpp /usr/include/stdc-predef.h \
  /usr/include/vlc/libvlc_events.h /usr/include/vlc/libvlc_dialog.h \
  /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h \
  /usr/include/vlc/libvlc_vlm.h /usr/include/vlc/deprecated.h \
- ../include/utity.hpp
+ ../includes/utility.hpp
 /usr/include/stdc-predef.h:
-../include/vlcinstance.hpp:
+../includes/vlcinstance.hpp:
 /usr/include/vlc/vlc.h:
 /usr/include/vlc/libvlc.h:
 /usr/include/stdio.h:
@@ -78,4 +78,4 @@ vlcinstance.o: vlcinstance.cpp /usr/include/stdc-predef.h \
 /usr/lib/gcc/x86_64-pc-linux-gnu/15.2.1/include/stdbool.h:
 /usr/include/vlc/libvlc_vlm.h:
 /usr/include/vlc/deprecated.h:
-../include/utity.hpp:
+../includes/utility.hpp:

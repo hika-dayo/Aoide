@@ -1,5 +1,5 @@
-main.o: main.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
- ../include/player.hpp /usr/include/vlc/vlc.h /usr/include/vlc/libvlc.h \
+main.o: main.cpp /usr/include/stdc-predef.h ../includes/utility.hpp \
+ ../includes/player.hpp /usr/include/vlc/vlc.h /usr/include/vlc/libvlc.h \
  /usr/include/stdio.h /usr/include/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
  /usr/include/bits/wordsize.h /usr/include/bits/timesize.h \
@@ -113,8 +113,8 @@ main.o: main.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
  /usr/include/c++/15.2.1/cstddef \
  /usr/include/c++/15.2.1/bits/uses_allocator.h \
  /usr/include/c++/15.2.1/bits/uses_allocator_args.h \
- /usr/include/c++/15.2.1/tuple ../include/vlcinstance.hpp \
- ../include/gui.hpp /usr/include/SDL3/SDL.h \
+ /usr/include/c++/15.2.1/tuple ../includes/vlcinstance.hpp \
+ ../includes/gui.hpp /usr/include/SDL3/SDL.h \
  /usr/include/SDL3/SDL_stdinc.h /usr/include/SDL3/SDL_platform_defines.h \
  /usr/include/string.h /usr/include/strings.h \
  /usr/include/SDL3/SDL_begin_code.h /usr/include/SDL3/SDL_close_code.h \
@@ -151,8 +151,8 @@ main.o: main.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
  /usr/include/bits/getopt_posix.h /usr/include/bits/getopt_core.h \
  /usr/include/bits/unistd_ext.h /usr/include/linux/close_range.h
 /usr/include/stdc-predef.h:
-../include/utity.hpp:
-../include/player.hpp:
+../includes/utility.hpp:
+../includes/player.hpp:
 /usr/include/vlc/vlc.h:
 /usr/include/vlc/libvlc.h:
 /usr/include/stdio.h:
@@ -312,8 +312,8 @@ main.o: main.cpp /usr/include/stdc-predef.h ../include/utity.hpp \
 /usr/include/c++/15.2.1/bits/uses_allocator.h:
 /usr/include/c++/15.2.1/bits/uses_allocator_args.h:
 /usr/include/c++/15.2.1/tuple:
-../include/vlcinstance.hpp:
-../include/gui.hpp:
+../includes/vlcinstance.hpp:
+../includes/gui.hpp:
 /usr/include/SDL3/SDL.h:
 /usr/include/SDL3/SDL_stdinc.h:
 /usr/include/SDL3/SDL_platform_defines.h:
