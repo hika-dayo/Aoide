@@ -20,8 +20,8 @@
 
 const std::string FontPath = "/home/hika/Downloads/unifont-17.0.03.otf";//フォントファイルの場所
 
-const int WINDOW_RES_X = 480;//解像度をここで設定
-const int WINDOW_RES_Y = 320;
+const int WINDOW_RES_X = 1920;//解像度をここで設定
+const int WINDOW_RES_Y = 1080;
 int GUIInit(void);//SDL_Windowのポインタのアドレスを引数に設定する
 int GUIRelease(void);//
 bool ProcessMessage(void);//ウィンドウのメッセージを処理。

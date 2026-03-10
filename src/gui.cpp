@@ -53,16 +53,3 @@ int QuitFont(TTF_Font* Font)
 	TTF_Quit();
 	return 0;
 }
-bool isFileExists(const char* Path)
-{	
-	struct stat Buffer;
-	int Exist = stat(Path, &Buffer);
-	if(Exist == 0)
-	{
-		return 1;
-	}
-	else
-	{
-		return 0;
-	}
-}

@@ -103,7 +103,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) \
 	vlcinstance.$(OBJEXT) loop.$(OBJEXT) error.$(OBJEXT) \
-	gui.$(OBJEXT) sdl.$(OBJEXT)
+	gui.$(OBJEXT) sdl.$(OBJEXT) file.$(OBJEXT)
 aoide_OBJECTS = $(am_aoide_OBJECTS)
 aoide_DEPENDENCIES =
 AM_V_P = $(am__v_P_$(V))
@@ -121,9 +121,10 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I. -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/error.Po ./$(DEPDIR)/gui.Po \
-	./$(DEPDIR)/loop.Po ./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po \
-	./$(DEPDIR)/sdl.Po ./$(DEPDIR)/vlcinstance.Po
+am__depfiles_remade = ./$(DEPDIR)/error.Po ./$(DEPDIR)/file.Po \
+	./$(DEPDIR)/gui.Po ./$(DEPDIR)/loop.Po ./$(DEPDIR)/main.Po \
+	./$(DEPDIR)/player.Po ./$(DEPDIR)/sdl.Po \
+	./$(DEPDIR)/vlcinstance.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -254,7 +255,7 @@ target_alias =
 top_build_prefix = ../
 top_builddir = ..
 top_srcdir = ..
-aoide_SOURCES = main.cpp player.cpp vlcinstance.cpp loop.cpp error.cpp gui.cpp sdl.cpp 
+aoide_SOURCES = main.cpp player.cpp vlcinstance.cpp loop.cpp error.cpp gui.cpp sdl.cpp file.cpp
 aoide_LDADD = -lvlc -lSDL3 -lSDL3_ttf
 all: all-am
 
@@ -343,6 +344,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 include ./$(DEPDIR)/error.Po # am--include-marker
+include ./$(DEPDIR)/file.Po # am--include-marker
 include ./$(DEPDIR)/gui.Po # am--include-marker
 include ./$(DEPDIR)/loop.Po # am--include-marker
 include ./$(DEPDIR)/main.Po # am--include-marker
@@ -498,6 +500,7 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f ./$(DEPDIR)/error.Po
+	-rm -f ./$(DEPDIR)/file.Po
 	-rm -f ./$(DEPDIR)/gui.Po
 	-rm -f ./$(DEPDIR)/loop.Po
 	-rm -f ./$(DEPDIR)/main.Po
@@ -550,6 +553,7 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/error.Po
+	-rm -f ./$(DEPDIR)/file.Po
 	-rm -f ./$(DEPDIR)/gui.Po
 	-rm -f ./$(DEPDIR)/loop.Po
 	-rm -f ./$(DEPDIR)/main.Po
