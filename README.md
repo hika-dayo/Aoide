@@ -88,28 +88,30 @@ $ sudo make uninstall
 
 
 使用したライブラリのライセンス  
-- libVLC -Copyright (C) 1998-2025 VLC authors and VideoLAN - LGPLv2.1 or later  
-libVLCはLGPLv2.1 or laterでライセンスされています。  
-VLCメディアプレーヤーのソースコードは、以下のリンクから入手できます：    
-[VLC公式のソースダウンロードリンク](https://www.videolan.org/vlc/download-sources.html)  
-詳細、全文は/licenses/libVLC-COPYING.LIBを参照するか、/libraries/vlc/vlc-3.0.23.tar.xz 内にあるCOPYING.LIBを参照してください。 
+このソフトウェアは以下のサードパーティー製ライブラリを利用しています。
 
-- SDL3 -Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org> - zlib License  
-SDL3はzlib Licenseの下でライセンスされています。  
+- libVLC -Copyright (C) 1998-2025 VLC authors and VideoLAN 
+License: LGPLv2.1 or later  
+libVLCのソースコードは、以下のリンクから入手できます：    
+[VLC公式のソースダウンロードリンク](https://www.videolan.org/vlc/download-sources.html)  
+詳細、全文は/licenses/libVLC-COPYING.LIB又は、/libraries/vlc/vlc-3.0.23.tar.xz 内にあるCOPYING.LIBを参照してください。 
+
+- SDL3 -Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org> 
+License: zlib License  
 SDL3のソースコードは以下のリンクから入手できます。:  
 [SDL3公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL/releases/)  
-詳細、全文は/licenses/SDL3を参照するか、/libraries/sdl3/SDL3-3.2.28.tar.gz 内にあるLICENSE.txtを参照してください。 
+詳細、全文は/licenses/SDL3-LICENSE又は、/libraries/sdl3/SDL3-3.2.28.tar.gz 内にあるLICENSE.txtを参照してください。 
 
-- SDL3_ttf Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> - zlib License  
-SDL3_ttfはzlib Licenseの下でライセンスされています。  
+- SDL3_ttf Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> 
+License: zlib License  
 SDL3_ttfのソースコードは以下のリンクから入手できます。:  
 [SDL3_ttf公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL_ttf)  
-詳細、全文は/licenses/SDL_ttfを参照するか、/libraries/sdl3/SDL3_ttf-3.2.2.tar.gz 内にあるLICENSE.txtを参照してください。 
+詳細、全文は/licenses/SDL_ttf-LICENSE又は、/libraries/sdl3/SDL3_ttf-3.2.2.tar.gz 内にあるLICENSE.txtを参照してください。 
 
-- SDL3_image Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> - zlib License  
-SDL3_imageはzlib Licenseの下でライセンスされています。  
+- SDL3_image Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> 
+License: zlib License  
 SDL3_imageのソースコードは以下のリンクから入手できます。:  
 [SDL3_image公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL_image)
-詳細、全文は/licenses/SDL_imageを参照するか、/libraries/sdl3/SDL3_image-3.4.0.tar.gz 内にあるLICENSE.txtを参照してください。 
+詳細、全文は/licenses/SDL_image-LICENSE又は、/libraries/sdl3/SDL3_image-3.4.0.tar.gz 内にあるLICENSE.txtを参照してください。 
 
 
