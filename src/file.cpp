@@ -19,7 +19,7 @@
 #include <sys/stat.h>
 
 static std::string ConfigPath;
-
+static bool SubstitutedPath = 0;
 bool isFileExists(const char* Path)
 {
 	return std::filesystem::is_regular_file(Path);
@@ -40,8 +40,28 @@ int MakeConfDir(void)
 		ConfigPath = ConfDir + "aoide.conf";
 	}
 	mkdir(ConfDir.c_str(), 0755);
+	SubstitutedPath = true;
+	return 0;
+
+}
+int InitConf(void)
+{
+	if(SubstitutedPath)
+	{
+		std::ofstream DefaultConf(ConfigPath);
+		DefaultConf << "SearchDirectory=~/" << std::endl;
+		DefaultConf << "WindowWidth=640" << std::endl;
+		DefaultConf << "WindowHeight=480" << std::endl;
+		DefaultConf.close();
+	}	
+	else
+	{
+		return -1;
+	}
+
 	return 0;
 }
+
 int ReadConf(void)
 {
 	MakeConfDir();
@@ -51,6 +71,7 @@ int ReadConf(void)
 	}
 	else
 	{
+		InitConf();
 		//無いからコンフィグファイルを新規で作る
 		
 	}
