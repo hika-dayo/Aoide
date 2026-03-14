@@ -1,10 +1,10 @@
 # autotools
-.deps/
+.deps/*
 .libs/
 *.o
 *.lo
 *.la
-
+aoide
 Makefile
 Makefile.in
 

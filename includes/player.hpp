@@ -30,7 +30,8 @@ class Player
 		libvlc_state_t GetState(void);
 	public:
 		~Player();
-		Player(const char* Path);	const char* GetFilePath(void);
+		Player(const char* Path);
+		const char* GetFilePath(void);
 		bool isEnded(void);	
 		bool isPlaying(void);
 		bool isPaused(void);

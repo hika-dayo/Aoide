@@ -17,8 +17,6 @@
 #include <SDL3_ttf/SDL_ttf.h>
 int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE)
 {
-	TTF_Font* Font = InitFont(16, FontPath);
-	Color FontColor = 0x00ff0000;
 	time_t NowTime;
 	time(&NowTime);
 	std::cerr << NowTime << ":";
@@ -38,6 +36,5 @@ int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LI
 				
 	}
 	std::cerr << ":" << Context;
-	DrawText(Font, Context, FontColor, 0, 16);
 	return 0;
 }
