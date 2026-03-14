@@ -136,4 +136,4 @@ SDL3_imageのソースコードは以下のリンクから入手できます。:
 詳細、全文はlicenses/SDL_image-LICENSE又は、libraries/sdl3/SDL3_image-3.4.0.tar.gz 内にあるLICENSE.txtを参照してください。 
 
 同梱されたフォントのライセンス
-このソフトウェアのアーカイブにはGNU Unifontが含まれています。GNU UnifontはSIL Open Font License1.1の下で配布されています。著作権はRoman Czyborra及びコントリビュータに帰属します。詳細、全文はlicense/OFL-1.1.txt又は[OFL本文へのリンク](https://openfontlicense.org/open-font-license-official-text/)
+- このソフトウェアのアーカイブにはGNU Unifontが含まれています。GNU UnifontはSIL Open Font License1.1の下で配布されています。著作権はRoman Czyborra及びコントリビュータに帰属します。詳細、全文はlicense/OFL-1.1.txt又は[OFL本文へのリンク](https://openfontlicense.org/open-font-license-official-text/)
