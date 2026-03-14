@@ -12,6 +12,7 @@
 #include "../includes/utility.hpp"
 #include <iostream>
 #include <time.h>
+#include <stdlib.h>
 #include "../includes/gui.hpp"
 #include <SDL3_ttf/SDL_ttf.h>
 int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE)
@@ -23,24 +24,20 @@ int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LI
 	std::cerr << NowTime << ":";
 	std::cerr << FILE << ":" << LINE << ":";
 	if(SCALE == INFO_ERROR)
-	{
-
-		//情報エラーの場合Contextだけを出力する
+	{	
+		//情報出力のみの軽いエラーの場合Contextだけを出力する
 	}
 	if(SCALE == GENERAL_ERROR)
 	{
-		DrawText(Font, "エラーが発生しました！", FontColor, 0, 0);
 		std::cerr << "エラーが発生しました！";
 		
 	}
 	if(SCALE == CRITICAL_ERROR)
 	{
-		DrawText(Font, "重大なエラーです。プログラムを終了します。", FontColor, 0, 0);
-		std::cerr << "重大なエラーです。プログラムを終了します。";
-		
+		std::cerr << "重大なエラーです。";
+				
 	}
 	std::cerr << ":" << Context;
 	DrawText(Font, Context, FontColor, 0, 16);
-
 	return 0;
 }

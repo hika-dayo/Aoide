@@ -13,15 +13,27 @@
 #include "../includes/player.hpp"
 #include "../includes/vlcinstance.hpp"
 #include "../includes/gui.hpp"
+#include <cstdlib>
 #include <stdio.h>
 #include <unistd.h>
+#include <iostream>
+#include <string>
+
 int main(int argc, char *argv[])
 {
+	std::string MusicPath;
+	if(argc >= 2)
+	{
+		MusicPath = argv[1];
+	}
+	atexit(Release);
 	ReadConf();
 	GUIInit();
 	InitVLCInstance();
-	RunMainLoop();
+	exit(0);
+}
+void Release(void)
+{
 	ReleaseVLCInstance();
 	GUIRelease();
-	return 0;
 }
