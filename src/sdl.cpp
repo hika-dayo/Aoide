@@ -34,22 +34,14 @@ int GUIInit(void)
 		SDL_Log("Failed to create window: %s", SDL_GetError());
 		ReportError("SDLを初期化できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
 		return 1;
-	}
-	
-	Window = SDL_CreateWindow("Aoide", WINDOW_RES_X, WINDOW_RES_Y, 0);
+	}	
+	Window = SDL_CreateWindow("Aoide", GetWindow_Width(), GetWindow_Height(), 0);
 	if(Window == nullptr)
 	{
 		SDL_Log("Failed to create window: %s", SDL_GetError());
 		ReportError("SDLのウィンドウを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
 		return 1;
 	}
-//	Renderer = SDL_CreateRenderer(Window, NULL);
-/*	if(!Renderer)
-	{
-		SDL_Log("Failed to create renderer: %s", SDL_GetError());
-		ReportError("SDLのレンダラーを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
-		return 1;
-	}*/
 	Surface = SDL_GetWindowSurface(Window);
 	if(!Surface)
 	{
@@ -57,6 +49,7 @@ int GUIInit(void)
 		ReportError("ウィンドウのサーフェスを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
 		return 1;
 	}
+	SDL_SetWindowSurfaceVSync(Window, 2);
 	Initilized = true;
 //	ProcessMessage();
 	return 0;
@@ -64,10 +57,6 @@ int GUIInit(void)
 SDL_Surface* GetGUISurface(void)
 {
 	return Surface;
-}
-SDL_Renderer* GetGUIRenderer(void)
-{
-	return Renderer;
 }
 bool ProcessMessage(void)
 {

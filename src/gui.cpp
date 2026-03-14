@@ -11,8 +11,10 @@
 
 #include "../includes/utility.hpp"
 #include "../includes/gui.hpp"
+#include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
+#include <stdlib.h>
 #include <sys/stat.h>
 #include <iostream>
 SDL_Surface* Image;
@@ -28,7 +30,6 @@ TTF_Font* InitFont(int Size, std::string Path)
 	else
 	{
 		ReportError("フォントファイルが存在していません!", CRITICAL_ERROR, __FILE__, __LINE__);
-		std::cerr << Path << std::endl;
 	}
 	return 0;
 }
@@ -51,5 +52,10 @@ int QuitFont(TTF_Font* Font)
 {
 	TTF_CloseFont(Font);
 	TTF_Quit();
+	return 0;
+}
+int CleanWindow(void)
+{
+	SDL_ClearSurface(GetGUISurface(), 0,0,0,0);
 	return 0;
 }
