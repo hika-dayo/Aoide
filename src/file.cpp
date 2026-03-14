@@ -22,7 +22,7 @@ static std::string ConfigPath;
 static bool SubstitutedPath = 0;
 bool isFileExists(const char* Path)
 {
-	return std::filesystem::is_regular_file(Path);
+	return std::filesystem::exists(Path);
 }
 int MakeConfDir(void)
 {
@@ -36,7 +36,7 @@ int MakeConfDir(void)
 	else	
 	{
 		ConfDir = getenv("XDG_CONFIG_HOME");
-		ConfDir += "/aoide";
+		ConfDir += "/aoide/";
 		ConfigPath = ConfDir + "aoide.conf";
 	}
 	mkdir(ConfDir.c_str(), 0755);
@@ -64,16 +64,45 @@ int InitConf(void)
 
 int ReadConf(void)
 {
+	
 	MakeConfDir();
 	if(isFileExists(ConfigPath.c_str()))
 	{
-		//こっから読む処理
+		
 	}
 	else
 	{
 		InitConf();
-		//無いからコンフィグファイルを新規で作る
 		
 	}
 	return 0;
+}
+
+const char* GetFontPath()
+{
+	if(isFileExists("/usr/local/share/aoide/unifont-17.0.03.otf"))
+	{
+		return "/usr/local/share/aoide/unifont-17.0.03.otf";
+	}
+	else
+	{
+		if(isFileExists("../assets/font/unifont-17.0.03.otf"))
+		{
+			return "../assets/font/unifont-17.0.03.otf";
+		}
+		else
+		{
+			ReportError("Fontファイルが存在しません。", CRITICAL_ERROR, __FILE__, __LINE__);
+			exit(1);
+		}
+
+	}
+}
+int GetWindow_Width(void)
+{
+	return 480;
+}
+int GetWindow_Height(void)
+{
+	return 320;
 }
