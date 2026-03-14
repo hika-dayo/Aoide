@@ -1,5 +1,15 @@
-autom4te.cache/
+# autotools
+.deps/
+.libs/
+*.o
+*.lo
+*.la
+
+Makefile
+Makefile.in
+
 config.log
 config.status
-Makefile
-config.h
+config.cache
+
+autom4te.cache/
