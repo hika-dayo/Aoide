@@ -10,6 +10,7 @@
   */
 
 #include "../includes/vlcinstance.hpp"
+#include "../includes/player.hpp"
 #include "../includes/utility.hpp"
 #include "../includes/gui.hpp"
 
@@ -19,13 +20,16 @@
 
 int RunMainLoop(void)
 {
-	TTF_Font* Font = InitFont(16, FontPath);
-	Color FontColor = 0x00ff0000;
-	SDL_Color tmp = ToSDLPixel(FontColor);
+	TTF_Font* Font = InitFont(16, GetFontPath());
+	if(Font == 0)
+	{
+		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
+		exit(1);
+	}
+	Color FontColor = 0x00ffffff;
 	while(1)
 	{
-		DrawText(Font, "我輩は猫である。", FontColor, 0, 0);
-		DrawText(Font, "名前はまだ無い。", FontColor, 0, 16);
+		CleanWindow();
 		if(ProcessMessage())
 		{
 			break;
