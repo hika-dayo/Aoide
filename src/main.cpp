@@ -21,15 +21,11 @@
 
 int main(int argc, char *argv[])
 {
-	std::string MusicPath;
-	if(argc >= 2)
-	{
-		MusicPath = argv[1];
-	}
 	atexit(Release);
 	ReadConf();
 	GUIInit();
 	InitVLCInstance();
+	RunMainLoop();
 	exit(0);
 }
 void Release(void)
