@@ -57,31 +57,31 @@ $ cd SDL3-3.2.28/
 $ cmake .
 $ make
 $ sudo make install
-###SDL_imageのインストール
-$ cd Aoide/libraries/sdl3
+```
+SDL_imageのインストール
+```bash
+###$ cd Aoide/libraries/sdl3
 $ tar xf SDL3_image-3.4.0.tar.gz
 $ cd SDL3_image-3.4.0/
 $ cmake .
 $ make
 $ sudo make install
-###SDL_ttfのインストール
-$ cd Aoide/libraries/sdl3
+```
+SDL_ttfのインストール
+```bash
+###$ cd Aoide/libraries/sdl3
 $ tar xf SDL3_ttf-3.2.2.tar.gz
 $ cd SDL3_ttf-3.2.2/
 $ cmake .
 $ make
 $ sudo make install
-
 ```
-本ソフトのビルド
+
+本ソフトのインストール
 ```bash
 $ cd Aoide
 $ ./configure
 $ make
-```
-- インストールする場合
-```bash
-$ cd Aoide
 $ sudo make install
 ```
 
@@ -115,24 +115,25 @@ $ sudo make uninstall
 License: LGPLv2.1 or later  
 libVLCのソースコードは、以下のリンクから入手できます：    
 [VLC公式のソースダウンロードリンク](https://www.videolan.org/vlc/download-sources.html)  
-詳細、全文は/licenses/libVLC-COPYING.LIB又は、/libraries/vlc/vlc-3.0.23.tar.xz 内にあるCOPYING.LIBを参照してください。 
+詳細、全文はlicenses/libVLC-COPYING.LIB又は、libraries/vlc/vlc-3.0.23.tar.xz 内にあるCOPYING.LIBを参照してください。 
 
 - SDL3 -Copyright (C) 1997-2025 Sam Lantinga <slouken@libsdl.org> 
 License: zlib License  
 SDL3のソースコードは以下のリンクから入手できます。:  
 [SDL3公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL/releases/)  
-詳細、全文は/licenses/SDL3-LICENSE又は、/libraries/sdl3/SDL3-3.2.28.tar.gz 内にあるLICENSE.txtを参照してください。 
+詳細、全文はlicenses/SDL3-LICENSE又は、libraries/sdl3/SDL3-3.2.28.tar.gz 内にあるLICENSE.txtを参照してください。 
 
 - SDL3_ttf Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> 
 License: zlib License  
 SDL3_ttfのソースコードは以下のリンクから入手できます。:  
 [SDL3_ttf公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL_ttf)  
-詳細、全文は/licenses/SDL_ttf-LICENSE又は、/libraries/sdl3/SDL3_ttf-3.2.2.tar.gz 内にあるLICENSE.txtを参照してください。 
+詳細、全文はlicenses/SDL_ttf-LICENSE又は、libraries/sdl3/SDL3_ttf-3.2.2.tar.gz 内にあるLICENSE.txtを参照してください。 
 
 - SDL3_image Copyright (C) 1997-2026 Sam Lantinga <slouken@libsdl.org> 
 License: zlib License  
 SDL3_imageのソースコードは以下のリンクから入手できます。:  
 [SDL3_image公式のソースダウンロードリンク](https://github.com/libsdl-org/SDL_image)
-詳細、全文は/licenses/SDL_image-LICENSE又は、/libraries/sdl3/SDL3_image-3.4.0.tar.gz 内にあるLICENSE.txtを参照してください。 
+詳細、全文はlicenses/SDL_image-LICENSE又は、libraries/sdl3/SDL3_image-3.4.0.tar.gz 内にあるLICENSE.txtを参照してください。 
 
-
+同梱されたフォントのライセンス
+このソフトウェアのアーカイブにはGNU Unifontが含まれています。GNU UnifontはSIL Open Font License1.1の下で配布されています。著作権はRoman Czyborra及びコントリビュータに帰属します。詳細、全文はlicense/OFL-1.1.txt又は[OFL本文へのリンク](https://openfontlicense.org/open-font-license-official-text/)
