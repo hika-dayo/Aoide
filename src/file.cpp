@@ -30,7 +30,12 @@ int MakeConfDir(void)
 	if(getenv("XDG_CONFIG_HOME") == NULL)
 	{//特に指定が無いなら~/.config以下にaoideディレクトリを生成する
 		ConfDir = getenv("HOME");
-		ConfDir += "/.config/aoide";
+		if(ConfDir.c_str() == NULL)
+		{
+			ReportError("HOMEが設定されていません", CRITICAL_ERROR, __FILE__,__LINE__);
+			exit(1);
+		}
+		ConfDir += "/.config/aoide/";
 		ConfigPath = ConfDir + "aoide.conf";
 	}
 	else	
@@ -39,7 +44,7 @@ int MakeConfDir(void)
 		ConfDir += "/aoide/";
 		ConfigPath = ConfDir + "aoide.conf";
 	}
-	mkdir(ConfDir.c_str(), 0755);
+	std::filesystem::create_directory(ConfDir.c_str());
 	SubstitutedPath = true;
 	return 0;
 
@@ -49,7 +54,7 @@ int InitConf(void)
 	if(SubstitutedPath)
 	{
 		std::ofstream DefaultConf(ConfigPath);
-		DefaultConf << "SearchDirectory=~/" << std::endl;
+		DefaultConf << "SearchDirectory=" << getenv("HOME") << "/music" << std::endl;
 		DefaultConf << "WindowWidth=640" << std::endl;
 		DefaultConf << "WindowHeight=480" << std::endl;
 		DefaultConf.close();
