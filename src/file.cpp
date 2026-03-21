@@ -17,6 +17,8 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 #include <sys/stat.h>
+#include <fts.h>
+#include <regex>
 
 static std::string ConfigPath;
 static bool SubstitutedPath = 0;
@@ -57,6 +59,7 @@ int InitConf(void)
 		DefaultConf << "SearchDirectory=" << getenv("HOME") << "/music" << std::endl;
 		DefaultConf << "WindowWidth=640" << std::endl;
 		DefaultConf << "WindowHeight=480" << std::endl;
+		DefaultConf << "SearchExtension=flac mp3" << std::endl;
 		DefaultConf.close();
 	}	
 	else
@@ -110,4 +113,25 @@ int GetWindow_Width(void)
 int GetWindow_Height(void)
 {
 	return 320;
+}
+int SearchDir(const char *Path)
+{
+	char* const Paths[] = {const_cast<char*>(Path), nullptr};
+	FTS* Fts = fts_open(Paths, FTS_PHYSICAL| FTS_NOCHDIR, nullptr);
+	if(Fts == nullptr)
+	{
+		return -1;
+	}
+	std::string CmpStr;
+	std::regex MusicPattern(".*\\.((mp3|flac)$)");
+	FTSENT* Ent = nullptr;
+	while((Ent = fts_read(Fts))!= nullptr)
+	{
+		CmpStr = Ent->fts_path;
+		if(std::regex_match(CmpStr, MusicPattern))
+		{
+			std::cout << Ent->fts_path << std::endl;
+		}
+	}
+	return 0;
 }
