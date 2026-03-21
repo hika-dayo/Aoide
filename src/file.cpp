@@ -114,6 +114,20 @@ int GetWindow_Height(void)
 {
 	return 320;
 }
+
+
+int CheckExtention(const std::string Str, const std::string Extention)
+{
+	if(Str.size() < Extention.size())
+	{
+		return 0;
+	}
+	if(Str.compare(Str.size() - Extention.size(),Extention.size(), Extention) != 0)//ファイルの最後拡張子分を比較
+	{
+		return 0;
+	}
+	return 1;
+}
 int SearchDir(const char *Path)
 {
 	char* const Paths[] = {const_cast<char*>(Path), nullptr};
@@ -123,14 +137,13 @@ int SearchDir(const char *Path)
 		return -1;
 	}
 	std::string CmpStr;
-	std::regex MusicPattern(".*\\.((mp3|flac)$)");
 	FTSENT* Ent = nullptr;
 	while((Ent = fts_read(Fts))!= nullptr)
 	{
 		CmpStr = Ent->fts_path;
-		if(std::regex_match(CmpStr, MusicPattern))
+		if(CheckExtention(CmpStr, ".flac") || CheckExtention(CmpStr, ".mp3"))
 		{
-			std::cout << Ent->fts_path << std::endl;
+			std::cout << CmpStr << std::endl;
 		}
 	}
 	return 0;

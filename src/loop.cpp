@@ -20,6 +20,7 @@
 
 int RunMainLoop(void)
 {
+	GUIInit();
 	TTF_Font* Font = InitFont(16, GetFontPath());
 	if(Font == 0)
 	{

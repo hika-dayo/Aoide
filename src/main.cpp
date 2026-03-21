@@ -23,7 +23,6 @@ int main(int argc, char *argv[])
 {
 	atexit(Release);
 	ReadConf();
-	GUIInit();
 	InitVLCInstance();
 	SearchDir(getenv("HOME"));
 	RunMainLoop();
