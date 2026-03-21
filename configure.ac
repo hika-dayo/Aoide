@@ -5,8 +5,7 @@ AC_INIT([Aoide], [1.0])
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([foreign])
-AC_CONFIG_FILES([Makefile
-				 src/Makefile])
+AC_CONFIG_FILES([Makefile])
 # Checks for programs.
 AC_PROG_CXX
 
