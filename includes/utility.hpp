@@ -9,16 +9,26 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
+#include <string>
 enum ERROR_SCALE
 {
 	INFO_ERROR,
 	GENERAL_ERROR,
 	CRITICAL_ERROR
 };
+enum METADATA
+{
+	ARTIST,
+	TITLE,
+	ALBUM,
+	TRACKNUM,
+
+};
 void Release(void);//プログラムが終了したときにインスタンスを解放する
 int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE);//エラー発生時に呼び出し 引数FILEには__FILE__、引数LINEには__LINE__を指定
 int RunMainLoop(void);//ループ処理
  
-bool isFileExists(const char* Path);//そのファイルが存在しているか確認する
+bool FileExists(const char* Path);//そのファイルが存在しているか確認する
 int ReadConf(void);
 int SearchDir(const char *Path);
+const char* GetAudioMetaData(const char* Path, METADATA METAID);

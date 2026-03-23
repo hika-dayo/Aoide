@@ -11,7 +11,13 @@
 
 #include "../includes/vlcinstance.hpp"
 #include "../includes/utility.hpp"
+#include <vlc/deprecated.h>
 #include <vlc/libvlc.h>
+#include <string>
+#include <vlc/libvlc_events.h>
+#include <vlc/libvlc_media.h>
+#include <iostream>
+
 static libvlc_instance_t* VLCInstance;
 bool Initialized = false;
 int InitVLCInstance(void)
@@ -35,4 +41,46 @@ int ReleaseVLCInstance(void)
 {
 	libvlc_release(VLCInstance);
 	return 0;
+}
+
+const char* GetAudioMetaData(const char* Path, METADATA METAID)
+{
+	if(!FileExists(Path))
+	{
+		return 0;
+	}
+	libvlc_media_t* Media;
+	Media = libvlc_media_new_path(GetVLCInstance(), Path);
+	libvlc_media_parse(Media);
+	const char* TmpStr = NULL;
+	if(METAID == ARTIST)
+	{
+
+	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_Artist);
+	}
+
+	if(METAID == TITLE)
+	{
+
+	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_Title);
+	}
+
+	if(METAID == ALBUM)
+	{
+
+	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_Album);
+	}
+
+	if(METAID == TRACKNUM)
+	{
+
+	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_TrackNumber);
+	}
+	
+	libvlc_media_release(Media);
+	if(TmpStr == NULL)
+	{
+		return "";
+	}
+	return TmpStr;
 }
