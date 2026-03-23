@@ -21,14 +21,31 @@
 #include <regex>
 
 static std::string ConfigPath;
+static std::string CacheDir;
 static bool SubstitutedPath = 0;
-bool isFileExists(const char* Path)
+bool FileExists(const char* Path)
 {
 	return std::filesystem::exists(Path);
 }
-int MakeConfDir(void)
+int MakeConfAndCacheDir(void)
 {
 	std::string ConfDir;
+	//std::string CacheDir;
+	if(getenv("XDG_CACHE_HOME") == NULL)
+	{//特に指定が無いなら~/.config以下にaoideディレクトリを生成する
+		CacheDir = getenv("HOME");
+		if(ConfDir.c_str() == NULL)
+		{
+			ReportError("HOMEが設定されていません", CRITICAL_ERROR, __FILE__,__LINE__);
+			exit(1);
+		}
+		CacheDir += "/.cache/aoide/";
+	}
+	else	
+	{
+		CacheDir = getenv("XDG_CACHE_HOME");
+		CacheDir += "/aoide/";
+	}
 	if(getenv("XDG_CONFIG_HOME") == NULL)
 	{//特に指定が無いなら~/.config以下にaoideディレクトリを生成する
 		ConfDir = getenv("HOME");
@@ -47,6 +64,7 @@ int MakeConfDir(void)
 		ConfigPath = ConfDir + "aoide.conf";
 	}
 	std::filesystem::create_directory(ConfDir.c_str());
+	std::filesystem::create_directory(CacheDir.c_str());
 	SubstitutedPath = true;
 	return 0;
 
@@ -73,8 +91,8 @@ int InitConf(void)
 int ReadConf(void)
 {
 	
-	MakeConfDir();
-	if(isFileExists(ConfigPath.c_str()))
+	MakeConfAndCacheDir();
+	if(FileExists(ConfigPath.c_str()))
 	{
 		
 	}
@@ -88,13 +106,13 @@ int ReadConf(void)
 
 const char* GetFontPath()
 {
-	if(isFileExists("/usr/local/share/aoide/unifont-17.0.03.otf"))
+	if(FileExists("/usr/local/share/aoide/unifont-17.0.03.otf"))
 	{
 		return "/usr/local/share/aoide/unifont-17.0.03.otf";
 	}
 	else
 	{
-		if(isFileExists("../assets/font/unifont-17.0.03.otf"))
+		if(FileExists("../assets/font/unifont-17.0.03.otf"))
 		{
 			return "../assets/font/unifont-17.0.03.otf";
 		}
@@ -143,8 +161,12 @@ int SearchDir(const char *Path)
 		CmpStr = Ent->fts_path;
 		if(CheckExtention(CmpStr, ".flac") || CheckExtention(CmpStr, ".mp3"))
 		{
-			std::cout << CmpStr << std::endl;
+			const char* Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
+			const char* Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
+			const char* TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
+
 		}
 	}
+	fts_close(Fts);
 	return 0;
 }

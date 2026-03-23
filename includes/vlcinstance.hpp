@@ -15,3 +15,4 @@ int InitVLCInstance(void);//VLCの初期化
 libvlc_instance_t* GetVLCInstance(void);//VLCインスタンスを返す
 int ReleaseVLCInstance(void);//VLCの解放
 bool isLibVLCInitialized(void);//VLCが初期化されているか
+							   //

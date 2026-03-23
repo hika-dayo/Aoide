@@ -22,7 +22,7 @@ TTF_Font* InitFont(int Size, std::string Path)
 {	
 	TTF_Font* Font;
 	TTF_Init();
-	if(isFileExists(Path.c_str()))
+	if(FileExists(Path.c_str()))
 	{
 		Font = TTF_OpenFont(Path.c_str(),Size);
 		return Font;	
