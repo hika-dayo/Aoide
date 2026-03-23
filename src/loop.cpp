@@ -21,7 +21,7 @@
 int RunMainLoop(void)
 {
 	GUIInit();
-	TTF_Font* Font = InitFont(16, GetFontPath());
+	TTF_Font* Font = InitFont(13, GetFontPath());
 	if(Font == 0)
 	{
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
@@ -31,6 +31,7 @@ int RunMainLoop(void)
 	while(1)
 	{
 		CleanWindow();
+		DrawText(Font, "あいうえお", FontColor, 0,0);
 		if(ProcessMessage())
 		{
 			break;

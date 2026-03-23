@@ -105,9 +105,9 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) \
-	vlcinstance.$(OBJEXT) loop.$(OBJEXT) error.$(OBJEXT) \
-	gui.$(OBJEXT) sdl.$(OBJEXT) file.$(OBJEXT)
+am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) audio.$(OBJEXT) \
+	loop.$(OBJEXT) error.$(OBJEXT) gui.$(OBJEXT) sdl.$(OBJEXT) \
+	file.$(OBJEXT)
 aoide_OBJECTS = $(am_aoide_OBJECTS)
 aoide_DEPENDENCIES =
 AM_V_P = $(am__v_P_@AM_V@)
@@ -125,10 +125,9 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/error.Po ./$(DEPDIR)/file.Po \
-	./$(DEPDIR)/gui.Po ./$(DEPDIR)/loop.Po ./$(DEPDIR)/main.Po \
-	./$(DEPDIR)/player.Po ./$(DEPDIR)/sdl.Po \
-	./$(DEPDIR)/vlcinstance.Po
+am__depfiles_remade = ./$(DEPDIR)/audio.Po ./$(DEPDIR)/error.Po \
+	./$(DEPDIR)/file.Po ./$(DEPDIR)/gui.Po ./$(DEPDIR)/loop.Po \
+	./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po ./$(DEPDIR)/sdl.Po
 am__mv = mv -f
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -326,7 +325,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-aoide_SOURCES = src/main.cpp src/player.cpp src/vlcinstance.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp includes/gui.hpp includes/player.hpp includes/utility.hpp includes/vlcinstance.hpp
+aoide_SOURCES = src/main.cpp src/player.cpp src/audio.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp includes/gui.hpp includes/player.hpp includes/utility.hpp includes/vlcinstance.hpp
 aoide_LDADD = -lvlc -lSDL3 -lSDL3_ttf
 dist_pkgdata_DATA = assets/font/unifont-17.0.03.otf
 all: config.h
@@ -435,6 +434,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/audio.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui.Po@am__quote@ # am--include-marker
@@ -442,7 +442,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/player.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdl.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/vlcinstance.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -492,19 +491,19 @@ player.obj: src/player.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o player.obj `if test -f 'src/player.cpp'; then $(CYGPATH_W) 'src/player.cpp'; else $(CYGPATH_W) '$(srcdir)/src/player.cpp'; fi`
 
-vlcinstance.o: src/vlcinstance.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT vlcinstance.o -MD -MP -MF $(DEPDIR)/vlcinstance.Tpo -c -o vlcinstance.o `test -f 'src/vlcinstance.cpp' || echo '$(srcdir)/'`src/vlcinstance.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/vlcinstance.Tpo $(DEPDIR)/vlcinstance.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/vlcinstance.cpp' object='vlcinstance.o' libtool=no @AMDEPBACKSLASH@
+audio.o: src/audio.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT audio.o -MD -MP -MF $(DEPDIR)/audio.Tpo -c -o audio.o `test -f 'src/audio.cpp' || echo '$(srcdir)/'`src/audio.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/audio.Tpo $(DEPDIR)/audio.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/audio.cpp' object='audio.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o vlcinstance.o `test -f 'src/vlcinstance.cpp' || echo '$(srcdir)/'`src/vlcinstance.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o audio.o `test -f 'src/audio.cpp' || echo '$(srcdir)/'`src/audio.cpp
 
-vlcinstance.obj: src/vlcinstance.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT vlcinstance.obj -MD -MP -MF $(DEPDIR)/vlcinstance.Tpo -c -o vlcinstance.obj `if test -f 'src/vlcinstance.cpp'; then $(CYGPATH_W) 'src/vlcinstance.cpp'; else $(CYGPATH_W) '$(srcdir)/src/vlcinstance.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/vlcinstance.Tpo $(DEPDIR)/vlcinstance.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/vlcinstance.cpp' object='vlcinstance.obj' libtool=no @AMDEPBACKSLASH@
+audio.obj: src/audio.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT audio.obj -MD -MP -MF $(DEPDIR)/audio.Tpo -c -o audio.obj `if test -f 'src/audio.cpp'; then $(CYGPATH_W) 'src/audio.cpp'; else $(CYGPATH_W) '$(srcdir)/src/audio.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/audio.Tpo $(DEPDIR)/audio.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/audio.cpp' object='audio.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o vlcinstance.obj `if test -f 'src/vlcinstance.cpp'; then $(CYGPATH_W) 'src/vlcinstance.cpp'; else $(CYGPATH_W) '$(srcdir)/src/vlcinstance.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o audio.obj `if test -f 'src/audio.cpp'; then $(CYGPATH_W) 'src/audio.cpp'; else $(CYGPATH_W) '$(srcdir)/src/audio.cpp'; fi`
 
 loop.o: src/loop.cpp
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT loop.o -MD -MP -MF $(DEPDIR)/loop.Tpo -c -o loop.o `test -f 'src/loop.cpp' || echo '$(srcdir)/'`src/loop.cpp
@@ -877,6 +876,7 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
+	-rm -f ./$(DEPDIR)/audio.Po
 	-rm -f ./$(DEPDIR)/error.Po
 	-rm -f ./$(DEPDIR)/file.Po
 	-rm -f ./$(DEPDIR)/gui.Po
@@ -884,7 +884,6 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/player.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
-	-rm -f ./$(DEPDIR)/vlcinstance.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-tags
@@ -932,6 +931,7 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
+	-rm -f ./$(DEPDIR)/audio.Po
 	-rm -f ./$(DEPDIR)/error.Po
 	-rm -f ./$(DEPDIR)/file.Po
 	-rm -f ./$(DEPDIR)/gui.Po
@@ -939,7 +939,6 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/player.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
-	-rm -f ./$(DEPDIR)/vlcinstance.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
