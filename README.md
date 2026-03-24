@@ -62,7 +62,7 @@ $ sudo make install
 ```
 #### SDL_imageのインストール
 ```bash
-###$ cd Aoide/libraries/sdl3
+$ cd Aoide/libraries/sdl3
 $ tar xf SDL3_image-3.4.0.tar.gz
 $ cd SDL3_image-3.4.0/
 $ mkdir build
@@ -73,7 +73,7 @@ $ sudo make install
 ```
 #### SDL_ttfのインストール
 ```bash
-###$ cd Aoide/libraries/sdl3
+$ cd Aoide/libraries/sdl3
 $ tar xf SDL3_ttf-3.2.2.tar.gz
 $ cd SDL3_ttf-3.2.2/
 $ mkdir build
@@ -84,7 +84,7 @@ $ sudo make install
 ```
 #### TagLibのインストール
 ```bash
-###$ cd Aoide/libraries/TagLib
+$ cd Aoide/libraries/Taglib
 $ tar xf taglib-2.2.1.tar.gz
 $ cd taglib-2.2.1/
 $ mkdir build
