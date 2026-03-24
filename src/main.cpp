@@ -15,6 +15,7 @@
 #include "../includes/gui.hpp"
 #include <cstdlib>
 #include <stdio.h>
+#include <thread>
 #include <unistd.h>
 #include <iostream>
 #include <string>
@@ -24,8 +25,9 @@ int main(int argc, char *argv[])
 	atexit(Release);
 	ReadConf();
 	InitVLCInstance();
-	SearchDir(getenv("HOME"));
+	std::thread Search (SearchDir, getenv("HOME"));
 	RunMainLoop();
+	Search.join();
 	exit(0);
 }
 void Release(void)
