@@ -20,6 +20,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <vlc/libvlc_media_player.h>
+#include <taglib/tag.h>
 static libvlc_instance_t* VLCInstance;
 bool Initialized = false;
 int InitVLCInstance(void)
