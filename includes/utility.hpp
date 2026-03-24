@@ -22,6 +22,7 @@ enum METADATA
 	TITLE,
 	ALBUM,
 	TRACKNUM,
+	ARTWORK,
 
 };
 void Release(void);//プログラムが終了したときにインスタンスを解放する
