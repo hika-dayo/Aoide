@@ -112,9 +112,9 @@ const char* GetFontPath()
 	}
 	else
 	{
-		if(FileExists("../assets/font/unifont-17.0.03.otf"))
+		if(FileExists("assets/font/unifont-17.0.03.otf"))
 		{
-			return "../assets/font/unifont-17.0.03.otf";
+			return "assets/font/unifont-17.0.03.otf";
 		}
 		else
 		{
