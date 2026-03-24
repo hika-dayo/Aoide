@@ -80,6 +80,7 @@ const char* GetAudioMetaData(const char* Path, METADATA METAID)
 	}
 	if(METAID == ARTWORK)
 	{
+
 	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_ArtworkURL);
 	}
 		

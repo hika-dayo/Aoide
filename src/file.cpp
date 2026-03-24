@@ -164,8 +164,7 @@ int SearchDir(const char *Path)
 			const char* Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
 			const char* Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
 			const char* TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
-			//const char* Artwork = GetAudioMetaData(CmpStr.c_str(), ARTWORK);
-			std::cout << CmpStr << '\n' << Album<< std::endl;
+			const char* Artwork = GetAudioMetaData(CmpStr.c_str(), ARTWORK);
 		}
 	}
 	fts_close(Fts);
