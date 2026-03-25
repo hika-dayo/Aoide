@@ -32,4 +32,4 @@ int RunMainLoop(void);//ループ処理
 bool FileExists(const char* Path);//そのファイルが存在しているか確認する
 int ReadConf(void);
 int SearchDir(const char *Path);
-const char* GetAudioMetaData(const char* Path, METADATA METAID);
+std::string GetAudioMetaData(const char* Path, METADATA METAID);

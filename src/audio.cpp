@@ -11,7 +11,9 @@
 
 #include "../includes/vlcinstance.hpp"
 #include "../includes/utility.hpp"
+#include <sstream>
 #include <unistd.h>
+#include <stdio.h>
 #include <vlc/deprecated.h>
 #include <vlc/libvlc.h>
 #include <string>
@@ -21,6 +23,8 @@
 #include <stdlib.h>
 #include <vlc/libvlc_media_player.h>
 #include <taglib/tag.h>
+#include <taglib/fileref.h>
+
 static libvlc_instance_t* VLCInstance;
 bool Initialized = false;
 int InitVLCInstance(void)
@@ -46,49 +50,53 @@ int ReleaseVLCInstance(void)
 	return 0;
 }
 
-const char* GetAudioMetaData(const char* Path, METADATA METAID)
+std::string GetAudioMetaData(const char* Path, METADATA METAID)
 {
 	if(!FileExists(Path))
 	{
 		return 0;
 	}
-	libvlc_media_t* Media;
-	Media = libvlc_media_new_path(GetVLCInstance(), Path);
-   libvlc_media_parse(Media);
-	const char* TmpStr = NULL;
+	TagLib::FileRef F(Path);
+	if(F.isNull() && !F.tag())
+	{
+		return 0;
+	}
+	TagLib::Tag *T = F.tag();
+	std::string TmpStr = "";
 	if(METAID == ARTIST)
 	{
 
-	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_Artist);
+		TagLib::String Artist = T->artist();
+		TmpStr = Artist.to8Bit(true);
 	}
-
+	
 	if(METAID == TITLE)
 	{
 
-	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_Title);
+	TagLib::String Title = T->title();
+	TmpStr = Title.to8Bit(true);
+	
 	}
 
 	if(METAID == ALBUM)
 	{
 
-	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_Album);
+	TagLib::String Album = T->album();
+	TmpStr = Album.to8Bit(true);
 	}
 
 	if(METAID == TRACKNUM)
 	{
-
-	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_TrackNumber);
+	int t = T->track();
+	std::ostringstream I;
+	I << t;
+	TmpStr = I.str();
 	}
 	if(METAID == ARTWORK)
 	{
 
-	TmpStr = libvlc_media_get_meta(Media, libvlc_meta_ArtworkURL);
+	TagLib::String Album = T->artist();
 	}
 		
-	libvlc_media_release(Media);
-	if(TmpStr == NULL)
-	{
-		return "";
-	}
 	return TmpStr;
 }

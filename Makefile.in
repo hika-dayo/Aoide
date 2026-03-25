@@ -326,7 +326,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 aoide_SOURCES = src/main.cpp src/player.cpp src/audio.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp includes/gui.hpp includes/player.hpp includes/utility.hpp includes/vlcinstance.hpp
-aoide_LDADD = -lvlc -lSDL3 -lSDL3_ttf
+aoide_LDADD = -lvlc -lSDL3 -lSDL3_ttf -ltag
 dist_pkgdata_DATA = assets/font/unifont-17.0.03.otf
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am

@@ -30,7 +30,6 @@ bool FileExists(const char* Path)
 int MakeConfAndCacheDir(void)
 {
 	std::string ConfDir;
-	//std::string CacheDir;
 	if(getenv("XDG_CACHE_HOME") == NULL)
 	{//特に指定が無いなら~/.config以下にaoideディレクトリを生成する
 		CacheDir = getenv("HOME");
@@ -146,6 +145,21 @@ int CheckExtention(const std::string Str, const std::string Extention)
 	}
 	return 1;
 }
+
+
+
+int GetMtime(const char* Path)
+{
+	struct stat FileStatus;
+	if(stat(Path, &FileStatus) < 0)
+	{
+		return 0;
+	}
+	return FileStatus.st_mtime;
+}
+
+
+
 int SearchDir(const char *Path)
 {
 	char* const Paths[] = {const_cast<char*>(Path), nullptr};
@@ -156,17 +170,32 @@ int SearchDir(const char *Path)
 	}
 	std::string CmpStr;
 	FTSENT* Ent = nullptr;
+//	int FileMtime;
+	int CacheMtime;
+	std::ofstream Cache(CacheDir + "searched", std::ios::app);
+	if(!Cache)
+	{
+		exit(1);
+	}
 	while((Ent = fts_read(Fts))!= nullptr)
 	{
 		CmpStr = Ent->fts_path;
+		
+//		if(Ent->fts_statp->st_mtime)
+//		{
+//			std::cout << CmpStr << "\n" << Ent->fts_statp->st_mtime;
+//		}
 		if(CheckExtention(CmpStr, ".flac") || CheckExtention(CmpStr, ".mp3"))
 		{
-			const char* Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
-			const char* Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
-			const char* TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
-			const char* Artwork = GetAudioMetaData(CmpStr.c_str(), ARTWORK);
+//			std::cout << "aa";
+			std::string Title = GetAudioMetaData(CmpStr.c_str(), TITLE);
+			std::string Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
+			std::string Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
+			std::string TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
+			Cache << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
 		}
 	}
+	Cache.close();
 	fts_close(Fts);
 	return 0;
 }
