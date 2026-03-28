@@ -15,15 +15,15 @@
 #include <stdlib.h>
 #include "../includes/gui.hpp"
 #include <SDL3_ttf/SDL_ttf.h>
-int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE)
+int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE, const char* FUNCNAME)
 {
 	time_t NowTime;
 	time(&NowTime);
 	std::cerr << NowTime << ":";
-	std::cerr << FILE << ":" << LINE << ":";
+	std::cerr << FILE << ":" << LINE << ":" << FUNCNAME;
 	if(SCALE == INFO_ERROR)
 	{	
-		//情報出力のみの軽いエラーの場合Contextだけを出力する
+		//情報だけstd::errに流す
 	}
 	if(SCALE == GENERAL_ERROR)
 	{
@@ -35,6 +35,6 @@ int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LI
 		std::cerr << "重大なエラーです。";
 				
 	}
-	std::cerr << ":" << Context;
+	std::cerr << ":" << Context << std::endl;
 	return 0;
 }

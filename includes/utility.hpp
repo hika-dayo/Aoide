@@ -26,7 +26,7 @@ enum METADATA
 
 };
 void Release(void);//プログラムが終了したときにインスタンスを解放する
-int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE);//エラー発生時に呼び出し 引数FILEには__FILE__、引数LINEには__LINE__を指定
+int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE, const char* FUNCNAME = "Unknown function()");//エラー発生時に呼び出し 引数FILEには__FILE__、引数LINEには__LINE__を指定、引数FuncNameには__func__を指定する。
 int RunMainLoop(void);//ループ処理
  
 bool FileExists(const char* Path);//そのファイルが存在しているか確認する

@@ -29,7 +29,7 @@ TTF_Font* InitFont(int Size, std::string Path)
 	}
 	else
 	{
-		ReportError("フォントファイルが存在していません!", CRITICAL_ERROR, __FILE__, __LINE__);
+		ReportError("フォントファイルが存在していません!", CRITICAL_ERROR, __FILE__, __LINE__, __func__);
 	}
 	return 0;
 }

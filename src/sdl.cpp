@@ -22,10 +22,14 @@ static SDL_Event E;
 static SDL_Window *Window = NULL;
 static SDL_Renderer *Renderer = NULL;
 static SDL_Surface *Surface = NULL;
-bool Initilized = false;
+static bool Initialized = false;
+bool isSDLInitialized(void)
+{
+	return Initialized;
+}
 int GUIInit(void)
 {
-	if(Initilized == true)
+	if(Initialized == true)
 	{
 		return 1;
 	}
@@ -50,7 +54,7 @@ int GUIInit(void)
 		return 1;
 	}
 	SDL_SetWindowSurfaceVSync(Window, 2);
-	Initilized = true;
+	Initialized = true;
 //	ProcessMessage();
 	return 0;
 }
@@ -60,6 +64,10 @@ SDL_Surface* GetGUISurface(void)
 }
 bool ProcessMessage(void)
 {
+	if(!Initialized)
+	{
+		return 0;
+	}
 	bool Quit = false;
 	SDL_UpdateWindowSurface(Window);
 	while(SDL_PollEvent(&E))
@@ -78,11 +86,15 @@ bool ProcessMessage(void)
 
 int GUIRelease(void)
 {
-	SDL_DestroyRenderer(Renderer);
-	SDL_DestroyWindow(Window);
-	SDL_Quit();
-	Initilized = false;
-	return 0;
+	if(isSDLInitialized())
+	{
+		SDL_DestroyRenderer(Renderer);
+		SDL_DestroyWindow(Window);
+		SDL_Quit();
+		Initialized = false;
+		return 0;
+	}
+	return 1;
 }
 
 SDL_Color ToSDLPixel(Color Arg)

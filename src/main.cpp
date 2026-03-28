@@ -34,4 +34,5 @@ void Release(void)
 {
 	ReleaseVLCInstance();
 	GUIRelease();
+	return;
 }
