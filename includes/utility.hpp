@@ -31,5 +31,6 @@ int RunMainLoop(void);//ループ処理
  
 bool FileExists(const char* Path);//そのファイルが存在しているか確認する
 int ReadConf(void);
+const char* GetSearchDir(void);//コンフィグファイル内で設定された、検索対象のパスを返す
 int SearchDir(const char *Path);
 std::string GetAudioMetaData(const char* Path, METADATA METAID);

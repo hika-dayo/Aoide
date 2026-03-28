@@ -26,7 +26,7 @@
 #include <taglib/fileref.h>
 
 static libvlc_instance_t* VLCInstance;
-bool Initialized = false;
+static bool Initialized = false;
 int InitVLCInstance(void)
 {
 	if(Initialized == true)
@@ -46,8 +46,12 @@ libvlc_instance_t* GetVLCInstance(void)
 }
 int ReleaseVLCInstance(void)
 {
+	if(isLibVLCInitialized())
+	{
 	libvlc_release(VLCInstance);
 	return 0;
+	}
+	return 1;
 }
 
 std::string GetAudioMetaData(const char* Path, METADATA METAID)

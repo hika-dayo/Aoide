@@ -21,7 +21,7 @@
 int RunMainLoop(void)
 {
 	GUIInit();
-	TTF_Font* Font = InitFont(13, GetFontPath());
+	TTF_Font* Font = InitFont(GetSetFontSize(), GetFontPath());
 	if(Font == 0)
 	{
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
@@ -31,12 +31,14 @@ int RunMainLoop(void)
 	while(1)
 	{
 		CleanWindow();
-		DrawText(Font, "あいうえお", FontColor, 0,0);
+		DrawText(Font, "あのイーハトーヴォのすきとおった風", FontColor, 0, 0);	
+		DrawText(Font, "The quick brown fox jumps over the lazy dog.", FontColor, 0, GetFontSize(Font));	
+
+
 		if(ProcessMessage())
 		{
 			break;
 		}
-		
 	//ここに処理を書く
 	}
 	return 0;

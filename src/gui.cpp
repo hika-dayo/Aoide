@@ -18,7 +18,7 @@
 #include <sys/stat.h>
 #include <iostream>
 SDL_Surface* Image;
-TTF_Font* InitFont(int Size, std::string Path)
+TTF_Font* InitFont(float Size, std::string Path)
 {	
 	TTF_Font* Font;
 	TTF_Init();
@@ -32,6 +32,10 @@ TTF_Font* InitFont(int Size, std::string Path)
 		ReportError("フォントファイルが存在していません!", CRITICAL_ERROR, __FILE__, __LINE__, __func__);
 	}
 	return 0;
+}
+float GetFontSize(TTF_Font* Font)
+{
+	return TTF_GetFontSize(Font);
 }
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y)
 {

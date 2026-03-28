@@ -18,8 +18,23 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <fts.h>
-#include <regex>
+#include <vector>
 
+//デフォルトの値設定
+static std::string SEARCH_DIR = getenv("HOME");
+static std::string FONT_PATH = "";
+static std::vector<std::string> SEARCHED_EXTENTION=
+{
+	"flac",
+	"mp3"
+};
+static int WINDOW_WIDTH = 640;
+static int WINDOW_HEIGHT = 480;
+static float FONT_SIZE = 16;
+
+
+
+static bool ReadConfig = false;
 static std::string ConfigPath;
 static std::string CacheDir;
 static bool SubstitutedPath = 0;
@@ -73,10 +88,29 @@ int InitConf(void)
 	if(SubstitutedPath)
 	{
 		std::ofstream DefaultConf(ConfigPath);
-		DefaultConf << "SearchDirectory=" << getenv("HOME") << "/music" << std::endl;
-		DefaultConf << "WindowWidth=640" << std::endl;
-		DefaultConf << "WindowHeight=480" << std::endl;
-		DefaultConf << "SearchExtension=flac mp3" << std::endl;
+		if(!DefaultConf)
+		{
+			ReportError("コンフィグファイルの新規作成に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
+			exit(1);
+		}
+		DefaultConf << "#ハッシュから始まる行はコメントになります\n";
+		DefaultConf << "###検索するディレクトリ(デフォルトはホームディレクトリ)\n";
+		DefaultConf << "#SearchDirectory=/home/hika/\n";
+		DefaultConf << "\n";
+		DefaultConf << "###ウィンドウの横幅(デフォルトは640px)\n";
+		DefaultConf << "#WindowWidth=640\n";
+		DefaultConf << "\n";
+		DefaultConf << "#ウィンドウの縦幅(デフォルトは480px)\n";
+		DefaultConf << "#WindowHeight=480\n";
+		DefaultConf << "\n";
+		DefaultConf << "#文字のサイズ(デフォルトは16)\n";
+		DefaultConf << "#FontSize=16\n";
+		DefaultConf << "\n";
+//		DefaultConf << "#音楽ファイルの拡張子(デフォルトはflac mp3)\n";
+//		DefaultConf << "#SearchExtension=flac mp3\n";
+		DefaultConf << "\n";
+		DefaultConf << "#フォントファイルのパス(未設定の場合unifontが選択されます)\n";
+		DefaultConf << "#FontPath=/usr/local/share/aoide/unifont-17.0.03.otf1\n";
 		DefaultConf.close();
 	}	
 	else
@@ -88,23 +122,142 @@ int InitConf(void)
 }
 
 int ReadConf(void)
-{
-	
+{	
 	MakeConfAndCacheDir();
 	if(FileExists(ConfigPath.c_str()))
 	{
-		
+		std::ifstream ConfFile(ConfigPath);
+		if(!ConfFile)
+		{
+			ReportError("コンフィグファイルの読み込みに失敗しました。", CRITICAL_ERROR, __FILE__, __LINE__, __func__);
+			exit(1);
+		}
+		std::string Line = "";
+		int LineNum = 1;
+		while(getline(ConfFile, Line))
+		{
+			if(Line[0] != '#' && Line[0] != '\n')
+			{
+				if(Line.find("SearchDirectory=") != std::string::npos)
+				{
+					SEARCH_DIR = Line.substr(Line.find("=") + 1, Line.length());
+					if(SEARCH_DIR == "")
+					{
+						std::string Error = std::to_string(LineNum) + "行目の検索対象のディレクトリの設定がされていません。";
+						ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+					}						
+				}
+				else
+				{
+					if(Line.find("WindowWidth") != std::string::npos)
+					{
+						try{WINDOW_WIDTH = stoi(Line.substr(Line.find("=") + 1, Line.length()));}
+						catch(const std::invalid_argument& e)
+						{
+							std::cerr << WINDOW_WIDTH;
+							ReportError("stoiに失敗しました。設定された物が数値以外の文字を含んでいる可能性があります。", GENERAL_ERROR, __FILE__,__LINE__,__func__);
+							WINDOW_WIDTH = 640;
+						}
+						catch(const std::out_of_range& e)
+						{
+							std::cerr << WINDOW_WIDTH;
+							ReportError("stoiに失敗しました。設定された数値が数値型の最大値を越えている可能性があります。", GENERAL_ERROR, __FILE__,__LINE__, __func__);
+							WINDOW_WIDTH = 640;
+						}
+						if(WINDOW_WIDTH == 0)
+						{
+							std::string Error = std::to_string(LineNum) + "行目のウィンドウの横幅の設定がされていません。";
+							ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+						}
+
+					}
+					else
+					{
+
+						if(Line.find("WindowHeight") != std::string::npos)
+						{
+							try{WINDOW_HEIGHT = stoi(Line.substr(Line.find("=") + 1, Line.length()));}
+							catch(const std::invalid_argument& e)
+							{
+								ReportError("stoiに失敗しました。設定された物が数値以外の文字を含んでいる可能性があります。", GENERAL_ERROR, __FILE__,__LINE__,__func__);
+								WINDOW_HEIGHT = 480;
+							}
+							catch(const std::out_of_range& e)
+							{
+								ReportError("stoiに失敗しました。設定された数値が数値型の最大値を越えている可能性があります。", GENERAL_ERROR, __FILE__,__LINE__, __func__);
+								WINDOW_HEIGHT = 480;
+							}
+							if(WINDOW_HEIGHT == 0)
+							{
+								std::string Error = std::to_string(LineNum) + "行目のウィンドウの高さの設定がされていません。";
+								ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+							}
+	
+						}
+						else
+						{
+							if(Line.find("FontSize") != std::string::npos)
+							{
+								try{FONT_SIZE = stof(Line.substr(Line.find("=") + 1, Line.length()));}
+								catch(const std::invalid_argument& e)
+								{
+									ReportError("stoiに失敗しました。設定された物が数値以外の文字を含んでいる可能性があります。", GENERAL_ERROR, __FILE__,__LINE__,__func__);
+									FONT_SIZE = 16;
+								}
+								catch(const std::out_of_range& e)
+								{
+									ReportError("stoiに失敗しました。設定された数値が数値型の最大値を越えている可能性があります。", GENERAL_ERROR, __FILE__,__LINE__, __func__);
+									WINDOW_HEIGHT = 16;
+								}
+									if(WINDOW_WIDTH == 0)
+								{
+									std::string Error = std::to_string(LineNum) + "行目のウィンドウの横幅の設定がされていません。";
+									ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+								}
+							}
+
+							else
+							{
+								if(Line.find("FontPath") != std::string::npos)
+								{
+										FONT_PATH = Line.substr(Line.find("=") + 1, Line.length());
+										if(FONT_PATH == "")
+										{
+											std::string Error = std::to_string(LineNum) + "行目フォントの設定がされていません。";
+											ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+										}
+								}
+							}
+
+						}
+					}
+				}
+			}
+			LineNum++;
+		}
+
 	}
 	else
 	{
-		InitConf();
-		
+		InitConf();	
 	}
+	ReadConfig = true;
 	return 0;
 }
 
+
+
+
 const char* GetFontPath()
 {
+	if(!ReadConfig)
+	{
+		ReadConf();
+	}
+	if(FONT_PATH != "")
+	{
+		return FONT_PATH.c_str();
+	}
 	if(FileExists("/usr/local/share/aoide/unifont-17.0.03.otf"))
 	{
 		return "/usr/local/share/aoide/unifont-17.0.03.otf";
@@ -123,17 +276,59 @@ const char* GetFontPath()
 
 	}
 }
+
+bool DirExsists(const char* Dir)
+{
+	struct stat D;
+	if(stat(Dir, &D) == 0 && S_ISDIR(D.st_mode))
+	{
+		return 1;
+	}
+	return 0;
+}
+const char* GetSearchDir(void)
+{	
+	if(!ReadConfig)
+	{
+		ReadConf();
+	}
+	if(!DirExsists(SEARCH_DIR.c_str()))
+	{
+		std::string Error = SEARCH_DIR + "は存在しないディレクトリです";
+		ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+
+	}
+
+	return SEARCH_DIR.c_str();
+}
+
 int GetWindow_Width(void)
 {
-	return 480;
+	if(!ReadConfig)
+	{
+		ReadConf();
+	}
+	return WINDOW_WIDTH;
+}
+float GetSetFontSize(void)
+{
+	if(!ReadConfig)
+	{
+		ReadConf();
+	}
+	return FONT_SIZE;
 }
 int GetWindow_Height(void)
 {
-	return 320;
+	if(!ReadConfig)
+	{
+		ReadConf();
+	}
+	return WINDOW_HEIGHT;
 }
 
 
-int CheckExtention(const std::string Str, const std::string Extention)
+int CheckExtension(const std::string Str, const std::string Extention)
 {
 	if(Str.size() < Extention.size())
 	{
@@ -185,7 +380,8 @@ int SearchDir(const char *Path)
 //		{
 //			std::cout << CmpStr << "\n" << Ent->fts_statp->st_mtime;
 //		}
-		if(CheckExtention(CmpStr, ".flac") || CheckExtention(CmpStr, ".mp3"))
+		std::cout << CmpStr << "\n";
+		if(CheckExtension(CmpStr, ".flac") || CheckExtension(CmpStr, ".mp3"))
 		{
 //			std::cout << "aa";
 			std::string Title = GetAudioMetaData(CmpStr.c_str(), TITLE);
