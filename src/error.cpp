@@ -19,7 +19,8 @@ int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LI
 {
 	time_t NowTime;
 	time(&NowTime);
-	std::cerr << NowTime << ":";
+	struct tm * Tmp = localtime(&NowTime);
+	std::cerr << Tmp->tm_hour << "-" << Tmp->tm_min << "-" << Tmp->tm_sec << ":";
 	std::cerr << FILE << ":" << LINE << ":" << FUNCNAME << "()"<<":";
 	if(SCALE == INFO_ERROR)
 	{	
