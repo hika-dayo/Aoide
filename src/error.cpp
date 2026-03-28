@@ -20,7 +20,7 @@ int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LI
 	time_t NowTime;
 	time(&NowTime);
 	std::cerr << NowTime << ":";
-	std::cerr << FILE << ":" << LINE << ":" << FUNCNAME;
+	std::cerr << FILE << ":" << LINE << ":" << FUNCNAME << "()"<<":";
 	if(SCALE == INFO_ERROR)
 	{	
 		//情報だけstd::errに流す
