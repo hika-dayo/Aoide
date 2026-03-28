@@ -110,7 +110,7 @@ int InitConf(void)
 //		DefaultConf << "#SearchExtension=flac mp3\n";
 		DefaultConf << "\n";
 		DefaultConf << "#フォントファイルのパス(未設定の場合unifontが選択されます)\n";
-		DefaultConf << "#FontPath=/usr/local/share/aoide/unifont-17.0.03.otf1\n";
+		DefaultConf << "#FontPath=/usr/local/share/aoide/unifont-17.0.03.otf\n";
 		DefaultConf.close();
 	}	
 	else
@@ -136,7 +136,7 @@ int ReadConf(void)
 		int LineNum = 1;
 		while(getline(ConfFile, Line))
 		{
-			if(Line[0] != '#' && Line[0] != '\n')
+			if(Line[0] != '#' && Line[0] != '\n' && Line[0] != '\0')
 			{
 				if(Line.find("SearchDirectory=") != std::string::npos)
 				{
@@ -154,14 +154,14 @@ int ReadConf(void)
 						try{WINDOW_WIDTH = stoi(Line.substr(Line.find("=") + 1, Line.length()));}
 						catch(const std::invalid_argument& e)
 						{
-							std::cerr << WINDOW_WIDTH;
-							ReportError("stoiに失敗しました。設定された物が数値以外の文字を含んでいる可能性があります。", GENERAL_ERROR, __FILE__,__LINE__,__func__);
+							std::string Error = "stoiに失敗しました。設定(" + Line.substr(Line.find("=") + 1) + ")が数値以外の文字を含んでいます。";
+							ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
 							WINDOW_WIDTH = 640;
 						}
 						catch(const std::out_of_range& e)
 						{
-							std::cerr << WINDOW_WIDTH;
-							ReportError("stoiに失敗しました。設定された数値が数値型の最大値を越えている可能性があります。", GENERAL_ERROR, __FILE__,__LINE__, __func__);
+							std::string Error = "stoiに失敗しました。設定(" + Line.substr(Line.find("=") + 1)+ ")の値が大きすぎます。";
+							ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
 							WINDOW_WIDTH = 640;
 						}
 						if(WINDOW_WIDTH == 0)
@@ -179,12 +179,14 @@ int ReadConf(void)
 							try{WINDOW_HEIGHT = stoi(Line.substr(Line.find("=") + 1, Line.length()));}
 							catch(const std::invalid_argument& e)
 							{
-								ReportError("stoiに失敗しました。設定された物が数値以外の文字を含んでいる可能性があります。", GENERAL_ERROR, __FILE__,__LINE__,__func__);
+									std::string Error = "stoiに失敗しました。設定(" + Line.substr(Line.find("=") + 1) + ")が数値以外の文字を含んでいます。";
+									ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
 								WINDOW_HEIGHT = 480;
 							}
 							catch(const std::out_of_range& e)
 							{
-								ReportError("stoiに失敗しました。設定された数値が数値型の最大値を越えている可能性があります。", GENERAL_ERROR, __FILE__,__LINE__, __func__);
+								std::string Error = "stoiに失敗しました。設定(" + Line.substr(Line.find("=") + 1)+ ")の値が大きすぎます。";
+								ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
 								WINDOW_HEIGHT = 480;
 							}
 							if(WINDOW_HEIGHT == 0)
@@ -201,12 +203,14 @@ int ReadConf(void)
 								try{FONT_SIZE = stof(Line.substr(Line.find("=") + 1, Line.length()));}
 								catch(const std::invalid_argument& e)
 								{
-									ReportError("stoiに失敗しました。設定された物が数値以外の文字を含んでいる可能性があります。", GENERAL_ERROR, __FILE__,__LINE__,__func__);
+									std::string Error = "stoiに失敗しました。設定(" + Line.substr(Line.find("=") + 1) + ")が数値以外の文字を含んでいます。";
+									ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
 									FONT_SIZE = 16;
 								}
 								catch(const std::out_of_range& e)
 								{
-									ReportError("stoiに失敗しました。設定された数値が数値型の最大値を越えている可能性があります。", GENERAL_ERROR, __FILE__,__LINE__, __func__);
+									std::string Error = "stoiに失敗しました。設定(" + Line.substr(Line.find("=") + 1) + ")の値が大きすぎます。";
+									ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
 									WINDOW_HEIGHT = 16;
 								}
 									if(WINDOW_WIDTH == 0)
@@ -226,6 +230,11 @@ int ReadConf(void)
 											std::string Error = std::to_string(LineNum) + "行目フォントの設定がされていません。";
 											ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
 										}
+								}
+								else
+								{
+									std::string Error = std::to_string(LineNum) + "行目に不明な設定(" + Line + ")があります。";
+									ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
 								}
 							}
 
@@ -380,7 +389,6 @@ int SearchDir(const char *Path)
 //		{
 //			std::cout << CmpStr << "\n" << Ent->fts_statp->st_mtime;
 //		}
-		std::cout << CmpStr << "\n";
 		if(CheckExtension(CmpStr, ".flac") || CheckExtension(CmpStr, ".mp3"))
 		{
 //			std::cout << "aa";
