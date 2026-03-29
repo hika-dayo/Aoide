@@ -10,6 +10,8 @@
   */
 
 #include <string>
+#include <vector>
+
 enum ERROR_SCALE
 {
 	INFO_ERROR,
@@ -30,7 +32,10 @@ int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LI
 int RunMainLoop(void);//ループ処理
  
 bool FileExists(const char* Path);//そのファイルが存在しているか確認する
-int ReadConf(void);
+bool DirExsists(const char* Dir);
+//int ReadConf(void);//Configファイルを読む
+
+std::vector<std::string> GetSearchExtension(void);
 const char* GetSearchDir(void);//コンフィグファイル内で設定された、検索対象のパスを返す
-int SearchDir(const char *Path);
-std::string GetAudioMetaData(const char* Path, METADATA METAID);
+int SearchDir(const char *Path);//ディレクトリを検索する
+std::string GetAudioMetaData(const char* Path, METADATA METAID);//パスにあるオーディオのメタデータを取得する

@@ -33,7 +33,8 @@ int InitVLCInstance(void)
 	{
 		return 1;
 	}
-	VLCInstance = libvlc_new(0,NULL);
+	const char* Args[] = {"--no-video"};
+	VLCInstance = libvlc_new(1, Args);
 	return 0;
 }
 bool isLibVLCInitialized(void)
@@ -58,48 +59,56 @@ std::string GetAudioMetaData(const char* Path, METADATA METAID)
 {
 	if(!FileExists(Path))
 	{
-		return 0;
+		return "";
+	}
+	if(DirExsists(Path))
+	{
+		return "";
 	}
 	TagLib::FileRef F(Path);
-	if(F.isNull() && !F.tag())
+	if(F.isNull() || !F.tag())
 	{
-		return 0;
+		return "";
 	}
 	TagLib::Tag *T = F.tag();
+	if(NULL == T)
+	{
+		return "";
+	}
 	std::string TmpStr = "";
 	if(METAID == ARTIST)
-	{
-
+	{	
 		TagLib::String Artist = T->artist();
 		TmpStr = Artist.to8Bit(true);
 	}
 	
 	if(METAID == TITLE)
 	{
-
-	TagLib::String Title = T->title();
-	TmpStr = Title.to8Bit(true);
 	
+		TagLib::String Title = T->title();
+		TmpStr = Title.to8Bit(true);
+		
 	}
 
 	if(METAID == ALBUM)
 	{
-
-	TagLib::String Album = T->album();
-	TmpStr = Album.to8Bit(true);
+	
+		TagLib::String Album = T->album();
+		TmpStr = Album.to8Bit(true);
 	}
 
 	if(METAID == TRACKNUM)
 	{
-	int t = T->track();
-	std::ostringstream I;
-	I << t;
-	TmpStr = I.str();
+		int t = T->track();
+		std::ostringstream I;
+		I << t;
+		TmpStr = I.str();//数字を文字列にして返す(なんと非合理的！)
 	}
-	if(METAID == ARTWORK)
-	{
 
-	TagLib::String Album = T->artist();
+	if(METAID == ARTWORK)
+	{	
+		TagLib::String Artwork = T->artist();
+		TmpStr = Artwork.to8Bit(true);
 	}
 		
 	return TmpStr;

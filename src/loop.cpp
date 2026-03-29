@@ -34,7 +34,6 @@ int RunMainLoop(void)
 		DrawText(Font, "あのイーハトーヴォのすきとおった風", FontColor, 0, 0);	
 		DrawText(Font, "The quick brown fox jumps over the lazy dog.", FontColor, 0, GetFontSize(Font));	
 
-
 		if(ProcessMessage())
 		{
 			break;

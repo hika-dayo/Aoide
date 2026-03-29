@@ -23,7 +23,7 @@
 //デフォルトの値設定
 static std::string SEARCH_DIR = getenv("HOME");
 static std::string FONT_PATH = "";
-static std::vector<std::string> SEARCHED_EXTENTION=
+static std::vector<std::string> SEARCH_EXTENTION=
 {
 	"flac",
 	"mp3"
@@ -106,8 +106,8 @@ int InitConf(void)
 		DefaultConf << "#文字のサイズ(デフォルトは16)\n";
 		DefaultConf << "#FontSize=16\n";
 		DefaultConf << "\n";
-//		DefaultConf << "#音楽ファイルの拡張子(デフォルトはflac mp3)\n";
-//		DefaultConf << "#SearchExtension=flac mp3\n";
+		DefaultConf << "#音楽ファイルの拡張子(デフォルトはflac mp3)ピリオドの有無は影響しません\n";
+		DefaultConf << "#SearchExtension=flac mp3\n";
 		DefaultConf << "\n";
 		DefaultConf << "#フォントファイルのパス(未設定の場合unifontが選択されます)\n";
 		DefaultConf << "#FontPath=/usr/local/share/aoide/unifont-17.0.03.otf\n";
@@ -233,8 +233,33 @@ int ReadConf(void)
 								}
 								else
 								{
+								if(Line.find("SearchExtension") != std::string::npos)
+								{
+										if(Line.find("SearchExtension") + 1 == std::string::npos)
+										{
+											std::string Error = std::to_string(LineNum) + "行目の検索対象の拡張子の設定がされていません。";
+											ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);	
+										}
+//										std::string Op = Line.substr(Line.find("=") + 1, Line.length());
+										for(int i = 0; i <= SEARCH_EXTENTION.size(); i++)//初期化されていたデータを全部popして捨てる
+										{
+											SEARCH_EXTENTION.pop_back();
+										}
+
+										std::istringstream Option(Line.substr(Line.find("=") + 1, Line.length()));//istringstreamは空白改行で区切られたデータを一つずつ取り出せる
+										std::string Tmp;
+										while(Option >> Tmp)
+										{
+											SEARCH_EXTENTION.push_back(Tmp);
+										}
+								}
+								else
+								{
 									std::string Error = std::to_string(LineNum) + "行目に不明な設定(" + Line + ")があります。";
 									ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+
+								}
+
 								}
 							}
 
@@ -255,7 +280,14 @@ int ReadConf(void)
 }
 
 
-
+std::vector<std::string> GetSearchExtension(void)
+{
+	if(!ReadConfig)
+	{
+		ReadConf();
+	}
+	return SEARCH_EXTENTION;
+}
 
 const char* GetFontPath()
 {
@@ -376,27 +408,32 @@ int SearchDir(const char *Path)
 	FTSENT* Ent = nullptr;
 //	int FileMtime;
 	int CacheMtime;
-	std::ofstream Cache(CacheDir + "searched", std::ios::app);
+	std::ofstream Cache(CacheDir + "searched");
 	if(!Cache)
 	{
 		exit(1);
 	}
 	while((Ent = fts_read(Fts))!= nullptr)
 	{
-		CmpStr = Ent->fts_path;
-		
-//		if(Ent->fts_statp->st_mtime)
-//		{
-//			std::cout << CmpStr << "\n" << Ent->fts_statp->st_mtime;
-//		}
-		if(CheckExtension(CmpStr, ".flac") || CheckExtension(CmpStr, ".mp3"))
+		if(S_ISREG(Ent->fts_statp->st_mode))
 		{
-//			std::cout << "aa";
-			std::string Title = GetAudioMetaData(CmpStr.c_str(), TITLE);
-			std::string Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
-			std::string Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
-			std::string TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
-			Cache << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
+			CmpStr = Ent->fts_path;
+			
+	//		if(Ent->fts_statp->st_mtime)
+	//		{
+	//			std::cout << CmpStr << "\n" << Ent->fts_statp->st_mtime;
+	//		}
+			for(int i = 0; i < GetSearchExtension().size(); i++)
+			{
+				if(CheckExtension(CmpStr, GetSearchExtension()[i]))
+				{
+						std::string Title = GetAudioMetaData(CmpStr.c_str(), TITLE);
+						std::string Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
+						std::string Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
+						std::string TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
+						Cache << CmpStr << '\n' << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
+				}
+			}			
 		}
 	}
 	Cache.close();

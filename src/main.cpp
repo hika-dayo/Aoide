@@ -19,13 +19,15 @@
 #include <unistd.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 int main(int argc, char *argv[])
 {
 	atexit(Release);
-	ReadConf();
-	InitVLCInstance();
+//	ReadConf();
+	InitVLCInstance();	
 	std::thread Search (SearchDir, GetSearchDir());
+//	SearchDir(GetSearchDir());
 	RunMainLoop();
 	Search.join();
 	exit(0);
