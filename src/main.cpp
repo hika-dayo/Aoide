@@ -26,8 +26,9 @@ int main(int argc, char *argv[])
 	atexit(Release);
 //	ReadConf();
 	InitVLCInstance();	
-	std::thread Search (SearchDir, GetSearchDir());
-//	SearchDir(GetSearchDir());
+	Config C;
+	std::thread Search (SearchDir, C.GetSearchDir().c_str());
+//	SearchDir(C.GetSearchDir().c_str());
 	RunMainLoop();
 	Search.join();
 	exit(0);

@@ -18,11 +18,11 @@
 #define SDL_VIDEO_DRIVER_X11 1
 
 
-const char* GetFontPath(void);//フォントファイルの場所
-float GetSetFontSize(void);//フォントサイズの取得
-float GetFontSize(TTF_Font* Font);//フォントサイズの取得
-int GetWindow_Width(void);//解像度を取得
-int GetWindow_Height(void);
+//const char* GetFontPath(void);//フォントファイルの場所
+//float GetSetFontSize(void);//フォントサイズの取得
+//float GetFontSize(TTF_Font* Font);//フォントサイズの取得
+//int GetWindow_Width(void);//解像度を取得
+//int GetWindow_Height(void);
 bool isSDLInitialized(void);//SDLが初期化されているか
 int GUIInit(void);//GUIを初期化
 int GUIRelease(void);//SDLをリリース
@@ -44,7 +44,7 @@ typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲
 SDL_Color ToSDLPixel(Color Arg);//符号無し32bit整数で表現された色をSDL用の表現に変換する
 
 //終わり
-
+float GetFontSize(TTF_Font* Font);//フォントのサイズを取得
 TTF_Font* InitFont(float Size, std::string Path);//Pathのフォントと引数のサイズの大きさに
 int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する

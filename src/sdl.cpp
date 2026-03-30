@@ -29,6 +29,7 @@ bool isSDLInitialized(void)
 }
 int GUIInit(void)
 {
+	Config C;
 	if(Initialized == true)
 	{
 		return 1;
@@ -39,7 +40,7 @@ int GUIInit(void)
 		ReportError("SDLを初期化できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
 		return 1;
 	}	
-	Window = SDL_CreateWindow("Aoide", GetWindow_Width(), GetWindow_Height(), 0);
+	Window = SDL_CreateWindow("Aoide", C.GetWindowWidth(), C.GetWindowHeight(), 0);
 	if(Window == nullptr)
 	{
 		SDL_Log("Failed to create window: %s", SDL_GetError());

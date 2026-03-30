@@ -20,8 +20,9 @@
 
 int RunMainLoop(void)
 {
+	Config C;
 	GUIInit();
-	TTF_Font* Font = InitFont(GetSetFontSize(), GetFontPath());
+	TTF_Font* Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)
 	{
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
