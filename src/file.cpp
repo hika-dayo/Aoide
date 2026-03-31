@@ -30,6 +30,7 @@ static std::vector<std::string> SEARCH_EXTENTION=
 	"mp3"
 };*/
 //static std::vector<std::string> MusicList;
+
 Config::Config()
 {
 	if(!LoadConfig)
@@ -44,6 +45,7 @@ Config::Config()
 	}
 	return;
 }
+
 
 /*int Config::WINDOW_WIDTH = 640;
 int Config::WINDOW_HEIGHT = 480;
@@ -495,14 +497,7 @@ std::vector<Music>SearchDir(const char *Path)
 			{
 				if(CheckExtension(CmpStr, C.GetSearchExtension()[i]))
 				{
-					std::string Title = GetAudioMetaData(CmpStr.c_str(), TITLE);
-					std::string Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
-					std::string Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
-					std::string TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
-					Music M(Artist, Album, Title, Path, stoi(TrackNum));
-					MList.push_back(M);
-					std::cout << CmpStr << '\n' << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
-					Cache << CmpStr << '\n' << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
+					MList.push_back(GetAudioMetaData(CmpStr.c_str()));
 				}
 			}			
 		}

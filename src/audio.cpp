@@ -9,9 +9,10 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/vlcinstance.hpp"
+#include "../includes/audio.hpp"
 #include "../includes/utility.hpp"
 #include <sstream>
+#include <taglib/tstring.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <vlc/deprecated.h>
@@ -55,63 +56,33 @@ int ReleaseVLCInstance(void)
 	return 1;
 }
 
-std::string GetAudioMetaData(const char* Path, METADATA METAID)
+Music GetAudioMetaData(const char* Path)
 {
 	if(!FileExists(Path))
 	{
-		return "";
+		Music M("", "", "", "", 0);
+		return M;
 	}
 	if(DirExsists(Path))
 	{
-		return "";
+		Music M("", "", "", "", 0);
+		return M;
 	}
 	TagLib::FileRef F(Path);
 	if(F.isNull() || !F.tag())
 	{
-		return "";
+		Music M("", "", "", "", 0);
+		return M;
 	}
 	TagLib::Tag *T = F.tag();
 	if(NULL == T)
 	{
-		return "";
+		Music M("", "", "", "", 0);
+		return M;
 	}
-	std::string TmpStr = "";
-	if(METAID == ARTIST)
-	{	
-		TagLib::String Artist = T->artist();
-		TmpStr = Artist.to8Bit(true);
-	}
-	
-	if(METAID == TITLE)
-	{
-	
-		TagLib::String Title = T->title();
-		TmpStr = Title.to8Bit(true);
+	Music M(T->artist().to8Bit(true), T->album().to8Bit(true), T->title().to8Bit(true), Path, T->track());
+	return M;
 		
-	}
-
-	if(METAID == ALBUM)
-	{
-	
-		TagLib::String Album = T->album();
-		TmpStr = Album.to8Bit(true);
-	}
-
-	if(METAID == TRACKNUM)
-	{
-		int t = T->track();
-		std::ostringstream I;
-		I << t;
-		TmpStr = I.str();//数字を文字列にして返す(なんと非合理的！)
-	}
-
-	if(METAID == ARTWORK)
-	{	
-		TagLib::String Artwork = T->artist();
-		TmpStr = Artwork.to8Bit(true);
-	}
-		
-	return TmpStr;
 }
 
 

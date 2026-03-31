@@ -9,10 +9,41 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 #pragma once
+#include "utility.hpp"
 #include <vlc/vlc.h>
-
 int InitVLCInstance(void);//VLCの初期化
 libvlc_instance_t* GetVLCInstance(void);//VLCインスタンスを返す
 int ReleaseVLCInstance(void);//VLCの解放
 bool isLibVLCInitialized(void);//VLCが初期化されているか
-							   //
+enum METADATA
+{
+	ARTIST,
+	TITLE,
+	ALBUM,
+	TRACKNUM,
+	ARTWORK,
+
+};
+
+class Music
+{
+private:
+	bool Initialized = false;
+	std::string Artist = "";
+	std::string Title = "";
+	std::string Path = "";
+	std::string Album = "";
+	int TrackNum = 0;
+public:
+	Music(std::string Artist, std::string Album, std::string Title, std::string Path, int TrackNum);
+	std::string GetArtist(void);
+	std::string GetTitle(void);
+	std::string GetAlbum(void);
+	std::string GetPath(void);
+	int GetTrackNum(void);
+	bool isThisInitialized(void);
+};
+
+Music GetAudioMetaData(const char* Path);//音楽ファイルのメタデータを返す
+
+std::vector<Music> SearchDir(const char *Path);//ディレクトリを検索する

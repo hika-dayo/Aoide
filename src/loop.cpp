@@ -9,7 +9,7 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/vlcinstance.hpp"
+#include "../includes/audio.hpp"
 #include "../includes/player.hpp"
 #include "../includes/utility.hpp"
 #include "../includes/gui.hpp"
@@ -21,6 +21,7 @@
 int RunMainLoop(void)
 {
 	Config C;
+	std::vector<Music> M = SearchDir(C.GetSearchDir().c_str());
 	GUIInit();
 	TTF_Font* Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)

@@ -11,7 +11,7 @@
 
 #include "../includes/utility.hpp"
 #include "../includes/player.hpp"
-#include "../includes/vlcinstance.hpp"
+#include "../includes/audio.hpp"
 #include "../includes/gui.hpp"
 #include <cstdlib>
 #include <stdio.h>
