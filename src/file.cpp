@@ -10,6 +10,7 @@
   */
 
 #include "../includes/utility.hpp"
+#include <cstdlib>
 #include <filesystem>
 #include <iostream>
 #include <fstream>
@@ -20,22 +21,15 @@
 #include <fts.h>
 #include <vector>
 
-//デフォルトの値設定
+/*//デフォルトの値設定
 static std::string SEARCH_DIR = getenv("HOME");
 //static std::string FONT_PATH = "";
 static std::vector<std::string> SEARCH_EXTENTION=
 {
 	"flac",
 	"mp3"
-};
-static std::vector<std::string> ArtistList;
-static std::vector<std::string> MusicList;
+};*/
 //static std::vector<std::string> MusicList;
-class Music
-{
-private:
-public:
-};
 Config::Config()
 {
 	if(!LoadConfig)
@@ -60,12 +54,15 @@ int Config::WINDOW_WIDTH = 640;
 int Config::WINDOW_HEIGHT = 480;
 float Config::FONT_SIZE = 16;
 std::string Config::FONT_PATH = "";
-std::string Config::SEARCH_DIR = "aaa";
+std::string Config::SEARCH_DIR = getenv("HOME");
 bool Config::LoadConfig = false;
 std::string Config::ConfigPath = "";
 std::string Config::CacheDir = "";
-
-
+std::vector<std::string> Config::SEARCH_EXTENTION=
+{
+	"flac",
+	"mp3"
+};
 static bool SubstitutedPath = 0;
 bool FileExists(const char* Path)
 {
@@ -465,14 +462,14 @@ int GetMtime(const char* Path)
 }
 
 
-
-int SearchDir(const char *Path)
+std::vector<Music>SearchDir(const char *Path)
 {
+	std::vector<Music> MList;
 	char* const Paths[] = {const_cast<char*>(Path), nullptr};
 	FTS* Fts = fts_open(Paths, FTS_PHYSICAL| FTS_NOCHDIR, nullptr);
 	if(Fts == nullptr)
 	{
-		return -1;
+		return MList;
 	}
 	std::string CmpStr;
 	FTSENT* Ent = nullptr;
@@ -498,16 +495,19 @@ int SearchDir(const char *Path)
 			{
 				if(CheckExtension(CmpStr, C.GetSearchExtension()[i]))
 				{
-						std::string Title = GetAudioMetaData(CmpStr.c_str(), TITLE);
-						std::string Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
-						std::string Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
-						std::string TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
-						Cache << CmpStr << '\n' << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
+					std::string Title = GetAudioMetaData(CmpStr.c_str(), TITLE);
+					std::string Album = GetAudioMetaData(CmpStr.c_str(), ALBUM);
+					std::string Artist = GetAudioMetaData(CmpStr.c_str(), ARTIST);
+					std::string TrackNum = GetAudioMetaData(CmpStr.c_str(), TRACKNUM);
+					Music M(Artist, Album, Title, Path, stoi(TrackNum));
+					MList.push_back(M);
+					std::cout << CmpStr << '\n' << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
+					Cache << CmpStr << '\n' << Title << '\n'<< Album << '\n' << Artist << '\n' << TrackNum << std::endl;
 				}
 			}			
 		}
 	}
 	Cache.close();
 	fts_close(Fts);
-	return 0;
+	return MList;
 }

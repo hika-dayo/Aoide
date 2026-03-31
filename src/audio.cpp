@@ -113,3 +113,34 @@ std::string GetAudioMetaData(const char* Path, METADATA METAID)
 		
 	return TmpStr;
 }
+
+
+Music::Music(std::string Artist, std::string Album, std::string Title, std::string Path, int TrackNum)
+{
+	this->Artist = Artist;
+	this->Title = Title;
+	this->Album = Album;
+	this->Path = Path;
+	this->TrackNum = TrackNum;
+	return;
+}
+std::string Music::GetAlbum(void)
+{
+	return Album;
+}
+std::string Music::GetArtist()
+{
+	return Artist;
+}
+std::string Music::GetTitle()
+{
+	return Title;
+}
+int Music::GetTrackNum()
+{
+	return TrackNum;
+}
+std::string Music::GetPath()
+{
+	return Path;
+}

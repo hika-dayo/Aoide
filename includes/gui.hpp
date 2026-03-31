@@ -10,10 +10,11 @@
   */
 
 #pragma once
+#include "utility.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
-
+#include <vector>
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
 
@@ -30,7 +31,14 @@ bool ProcessMessage(void);//ウィンドウのメッセージを処理。
 						  //この関数を定期的に呼びだす。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
 
-
+enum UI_MODE
+{
+	MAINMENU,
+	OPTION,
+	CHOOSE_ARTIST,
+	CHOOSE_ALBUM,
+	CHOOSE_SONG,
+};
 //色ゾーン
 enum COLOR
 {
@@ -48,3 +56,7 @@ float GetFontSize(TTF_Font* Font);//フォントのサイズを取得
 TTF_Font* InitFont(float Size, std::string Path);//Pathのフォントと引数のサイズの大きさに
 int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
+
+int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor);
+
+int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta);

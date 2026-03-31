@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <iostream>
+#include <vector>
+
 SDL_Surface* Image;
 TTF_Font* InitFont(float Size, std::string Path)
 {	
@@ -61,5 +63,47 @@ int QuitFont(TTF_Font* Font)
 int CleanWindow(void)
 {
 	SDL_ClearSurface(GetGUISurface(), 0,0,0,0);
+	return 0;
+}
+int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor)
+{
+	if(List.size() < Index + 1)
+	{
+		return 1;
+	}
+	for(int i = 0; i < List.size(); i++)
+	{
+	DrawText(Font, List[i].c_str(), TextColor, 0, GetFontSize(Font) * i);
+	}
+	
+	return 0;
+}
+int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta)
+{
+	std::vector<std::string> Tmp;
+	switch(Meta)
+	{
+		case ARTIST:
+		for(int i = 0; i < Musics.size(); i++)
+		{
+			Tmp.push_back(Musics[i].GetArtist());
+		}
+		break;
+		case ALBUM:
+		for(int i = 0; i < Musics.size(); i++)
+		{
+			Tmp.push_back(Musics[i].GetAlbum());
+		}
+		break;
+		case TITLE:
+		for(int i = 0; i < Musics.size(); i++)
+		{
+			Tmp.push_back(Musics[i].GetTitle());
+		}
+		break;
+		default:
+		return 1;
+	}
+	DrawLines(Tmp, ChoiceLine, Font, TextColor);
 	return 0;
 }
