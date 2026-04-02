@@ -90,6 +90,7 @@ int GUIRelease(void)
 	if(isSDLInitialized())
 	{
 		SDL_DestroyRenderer(Renderer);
+		SDL_DestroySurface(Surface);
 		SDL_DestroyWindow(Window);
 		SDL_Quit();
 		Initialized = false;

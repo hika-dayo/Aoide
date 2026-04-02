@@ -21,6 +21,12 @@
 #include <string>
 #include <vector>
 
+void Release(void)
+{
+	ReleaseVLCInstance();
+	GUIRelease();
+	return;
+}
 int main(int argc, char *argv[])
 {
 	atexit(Release);
@@ -31,11 +37,6 @@ int main(int argc, char *argv[])
 //	SearchDir(C.GetSearchDir().c_str());
 	RunMainLoop();
 	Search.join();
+	Release();
 	exit(0);
-}
-void Release(void)
-{
-	ReleaseVLCInstance();
-	GUIRelease();
-	return;
 }
