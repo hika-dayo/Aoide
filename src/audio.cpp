@@ -86,6 +86,90 @@ Music GetAudioMetaData(const char* Path)
 }
 
 
+std::vector<std::string> GetSortedArtists(std::vector<Music> &M)
+{
+	std::vector<std::string> Artists;
+	Artists.push_back((M[0].GetArtist()));
+	for(int i = 0; i < M.size(); i++)
+	{
+		int n = 0;
+		bool Repeat = false;
+		for(n = 0; n < Artists.size(); n++)
+		{
+			if(Artists[n] == M[i].GetArtist())
+			{
+				Repeat = true;
+			}
+		}
+		if(!Repeat)
+		{
+			Artists.push_back(M[i].GetArtist());
+		}
+	}
+	std::sort(Artists.begin(),Artists.end());
+	
+	return Artists;
+}
+std::vector<std::string> GetSortedAlbums(std::vector<Music> &M, const std::string ArtistName)
+{
+	std::vector<std::string> Albums;
+//	Albums.push_back((M[0].GetAlbum()));
+	for(int i = 0; i < M.size(); i++)
+	{
+		int n = 0;
+		bool Repeat = false;
+		bool ArtistMatch = (ArtistName == "" || ArtistName == M[i].GetArtist());
+		if(ArtistMatch)
+		{
+			for(n = 0; n < Albums.size(); n++)//重複していないかチェック
+			{
+				if(Albums[n] == M[i].GetAlbum())
+				{
+					Repeat = true;
+				}
+			}
+			if(!Repeat)
+			{
+				Albums.push_back(M[i].GetAlbum());
+			}
+		}
+	}
+	std::sort(Albums.begin(),Albums.end());
+	
+	return Albums;
+}
+std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName)
+{
+	std::vector<std::string> Titles;
+//	Titles.push_back((M[0].GetTitle()));
+	for(int i = 0; i < M.size(); i++)
+	{
+
+		int n = 0;
+		bool Repeat = false;
+		bool ArtistMatch = (ArtistName == "" || ArtistName == M[i].GetArtist());
+		bool AlbumMatch = (AlbumName == "" || AlbumName == M[i].GetAlbum());
+		if(ArtistMatch && AlbumMatch)
+		{
+			for(n = 0; n < Titles.size(); n++)
+			{
+				if(Titles[n] == M[i].GetTitle())
+				{
+					Repeat = true;
+				}
+			}
+			if(!Repeat)
+			{
+				Titles.push_back(M[i].GetTitle());
+			}
+		}
+	}
+	std::sort(Titles.begin(),Titles.end());
+	
+	return Titles;
+}
+
+
 Music::Music(std::string Artist, std::string Album, std::string Title, std::string Path, int TrackNum)
 {
 	this->Artist = Artist;
