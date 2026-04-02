@@ -112,3 +112,63 @@ SDL_Color ToSDLPixel(Color Arg)
 	Color.b = Arg % 0x100;
 	return Color;
 }
+bool GetKey(KEY K)
+{
+	auto Keys = SDL_GetKeyboardState(NULL);
+	if(K == UP)
+	{
+		return Keys[SDL_SCANCODE_UP];
+	}
+	if(K == DOWN)
+	{
+		return Keys[SDL_SCANCODE_DOWN];
+	}
+	if(K == RIGHT)
+	{
+		return Keys[SDL_SCANCODE_RIGHT];
+	}
+	if(K == LEFT)
+	{
+		return Keys[SDL_SCANCODE_LEFT];
+	}
+	if(K == ENTER)
+	{
+		return Keys[SDL_SCANCODE_RETURN];
+	}
+	if(K == ESC)
+	{
+		return Keys[SDL_SCANCODE_ESCAPE];
+	}
+	return false;
+}
+int GetKeyCount(void)
+{
+	KEY K;
+	auto Keys = SDL_GetKeyboardState(NULL);
+	int KeyCount = 0;
+	if(Keys[SDL_SCANCODE_UP])
+	{
+		KeyCount++;
+	}
+	if(Keys[SDL_SCANCODE_DOWN])
+	{
+		KeyCount++;
+	}
+	if(Keys[SDL_SCANCODE_RIGHT])
+	{
+		KeyCount++;
+	}
+	if(Keys[SDL_SCANCODE_LEFT])
+	{
+		KeyCount++;
+	}
+	if(Keys[SDL_SCANCODE_RETURN])
+	{
+		KeyCount++;
+	}
+	if(Keys[SDL_SCANCODE_ESCAPE])
+	{
+		KeyCount++;
+	}
+	return KeyCount;
+}

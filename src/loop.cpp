@@ -20,6 +20,7 @@
 
 int RunMainLoop(void)
 {
+	
 	Config C;
 	std::vector<Music> M = SearchDir(C.GetSearchDir().c_str());
 	GUIInit();
@@ -30,10 +31,66 @@ int RunMainLoop(void)
 		exit(1);
 	}
 	Color FontColor = 0x00ffffff;
-	
+	std::vector<std::string> ArtistsList = GetSortedArtists(M);
+	std::vector<std::string> Menu;
+	Menu.push_back("Artists");
+	Menu.push_back("Albums");
+	Menu.push_back("Songs");
+	Menu.push_back("Options");
+	Menu.push_back("Exit");
+	UI_MODE UI = MAINMENU;
+	int Index = 2;	
+	int i = DrawLines(GetSortedTitles(M), 0, Font, FontColor, 0);
+	bool KeyDown = false;
 	while(1)
 	{
+
+
+		if(KeyDown == false)
+		{
+			if(GetKey(UP))
+			{
+				Index--;
+				KeyDown = true;
+			}
+			if(GetKey(DOWN))
+			{
+				Index++;
+				KeyDown = true;
+			}
+			if(GetKey(ENTER))
+			{
+				if(Menu[Index] == "Artists")
+				{
+					UI = CHOOSE_ARTIST;
+
+				}
+				KeyDown = true;
+			}
+		}
+		else
+		{
+			if(GetKeyCount() == 0)
+			{
+				KeyDown = false;
+			}
+		}
+		if(GetKey(ESC))
+		{
+			break;
+		}
+
+
+
 		CleanWindow();
+		if(UI == MAINMENU)
+		{
+			i = DrawLines(Menu, Index, Font, FontColor, i);
+		}
+		if(UI == CHOOSE_ARTIST)
+		{
+			i = DrawLines(ArtistsList, Index, Font, FontColor, i);
+		}
 		if(ProcessMessage())
 		{
 			break;

@@ -9,12 +9,24 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 #pragma once
+#include <SDL3/SDL_keycode.h>
 #include <string>
 #include <vector>
 #include "audio.hpp"
 const int DEFAULT_WINDOW_WIDTH = 640;
 const int DEFAULT_WINDOW_HEIGHT = 480;
 const int DEFAULT_FONT_SIZE = 16;
+
+enum KEY
+{
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+	ENTER,
+	ESC,
+	ALL
+};
 
 enum ERROR_SCALE
 {
@@ -65,4 +77,6 @@ int RunMainLoop(void);//ループ処理
 bool FileExists(const char* Path);//そのファイルが存在しているか確認する
 bool DirExsists(const char* Dir);
 
+bool GetKey(KEY K);
+int GetKeyCount(void);
 //const char* GetSearchDir(void);//コンフィグファイル内で設定された、検索対象のパスを返す

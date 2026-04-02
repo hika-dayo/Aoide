@@ -65,22 +65,59 @@ int CleanWindow(void)
 	SDL_ClearSurface(GetGUISurface(), 0,0,0,0);
 	return 0;
 }
-int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor)
+
+int DrawRect(int X, int Y, int W, int H, Color RectColor)
 {
+    SDL_Rect Rect = {X, Y, W, H};
+
+    const SDL_PixelFormatDetails* formatDetails =
+        SDL_GetPixelFormatDetails(GetGUISurface()->format);
+    Uint8 R = (Uint8)((RectColor / 0x10000) % 0x100);
+    Uint8 G = (Uint8)((RectColor / 0x100) % 0x100);
+    Uint8 B = (Uint8)(RectColor % 0x100);
+
+    Uint32 ColorUint32 = SDL_MapRGB(formatDetails, nullptr, R, G, B);
+
+    SDL_FillSurfaceRect(GetGUISurface(), &Rect, ColorUint32);
+
+    return 0;  // 成功時とか
+
+}
+
+int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int Scroll)
+{
+	Config C;
 	if(List.size() < Index + 1)
 	{
-		return 1;
-	}
-	for(int i = 0; i < List.size(); i++)
-	{
-	DrawText(Font, List[i].c_str(), TextColor, 0, GetFontSize(Font) * i);
+		return -1;
 	}
 	
-	return 0;
+	for(int i = 0; i < List.size(); i++)
+	{
+		if(i == Index)
+		{
+			DrawRect(0, GetFontSize(Font) * i, C.GetWindowWidth(), GetFontSize(Font) , TextColor);
+			DrawText(Font, List[i].c_str(), ~TextColor, 0, GetFontSize(Font) * i);
+		}
+		else
+		{
+			DrawText(Font, List[i].c_str(), TextColor, 0, GetFontSize(Font) * i);
+		}
+	}
+	if((Index + Scroll) < C.GetWindowHeight() / GetFontSize(Font))
+	{
+		Scroll = C.GetWindowHeight() / GetFontSize(Font) - Index;
+	}
+	
+	return Scroll;
 }
-int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta)
+int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header)
 {
 	std::vector<std::string> Tmp;
+	if(Header != "")
+	{
+		Tmp.push_back(Header);
+	}
 	switch(Meta)
 	{
 		case ARTIST:
@@ -104,6 +141,6 @@ int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color Text
 		default:
 		return 1;
 	}
-	DrawLines(Tmp, ChoiceLine, Font, TextColor);
+	DrawLines(Tmp, ChoiceLine, Font, TextColor, ChoiceLine);
 	return 0;
 }
