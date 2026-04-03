@@ -37,7 +37,7 @@ enum UI_MODE
 	OPTION,
 	CHOOSE_ARTIST,
 	CHOOSE_ALBUM,
-	CHOOSE_SONG,
+	CHOOSE_TITLE,
 };
 //色ゾーン
 enum COLOR
@@ -59,6 +59,6 @@ int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //
 
 int DrawRect(int X1, int X2, int Y1, int Y2, Color RectColor);
 
-int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int Scroll);
+int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int Scroll, std::string Title = "");
 
 int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header="");

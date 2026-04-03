@@ -19,6 +19,7 @@
 #include <iostream>
 #include <vector>
 
+
 SDL_Surface* Image;
 TTF_Font* InitFont(float Size, std::string Path)
 {	
@@ -51,7 +52,7 @@ int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y)
 	Scr_Rect.x = X;
 	Scr_Rect.y = Y;	
 	SDL_BlitSurface(Image, &Rect, GetGUISurface(), &Scr_Rect);
-	
+	SDL_DestroySurface(Image);
 	return 0;
 }
 int QuitFont(TTF_Font* Font)
@@ -84,14 +85,18 @@ int DrawRect(int X, int Y, int W, int H, Color RectColor)
 
 }
 
-int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int Scroll)
+int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int Scroll, std::string Title)
 {
 	Config C;
 	if(List.size() < Index + 1)
 	{
 		return -1;
 	}
-	
+	if(Title != "")
+	{
+		Index++;
+		List.insert(List.begin(), Title);
+	}
 	for(int i = 0; i < List.size(); i++)
 	{
 		if(i == Index)
