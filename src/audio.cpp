@@ -30,12 +30,14 @@ static libvlc_instance_t* VLCInstance;
 static bool Initialized = false;
 int InitVLCInstance(void)
 {
+	std::cout << "aa";
 	if(Initialized == true)
 	{
 		return 1;
 	}
-	const char* Args[] = {"--no-video"};
-	VLCInstance = libvlc_new(1, Args);
+//	const char* Args[] = {"--no-video"};
+	VLCInstance = libvlc_new(0, NULL);
+	Initialized = true;
 	return 0;
 }
 bool isLibVLCInitialized(void)
@@ -85,7 +87,23 @@ Music GetAudioMetaData(const char* Path)
 		
 }
 
-
+std::string GetTitlePath(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName, const std::string TitleName)
+{
+	for(int i = 0; i < M.size(); i++)
+	{
+		if(M[i].GetArtist() == ArtistName)
+		{
+			if(M[i].GetAlbum() == AlbumName)
+			{
+				if(M[i].GetTitle() == TitleName)
+				{
+					return M[i].GetPath();
+				}
+			}
+		}
+	}
+	return "";
+}
 std::vector<std::string> GetSortedArtists(std::vector<Music> &M)
 {
 	std::vector<std::string> Artists;
@@ -169,6 +187,38 @@ std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::strin
 	return Titles;
 }
 
+std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName)
+{
+	std::vector<std::pair<int, std::string>> TitlesWithTrackNum;
+	for(int i = 0; i < M.size(); i++)
+	{
+		int n = 0;
+		bool Repeat = false;
+		bool ArtistMatch = (ArtistName == "" || ArtistName == M[i].GetArtist());
+		bool AlbumMatch = (AlbumName == "" || AlbumName == M[i].GetAlbum());
+		if(ArtistMatch && AlbumMatch)
+		{
+			for(n = 0; n < TitlesWithTrackNum.size(); n++)
+			{
+				if(TitlesWithTrackNum[n].second == M[i].GetTitle())
+				{
+					Repeat = true;
+				}
+			}
+			if(!Repeat)
+			{
+				TitlesWithTrackNum.push_back(std::make_pair(M[i].GetTrackNum(), M[i].GetTitle()));
+			}
+		}
+	}
+	std::sort(TitlesWithTrackNum.begin(), TitlesWithTrackNum.end());
+	std::vector<std::string> Titles;
+	for(int i = 0; i < TitlesWithTrackNum.size(); i++)
+	{
+		Titles.push_back(TitlesWithTrackNum[i].second);
+	}
+	return Titles;
+}
 
 Music::Music(std::string Artist, std::string Album, std::string Title, std::string Path, int TrackNum)
 {

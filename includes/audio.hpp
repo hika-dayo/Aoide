@@ -46,9 +46,12 @@ public:
 
 Music GetAudioMetaData(const char* Path);//音楽ファイルのメタデータを返す
 
+
+std::string GetTitlePath(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName, const std::string TitleName);
 std::vector<Music> SearchDir(const char *Path);//ディレクトリを検索する
 
 std::vector<std::string> GetSortedArtists(std::vector<Music> &M);
 std::vector<std::string> GetSortedAlbums(std::vector<Music> &M, const std::string ArtistName = "");
 std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName = "", const std::string AlbumName = "");
+std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName);
 //std::vector<std::string> GetSortedTitles(std::vector<Music> M);

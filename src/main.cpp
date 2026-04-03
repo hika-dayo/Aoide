@@ -30,13 +30,10 @@ void Release(void)
 int main(int argc, char *argv[])
 {
 	atexit(Release);
-//	ReadConf();
 	InitVLCInstance();	
+
 	Config C;
-	std::thread Search (SearchDir, C.GetSearchDir().c_str());
-//	SearchDir(C.GetSearchDir().c_str());
 	RunMainLoop();
-	Search.join();
 	Release();
 	exit(0);
 }
