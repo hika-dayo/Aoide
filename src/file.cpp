@@ -497,6 +497,7 @@ std::vector<Music>SearchDir(const char *Path)
 			{
 				if(CheckExtension(CmpStr, C.GetSearchExtension()[i]))
 				{
+					std::cout << CmpStr << std::endl;
 					MList.push_back(GetAudioMetaData(CmpStr.c_str()));
 				}
 			}			

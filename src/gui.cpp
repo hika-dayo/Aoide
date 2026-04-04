@@ -19,6 +19,33 @@
 #include <iostream>
 #include <vector>
 
+UI::UI(std::vector<Music> &Music)
+{
+	M = Music;
+	Config C;
+	FontColor =  0x00ffffff;
+	Font = InitFont(C.GetFontSize(), C.GetFontPath());
+	if(Font == 0)
+	{
+		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
+		exit(1);
+	}
+	ChoosingLine = 0;
+	Texts.push_back("Artists");
+	Texts.push_back("Albums");
+	Texts.push_back("Songs");
+	Texts.push_back("Options");
+	Texts.push_back("Exit");
+}
+int UI::Process(void)
+{
+	DrawLines(Texts, ChoosingLine, Font, FontColor, 0, 0);
+	return 0;
+
+}
+
+
+
 
 SDL_Surface* Image;
 TTF_Font* InitFont(float Size, std::string Path)
@@ -85,7 +112,7 @@ int DrawRect(int X, int Y, int W, int H, Color RectColor)
 
 }
 
-int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int Scroll, std::string Title)
+int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int X, int Y, std::string Title)
 {
 	Config C;
 	if(List.size() < Index + 1)
@@ -101,7 +128,7 @@ int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color Te
 	{
 		if(i == Index)
 		{
-			DrawRect(0, GetFontSize(Font) * i, C.GetWindowWidth(), GetFontSize(Font) , TextColor);
+			DrawRect(X, GetFontSize(Font) * i + Y, C.GetWindowWidth(), GetFontSize(Font) , TextColor);
 			DrawText(Font, List[i].c_str(), ~TextColor, 0, GetFontSize(Font) * i);
 		}
 		else
@@ -109,14 +136,9 @@ int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color Te
 			DrawText(Font, List[i].c_str(), TextColor, 0, GetFontSize(Font) * i);
 		}
 	}
-	if((Index + Scroll) < C.GetWindowHeight() / GetFontSize(Font))
-	{
-		Scroll = C.GetWindowHeight() / GetFontSize(Font) - Index;
-	}
-	
-	return Scroll;
+	return 0;	
 }
-int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header)
+/*int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header)
 {
 	std::vector<std::string> Tmp;
 	if(Header != "")
@@ -148,4 +170,4 @@ int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color Text
 	}
 	DrawLines(Tmp, ChoiceLine, Font, TextColor, ChoiceLine);
 	return 0;
-}
+}*/

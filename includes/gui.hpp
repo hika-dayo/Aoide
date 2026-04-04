@@ -59,6 +59,22 @@ int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //
 
 int DrawRect(int X1, int X2, int Y1, int Y2, Color RectColor);
 
-int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int Scroll, std::string Title = "");
+int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int X, int Y, std::string Title = "");
 
 int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header="");
+
+class UI
+{
+	private:
+		std::vector<Music> M;
+		int ChoosingLine;
+		int CheckKey(void);
+		int KeyDirection;
+		Color FontColor;
+		int ChoiceLine;
+		TTF_Font* Font;
+		std::vector<std::string> Texts;
+	public:
+		UI(std::vector<Music> &M);
+		int Process(void);
+};
