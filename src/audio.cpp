@@ -82,7 +82,7 @@ Music GetAudioMetaData(const char* Path)
 		Music M("", "", "", "", 0);
 		return M;
 	}
-	Music M(T->artist().to8Bit(true), T->album().to8Bit(true), T->title().to8Bit(true), Path, T->track());
+	Music M(Path, T->artist().to8Bit(true), T->album().to8Bit(true), T->title().to8Bit(true), T->track());
 	return M;
 		
 }
@@ -220,13 +220,14 @@ std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::str
 	return Titles;
 }
 
-Music::Music(std::string Artist, std::string Album, std::string Title, std::string Path, int TrackNum)
+Music::Music(std::string Path, std::string Artist, std::string Album, std::string Title, int TrackNum, std::string ArtworkPath)
 {
 	this->Artist = Artist;
 	this->Title = Title;
 	this->Album = Album;
 	this->Path = Path;
 	this->TrackNum = TrackNum;
+	this->ArtworkPath = ArtworkPath;
 	return;
 }
 std::string Music::GetAlbum(void)

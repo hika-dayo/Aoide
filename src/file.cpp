@@ -77,6 +77,11 @@ int Config::MakeConfAndCacheDir(void)
 	if(getenv("XDG_CACHE_HOME") == NULL)
 	{//特に指定が無いなら~/.config以下にaoideディレクトリを生成する
 		CacheDir = getenv("HOME");
+		if(CacheDir.empty())
+		{
+			ReportError("HOME環境変数が設定されていません。", CRITICAL_ERROR, __FILE__, __LINE__, __func__);
+			exit(1);
+		}
 		if(ConfDir.c_str() == NULL)
 		{
 			ReportError("HOMEが設定されていません", CRITICAL_ERROR, __FILE__,__LINE__);
@@ -270,10 +275,7 @@ int Config::LoadSearchExtension(std::string Line, int LineNum)
 		ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);	
 		return 1;
 	}
-	for(int i = 0; i <= SEARCH_EXTENTION.size(); i++)//初期化されていたデータを全部popして捨てる
-	{
-		SEARCH_EXTENTION.pop_back();
-	}
+	SEARCH_EXTENTION.clear();
 
 	std::istringstream Option(Line.substr(Line.find("=") + 1, Line.length()));//istringstreamは空白改行で区切られたデータを一つずつ取り出せる
 	std::string Tmp;
@@ -290,7 +292,6 @@ int Config::LoadSearchExtension(std::string Line, int LineNum)
 
 std::vector<std::string> Config::GetSearchExtension(void)
 {
-	Config Cobj;
 	return SEARCH_EXTENTION;
 }
 std::string Config::GetCacheDir(void)
@@ -299,7 +300,6 @@ std::string Config::GetCacheDir(void)
 }
 std::string Config::GetFontPath(void)
 {
-	Config Cobj;
 	if(FONT_PATH != "")
 	{
 		return FONT_PATH;
@@ -369,36 +369,25 @@ int Config::ReadConf(void)
 						SEARCH_DIR = getenv("HOME");
 					}						
 				}
-				else
-				{
-					if(Line.find("WindowWidth") != std::string::npos)
+				else if(Line.find("WindowWidth") != std::string::npos)
 					{
 						LoadWindowWidth(Line, LineNum);
 
 					}
-					else
-					{
-
-						if(Line.find("WindowHeight") != std::string::npos)
+					else if(Line.find("WindowHeight") != std::string::npos)
 						{
 							LoadWindowHeight(Line, LineNum);	
 
 						}
-						else
-						{
-							if(Line.find("FontSize") != std::string::npos)
+						else if(Line.find("FontSize") != std::string::npos)
 							{
 								LoadFontSize(Line, LineNum);
 							}
-							else
-							{
-								if(Line.find("FontPath") != std::string::npos)
+							else if(Line.find("FontPath") != std::string::npos)
 								{
 									LoadFontPath(Line, LineNum);
 								}
-								else
-								{
-									if(Line.find("SearchExtension") != std::string::npos)
+								else if(Line.find("SearchExtension") != std::string::npos)
 									{
 										LoadSearchExtension(Line, LineNum);
 									}
@@ -408,13 +397,6 @@ int Config::ReadConf(void)
 										ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
 	
 									}
-
-								}
-							}
-
-						}
-					}
-				}
 			}
 			LineNum++;
 		}
@@ -476,13 +458,7 @@ std::vector<Music>SearchDir(const char *Path)
 	std::string CmpStr;
 	FTSENT* Ent = nullptr;
 //	int FileMtime;
-	int CacheMtime;
 	Config C;
-	std::ofstream Cache(C.GetCacheDir() + "searched");
-	if(!Cache)
-	{
-		exit(1);
-	}
 	while((Ent = fts_read(Fts))!= nullptr)
 	{
 		if(S_ISREG(Ent->fts_statp->st_mode))
@@ -497,13 +473,11 @@ std::vector<Music>SearchDir(const char *Path)
 			{
 				if(CheckExtension(CmpStr, C.GetSearchExtension()[i]))
 				{
-					std::cout << CmpStr << std::endl;
 					MList.push_back(GetAudioMetaData(CmpStr.c_str()));
 				}
 			}			
 		}
 	}
-	Cache.close();
 	fts_close(Fts);
 	return MList;
 }

@@ -33,13 +33,15 @@ private:
 	std::string Title = "";
 	std::string Path = "";
 	std::string Album = "";
+	std::string ArtworkPath = "";
 	int TrackNum = 0;
 public:
-	Music(std::string Artist, std::string Album, std::string Title, std::string Path, int TrackNum);
+	Music(std::string Path, std::string Artist = "", std::string Album = "", std::string Title = "",int TrackNum = 0, std::string ArtworkPath = "");
 	std::string GetArtist(void);
 	std::string GetTitle(void);
 	std::string GetAlbum(void);
 	std::string GetPath(void);
+	std::string GetArtworkPath(void);
 	int GetTrackNum(void);
 	bool isThisInitialized(void);
 };
