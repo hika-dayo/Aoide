@@ -13,6 +13,7 @@
 #include "../includes/gui.hpp"
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <SDL3_image/SDL_image.h>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -47,7 +48,6 @@ int UI::Process(void)
 
 
 
-SDL_Surface* Image;
 TTF_Font* InitFont(float Size, std::string Path)
 {	
 	TTF_Font* Font;
@@ -60,6 +60,7 @@ TTF_Font* InitFont(float Size, std::string Path)
 	else
 	{
 		ReportError("フォントファイルが存在していません!", CRITICAL_ERROR, __FILE__, __LINE__, __func__);
+		exit(1);
 	}
 	return 0;
 }
@@ -69,6 +70,7 @@ float GetFontSize(TTF_Font* Font)
 }
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y)
 {
+	SDL_Surface* Image;
 	SDL_Rect Rect, Scr_Rect;
 	SDL_Color SDLColor = ToSDLPixel(FontColor);
 	Image = TTF_RenderText_Shaded(Font, Str, strlen(Str), SDLColor, SDLColor);
@@ -138,6 +140,35 @@ int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color Te
 	}
 	return 0;	
 }
+
+int DrawImage(std::string Path, int X, int Y, bool Centered)
+{
+	if(!FileExists(Path.c_str()))
+	{
+		return 1;
+	}
+	SDL_Surface* Image = IMG_Load(Path.c_str());
+	SDL_Rect Rect, Scr_Rect;
+	Rect.x = 0;
+	Rect.y = 0;
+	Rect.w = Image->w;
+	Rect.h = Image->h;
+	if(Centered)
+	{
+		Scr_Rect.x = X - Image->w / 2;
+		Scr_Rect.y = Y - Image->h / 2;
+	}
+	else
+	{
+		Scr_Rect.x = X;
+		Scr_Rect.y = Y;	
+	}
+	SDL_BlitSurface(Image, &Rect, GetGUISurface(), &Scr_Rect);
+	SDL_DestroySurface(Image);
+	return 0;
+}
+
+
 /*int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header)
 {
 	std::vector<std::string> Tmp;

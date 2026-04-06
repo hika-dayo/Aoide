@@ -63,6 +63,7 @@ int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color Te
 
 int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header="");
 
+int DrawImage(std::string Path, int X, int Y, bool Centered);
 class UI
 {
 	private:

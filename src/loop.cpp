@@ -26,19 +26,21 @@ int RunMainLoop(void)
 {	
 	Config C;
 	GUIInit();
-	TTF_Font* Font = InitFont(C.GetFontSize(), C.GetFontPath());
+/*	TTF_Font* Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)
 	{
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
 		exit(1);
 	}
-	Color FontColor = 0x00ffffff;
+	Color FontColor = 0x00ffffff*/
 	std::vector<Music> M = SearchDir(C.GetSearchDir().c_str());
 	UI UIobj(M);
+	int Y = 0;
+	CleanWindow();
+//	UIobj.Process();
 	while(1)
 	{
-	CleanWindow();
-	UIobj.Process();
+	
 		if(ProcessMessage())
 		{
 			break;

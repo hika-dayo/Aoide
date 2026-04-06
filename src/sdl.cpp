@@ -38,21 +38,21 @@ int GUIInit(void)
 	{
 		SDL_Log("Failed to create window: %s", SDL_GetError());
 		ReportError("SDLを初期化できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
-		return 1;
+		exit(1);
 	}	
 	Window = SDL_CreateWindow("Aoide", C.GetWindowWidth(), C.GetWindowHeight(), 0);
 	if(Window == nullptr)
 	{
 		SDL_Log("Failed to create window: %s", SDL_GetError());
 		ReportError("SDLのウィンドウを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
-		return 1;
+		exit(1);
 	}
 	Surface = SDL_GetWindowSurface(Window);
 	if(!Surface)
 	{
 		SDL_Log("Failed to create surface: %s", SDL_GetError());
 		ReportError("ウィンドウのサーフェスを作成できませんでした。", CRITICAL_ERROR, __FILE__, __LINE__);
-		return 1;
+		exit(1);
 	}
 	SDL_SetWindowSurfaceVSync(Window, 2);
 	Initialized = true;
