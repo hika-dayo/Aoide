@@ -96,7 +96,6 @@ Music GetAudioMetaData(const char* Path)
 
 std::string ExtractFromFlacFile(const char* Path, const char* ArtistName, const char* AlbumName)
 {
-	std::cout << "ExtractFromFlacFileが実行されたよ!!";
 	TagLib::FileRef F(Path);
 	TagLib::Tag* Tag = F.tag();	
 	std::string ArtworkPath = "";
@@ -113,6 +112,7 @@ std::string ExtractFromFlacFile(const char* Path, const char* ArtistName, const 
 				ArtworkPath = C.GetCacheDir() + "/" + ArtistName + " - " + AlbumName + ".jpg";
 				if(!FileExists(ArtworkPath.c_str()))
 				{
+					
 					std::ofstream Out(ArtworkPath, std::ios::binary);
 					TagLib::ByteVector Data = Pic.front()->data();
 					Out.write(Data.data(), Data.size());
