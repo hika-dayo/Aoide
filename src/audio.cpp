@@ -12,7 +12,9 @@
 #include "../includes/audio.hpp"
 #include "../includes/utility.hpp"
 #include <sstream>
+#include <fstream>
 #include <taglib/tstring.h>
+#include <taglib/flacfile.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <vlc/deprecated.h>
@@ -82,10 +84,46 @@ Music GetAudioMetaData(const char* Path)
 		Music M("", "", "", "", 0);
 		return M;
 	}
-	Music M(Path, T->artist().to8Bit(true), T->album().to8Bit(true), T->title().to8Bit(true), T->track());
+	std::string Artist = T->artist().to8Bit(true);
+	std::string Album = T->album().to8Bit(true);
+	std::string Title = T->title().to8Bit(true);
+	int TrackNum = T->track();
+	Music M(Path, Artist, Album, Title, TrackNum, ExtractFromFlacFile(Path, Artist.c_str(), Album.c_str()));
 	return M;
 		
 }
+
+
+std::string ExtractFromFlacFile(const char* Path, const char* ArtistName, const char* AlbumName)
+{
+	std::cout << "ExtractFromFlacFileが実行されたよ!!";
+	TagLib::FileRef F(Path);
+	TagLib::Tag* Tag = F.tag();	
+	std::string ArtworkPath = "";
+	if(Tag != NULL)
+	{
+		TagLib::File* CoverFile = F.file();
+		TagLib::FLAC::File* FileFlac = dynamic_cast<TagLib::FLAC::File*>(CoverFile);
+		if(FileFlac != NULL)
+		{
+			auto Pic = FileFlac->pictureList();
+			if(!Pic.isEmpty())
+			{
+				Config C;
+				ArtworkPath = C.GetCacheDir() + "/" + ArtistName + " - " + AlbumName + ".jpg";
+				if(!FileExists(ArtworkPath.c_str()))
+				{
+					std::ofstream Out(ArtworkPath, std::ios::binary);
+					TagLib::ByteVector Data = Pic.front()->data();
+					Out.write(Data.data(), Data.size());
+					Out.close();
+				}
+			}
+		}
+	}
+	return ArtworkPath;
+}
+
 
 std::string GetTitlePath(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName, const std::string TitleName)
 {

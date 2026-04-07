@@ -103,13 +103,13 @@ int Config::MakeConfAndCacheDir(void)
 			exit(1);
 		}
 		ConfDir += "/.config/aoide/";
-		ConfigPath = ConfDir + "aoide.conf";
+		ConfigPath = ConfDir + "/aoide.conf";
 	}
 	else	
 	{
 		ConfDir = getenv("XDG_CONFIG_HOME");
 		ConfDir += "/aoide/";
-		ConfigPath = ConfDir + "aoide.conf";
+		ConfigPath = ConfDir + "/aoide.conf";
 	}
 	std::filesystem::create_directory(ConfDir.c_str());
 	std::filesystem::create_directory(CacheDir.c_str());
@@ -473,7 +473,9 @@ std::vector<Music>SearchDir(const char *Path)
 			{
 				if(CheckExtension(CmpStr, C.GetSearchExtension()[i]))
 				{
-					MList.push_back(GetAudioMetaData(CmpStr.c_str()));
+					std::cout << CmpStr << std::endl;
+					Music Data = GetAudioMetaData(CmpStr.c_str());
+					MList.push_back(Data);
 				}
 			}			
 		}

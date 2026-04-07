@@ -56,4 +56,5 @@ std::vector<std::string> GetSortedArtists(std::vector<Music> &M);
 std::vector<std::string> GetSortedAlbums(std::vector<Music> &M, const std::string ArtistName = "");
 std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName = "", const std::string AlbumName = "");
 std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName);
+std::string ExtractFromFlacFile(const char* Path, const char* ArtistName, const char* AlbumName);
 //std::vector<std::string> GetSortedTitles(std::vector<Music> M);
