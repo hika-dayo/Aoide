@@ -142,34 +142,3 @@ bool GetKey(KEY K)
 	}
 	return false;
 }
-int GetKeyCount(void)
-{
-	KEY K;
-	auto Keys = SDL_GetKeyboardState(NULL);
-	int KeyCount = 0;
-	if(Keys[SDL_SCANCODE_UP])
-	{
-		KeyCount++;
-	}
-	if(Keys[SDL_SCANCODE_DOWN])
-	{
-		KeyCount++;
-	}
-	if(Keys[SDL_SCANCODE_RIGHT])
-	{
-		KeyCount++;
-	}
-	if(Keys[SDL_SCANCODE_LEFT])
-	{
-		KeyCount++;
-	}
-	if(Keys[SDL_SCANCODE_RETURN])
-	{
-		KeyCount++;
-	}
-	if(Keys[SDL_SCANCODE_ESCAPE])
-	{
-		KeyCount++;
-	}
-	return KeyCount;
-}

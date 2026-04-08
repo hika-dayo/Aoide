@@ -40,7 +40,7 @@ UI::UI(std::vector<Music> &Music)
 }
 int UI::Process(void)
 {
-	DrawLines(Texts, ChoosingLine, Font, FontColor, 0, 0);
+//	DrawLines(Texts, ChoosingLine, Font, FontColor, 0, 0);
 	return 0;
 
 }
@@ -114,91 +114,52 @@ int DrawRect(int X, int Y, int W, int H, Color RectColor)
 
 }
 
-int DrawLines(std::vector<std::string> List, int Index, TTF_Font* Font, Color TextColor, int X, int Y, std::string Title)
-{
-	Config C;
-	if(List.size() < Index + 1)
-	{
-		return -1;
-	}
-	if(Title != "")
-	{
-		Index++;
-		List.insert(List.begin(), Title);
-	}
-	for(int i = 0; i < List.size(); i++)
-	{
-		if(i == Index)
-		{
-			DrawRect(X, GetFontSize(Font) * i + Y, C.GetWindowWidth(), GetFontSize(Font) , TextColor);
-			DrawText(Font, List[i].c_str(), ~TextColor, 0, GetFontSize(Font) * i);
-		}
-		else
-		{
-			DrawText(Font, List[i].c_str(), TextColor, 0, GetFontSize(Font) * i);
-		}
-	}
-	return 0;	
-}
 
-int DrawImage(std::string Path, int X, int Y, bool Centered)
+Image::Image(std::string Path)
 {
 	if(!FileExists(Path.c_str()))
 	{
-		return 1;
+		return;
 	}
-	SDL_Surface* Image = IMG_Load(Path.c_str());
+	ImgData = IMG_Load(Path.c_str());
+	Width = ImgData->w;
+	Height = ImgData->h;
+	return;
+}
+Image::~Image(void)
+{
+	SDL_DestroySurface(ImgData);
+	return;
+}
+
+int Image::GetWidth(void)
+{
+	return Width;
+}
+int Image::GetHeight(void)
+{
+	return Height;
+}
+
+int Image::DrawImage(int X, int Y, int Width, int Height)
+{
 	SDL_Rect Rect, Scr_Rect;
 	Rect.x = 0;
 	Rect.y = 0;
-	Rect.w = Image->w;
-	Rect.h = Image->h;
-	if(Centered)
+	Rect.w = ImgData->w;
+	Rect.h = ImgData->h;
+	Scr_Rect.x = X;
+	Scr_Rect.y = Y;	
+	Scr_Rect.w = Width;
+	Scr_Rect.h = Height;	
+	if(Width == 0)
 	{
-		Scr_Rect.x = X - Image->w / 2;
-		Scr_Rect.y = Y - Image->h / 2;
+		Scr_Rect.w = GetWidth();
 	}
-	else
+	if(Height == 0)
 	{
-		Scr_Rect.x = X;
-		Scr_Rect.y = Y;	
+		Scr_Rect.h = GetHeight();	
 	}
-	SDL_BlitSurface(Image, &Rect, GetGUISurface(), &Scr_Rect);
-	SDL_DestroySurface(Image);
+	SDL_BlitSurfaceScaled(ImgData, &Rect, GetGUISurface(), &Scr_Rect, SDL_SCALEMODE_NEAREST);
 	return 0;
 }
-
-
-/*int DrawUI(std::vector<Music> Musics, int ChoiceLine, TTF_Font* Font, Color TextColor, METADATA Meta, std::string Header)
-{
-	std::vector<std::string> Tmp;
-	if(Header != "")
-	{
-		Tmp.push_back(Header);
-	}
-	switch(Meta)
-	{
-		case ARTIST:
-		for(int i = 0; i < Musics.size(); i++)
-		{
-			Tmp.push_back(Musics[i].GetArtist());
-		}
-		break;
-		case ALBUM:
-		for(int i = 0; i < Musics.size(); i++)
-		{
-			Tmp.push_back(Musics[i].GetAlbum());
-		}
-		break;
-		case TITLE:
-		for(int i = 0; i < Musics.size(); i++)
-		{
-			Tmp.push_back(Musics[i].GetTitle());
-		}
-		break;
-		default:
-		return 1;
-	}
-	DrawLines(Tmp, ChoiceLine, Font, TextColor, ChoiceLine);
-	return 0;
-}*/

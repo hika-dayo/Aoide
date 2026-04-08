@@ -37,10 +37,12 @@ int RunMainLoop(void)
 	UI UIobj(M);
 	int Y = 0;
 	CleanWindow();
-//	UIobj.Process();
 	while(1)
 	{
-	
+		if(GetKey(ESC))
+		{
+			break;
+		}
 		if(ProcessMessage())
 		{
 			break;

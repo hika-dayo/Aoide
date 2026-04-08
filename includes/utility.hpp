@@ -25,7 +25,7 @@ enum KEY
 	LEFT,
 	ENTER,
 	ESC,
-	ALL
+	SPACE,
 };
 
 enum ERROR_SCALE

@@ -288,3 +288,7 @@ std::string Music::GetPath()
 {
 	return Path;
 }
+std::string Music::GetArtworkPath()
+{
+	return ArtworkPath;
+}
