@@ -39,8 +39,11 @@ UI::UI(std::vector<Music> &Music)
 	Texts.push_back("Exit");
 }
 int UI::Process(void)
-{
-//	DrawLines(Texts, ChoosingLine, Font, FontColor, 0, 0);
+{	
+	for(int i = 0; i < Texts.size(); i++)
+	{
+		DrawText(Font, Texts[i].c_str(), FontColor, 0, i * GetFontSize(Font));
+	}
 	return 0;
 
 }
