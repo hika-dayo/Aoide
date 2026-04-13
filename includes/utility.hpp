@@ -46,25 +46,25 @@ private:
 	static bool LoadConfig;//false
 	static std::string ConfigPath;//$HOME/.config/aoide/aoide.conf
 	static std::string CacheDir;//$HOME/.cache/aoide/searched
-	int ReadConf(void);
+	int ReadConf(void);//コンフィグファイルを読む
 	int MakeConfAndCacheDir(void);
-	int InitConf(void);
-	int LoadWindowWidth(std::string Line, int LineNum);
+	int InitConf(void);//コンフィグファイルの初期化
+	int LoadWindowWidth(std::string Line, int LineNum);//文字列からオプションを分離する
 	int LoadWindowHeight(std::string Line, int LineNum);
 	int LoadFontSize(std::string Line, int LineNum);
 	int LoadFontPath(std::string Line, int LineNum);
 	int LoadSearchExtension(std::string Line, int LineNum);
 public:
 	Config();
-	std::string GetCacheDir(void);
-	std::string GetConfigPath(void);
-	std::string GetFontPath(void);
-	std::string GetSearchDir(void);
-	std::vector<std::string>GetSearchExtension();
-	int GetWindowWidth(void);
-	int GetWindowHeight(void);
-	float GetFontSize(void);
-	bool DidConfigLoad(void);
+	std::string GetCacheDir(void);//キャッシュがあるディレクトリのパス
+	std::string GetConfigPath(void);//コンフィグファイルのパス
+	std::string GetFontPath(void);//フォントのパス
+	std::string GetSearchDir(void);//検索対象のディレクトリ
+	std::vector<std::string>GetSearchExtension();//検索対象の拡張子
+	int GetWindowWidth(void);//ウィンドウサイズ(横)
+	int GetWindowHeight(void);//ウィンドウサイズ(縦)
+	float GetFontSize(void);//フォントのサイズ
+	bool DidConfigLoad(void);//コンフィグファイルが読み込まれたか(インストラクタで読み込むからほとんど使う用が無い)
 };
 
 
@@ -79,4 +79,3 @@ bool DirExsists(const char* Dir);
 
 bool GetKey(KEY K);
 int GetKeyCount(void);
-//const char* GetSearchDir(void);//コンフィグファイル内で設定された、検索対象のパスを返す

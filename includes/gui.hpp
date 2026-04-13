@@ -19,11 +19,6 @@
 #define SDL_VIDEO_DRIVER_X11 1
 
 
-//const char* GetFontPath(void);//フォントファイルの場所
-//float GetSetFontSize(void);//フォントサイズの取得
-//float GetFontSize(TTF_Font* Font);//フォントサイズの取得
-//int GetWindow_Width(void);//解像度を取得
-//int GetWindow_Height(void);
 bool isSDLInitialized(void);//SDLが初期化されているか
 int GUIInit(void);//GUIを初期化
 int GUIRelease(void);//SDLをリリース
@@ -56,20 +51,20 @@ float GetFontSize(TTF_Font* Font);//フォントのサイズを取得
 TTF_Font* InitFont(float Size, std::string Path);//Pathのフォントと引数のサイズの大きさに
 int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
-
-int DrawRect(int X1, int X2, int Y1, int Y2, Color RectColor);
+int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画する(X、Y、横の長さ、縦の長さ)
 
 
 class UI
 {
 	private:
-		std::vector<Music> M;
+		Config C;
+		std::vector<Music> M;//音楽の情報を保持
 		int ChoosingLine;
-		int CheckKey(void);
-		int KeyDirection;
+//		int ProcessKey(void);//キーを処理する(後で実装するつもり)
 		Color FontColor;
 		int ChoiceLine;
 		TTF_Font* Font;
+		bool TmpKey;
 		std::vector<std::string> Texts;
 	public:
 		UI(std::vector<Music> &M);

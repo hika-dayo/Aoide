@@ -23,9 +23,9 @@
 UI::UI(std::vector<Music> &Music)
 {
 	M = Music;
-	Config C;
+	TmpKey = false;
 	FontColor =  0x00ffffff;
-	Font = InitFont(C.GetFontSize(), C.GetFontPath());
+		Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)
 	{
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
@@ -42,15 +42,37 @@ int UI::Process(void)
 {	
 	for(int i = 0; i < Texts.size(); i++)
 	{
-		DrawText(Font, Texts[i].c_str(), FontColor, 0, i * GetFontSize(Font));
+		if(i == ChoosingLine)
+		{
+			DrawRect(0, C.GetFontSize() * i, C.GetWindowWidth(), C.GetFontSize(), FontColor);
+			DrawText(Font, Texts[i].c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+		}
+		else
+		{
+			DrawText(Font, Texts[i].c_str(), FontColor, 0, i * C.GetFontSize());
+		}
 	}
+
+	if(GetKey(UP))
+	{
+		if(TmpKey == false)
+			ChoosingLine--;
+		TmpKey = true;
+	}
+	else if(GetKey(DOWN))
+	{
+		if(TmpKey == false)
+			ChoosingLine++;
+		TmpKey = true;
+	}
+	else
+	{
+		TmpKey = false;
+	}
+		
 	return 0;
 
 }
-
-
-
-
 TTF_Font* InitFont(float Size, std::string Path)
 {	
 	TTF_Font* Font;
