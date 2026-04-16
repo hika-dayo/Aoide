@@ -14,6 +14,7 @@
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
+#include <iterator>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -39,7 +40,8 @@ UI::UI(std::vector<Music> &Music)
 	Texts.push_back("Exit");
 }
 int UI::Process(void)
-{	
+{
+	Config C;
 	for(int i = 0; i < Texts.size(); i++)
 	{
 		if(i == ChoosingLine)
@@ -52,7 +54,12 @@ int UI::Process(void)
 			DrawText(Font, Texts[i].c_str(), FontColor, 0, i * C.GetFontSize());
 		}
 	}
+	ProcessKey();
+	return 0;
 
+}
+int UI::ProcessKey(void)
+{
 	if(GetKey(UP))
 	{
 		if(TmpKey == false)
@@ -69,9 +76,15 @@ int UI::Process(void)
 	{
 		TmpKey = false;
 	}
-		
+	if(0 > ChoosingLine)
+	{
+		ChoosingLine = Texts.size() - 1;
+	}
+	if(Texts.size() <= ChoosingLine)
+	{
+		ChoosingLine = 0;
+	}
 	return 0;
-
 }
 TTF_Font* InitFont(float Size, std::string Path)
 {	

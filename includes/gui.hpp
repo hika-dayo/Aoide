@@ -60,11 +60,12 @@ class UI
 		Config C;
 		std::vector<Music> M;//音楽の情報を保持
 		int ChoosingLine;
-//		int ProcessKey(void);//キーを処理する(後で実装するつもり)
+		int ProcessKey(void);//キーを処理する
 		Color FontColor;
 		int ChoiceLine;
 		TTF_Font* Font;
 		bool TmpKey;
+		int LoopCount;
 		std::vector<std::string> Texts;
 	public:
 		UI(std::vector<Music> &M);
