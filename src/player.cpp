@@ -16,7 +16,7 @@
 #include <vlc/libvlc_media_player.h>
 #include <string>
 
-//プレーヤークラスの関数たち
+//プレーヤークラスの関数
 Player::Player(const char* Path)
 {
 	FilePath = Path;
@@ -44,9 +44,10 @@ libvlc_state_t Player::GetState(void)
 
 
 
-//プレーヤーの状態確認する関数たち
+//プレーヤーの状態確認する関数
 bool Player::isEnded(void)
 {
+	
 	return (libvlc_state_t::libvlc_Ended == GetState());
 }
 
@@ -63,11 +64,22 @@ bool Player::hasError(void)
 {
 	return (libvlc_state_t::libvlc_Error == GetState());
 }
+int Player::GetAudioLength(void)
+{
+	return libvlc_media_player_get_length(MediaPlayer);
+}
+
+int Player::GetAudioTime(void)
+{
+	return libvlc_media_player_get_time(MediaPlayer);
+}
+float Player::GetAudioPosition(void)
+{
+	return libvlc_media_player_get_position(MediaPlayer);
+}
 
 
-
-
-//プレーヤーの状態変更関数たち
+//プレーヤーの状態変更関数
 int Player::Stop(void)
 {
 	if(libvlc_state_t::libvlc_Stopped != GetState())//変更前と変更後が同じだったら変更しない

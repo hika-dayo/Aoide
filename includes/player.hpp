@@ -39,4 +39,7 @@ class Player
 		int Stop(void);
 		int Pause(void);
 		int Play(void);
+		int GetAudioLength(void);//音楽ファイルの長さをミリ秒で返す
+		int GetAudioTime(void);//現在の再生位置をミリ秒で返す
+		float GetAudioPosition(void);//0.0〜1.0までに正規化された、現在の再生位置
 };

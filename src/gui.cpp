@@ -11,6 +11,7 @@
 
 #include "../includes/utility.hpp"
 #include "../includes/gui.hpp"
+#include "../includes/player.hpp"
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
