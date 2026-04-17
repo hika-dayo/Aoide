@@ -8,32 +8,14 @@
 
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
+
 #pragma once
-#include <SDL3/SDL_keycode.h>
 #include <string>
 #include <vector>
-#include "audio.hpp"
+
 const int DEFAULT_WINDOW_WIDTH = 640;
 const int DEFAULT_WINDOW_HEIGHT = 480;
 const int DEFAULT_FONT_SIZE = 16;
-
-enum KEY
-{
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT,
-	ENTER,
-	ESC,
-	SPACE,
-};
-
-enum ERROR_SCALE
-{
-	INFO_ERROR,
-	GENERAL_ERROR,
-	CRITICAL_ERROR
-};
 class Config
 {
 private:
@@ -66,16 +48,3 @@ public:
 	float GetFontSize(void);//フォントのサイズ
 	bool DidConfigLoad(void);//コンフィグファイルが読み込まれたか(インストラクタで読み込むからほとんど使う用が無い)
 };
-
-
-
-
-void Release(void);//プログラムが終了したときにインスタンスを解放する
-int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE, const char* FUNCNAME = "Unknown function");//エラー発生時に呼び出し 引数FILEには__FILE__、引数LINEには__LINE__を指定、引数FuncNameには__func__を指定する。
-int RunMainLoop(void);//ループ処理
- 
-bool FileExists(const char* Path);//そのファイルが存在しているか確認する
-bool DirExsists(const char* Dir);
-
-bool GetKey(KEY K);
-int GetKeyCount(void);

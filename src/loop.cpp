@@ -9,16 +9,11 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/audio.hpp"
-#include "../includes/player.hpp"
-#include "../includes/utility.hpp"
+#include "../includes/audio_engine.hpp"
+#include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 #include <SDL3/SDL_gpu.h>
-#include <thread>
 #include <SDL3/SDL_pixels.h>
-#include <iostream>
-#include <stdio.h>
-
 
 
 

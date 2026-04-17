@@ -10,7 +10,8 @@
   */
 
 #include "../includes/gui.hpp"
-#include "../includes/utility.hpp"
+#include "../includes/error.hpp"
+#include "../includes/input.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>

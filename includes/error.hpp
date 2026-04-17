@@ -9,32 +9,12 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/config.hpp"
-#include "../includes/loop.hpp"
-#include "../includes/player.hpp"
-#include "../includes/audio_engine.hpp"
-#include "../includes/gui.hpp"
-#include <cstdlib>
-#include <stdio.h>
-#include <thread>
-#include <unistd.h>
-#include <iostream>
-#include <string>
-#include <vector>
-
-void Release(void)
+#pragma once
+enum ERROR_SCALE
 {
-	ReleaseMiniaudioEngine();
-	GUIRelease();
-	return;
-}
-int main(int argc, char *argv[])
-{
-	atexit(Release);
-	InitMiniaudio();
+	INFO_ERROR,
+	GENERAL_ERROR,
+	CRITICAL_ERROR
+};
 
-	Config C;
-	RunMainLoop();
-	Release();
-	exit(0);
-}
+int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE, const char* FUNCNAME = "Unknown function");//エラー発生時に呼び出し 引数FILEには__FILE__、引数LINEには__LINE__を指定、引数FuncNameには__func__を指定する。

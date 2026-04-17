@@ -10,7 +10,9 @@
   */
 
 #pragma once
-#include "utility.hpp"
+
+#include "config.hpp"
+#include "audio_engine.hpp"
 #include "player.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>

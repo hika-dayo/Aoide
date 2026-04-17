@@ -8,33 +8,20 @@
 
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
+#pragma once
+#include <SDL3/SDL_keycode.h>
 
-#include "../includes/config.hpp"
-#include "../includes/loop.hpp"
-#include "../includes/player.hpp"
-#include "../includes/audio_engine.hpp"
-#include "../includes/gui.hpp"
-#include <cstdlib>
-#include <stdio.h>
-#include <thread>
-#include <unistd.h>
-#include <iostream>
-#include <string>
-#include <vector>
 
-void Release(void)
+enum KEY
 {
-	ReleaseMiniaudioEngine();
-	GUIRelease();
-	return;
-}
-int main(int argc, char *argv[])
-{
-	atexit(Release);
-	InitMiniaudio();
+	UP,
+	DOWN,
+	RIGHT,
+	LEFT,
+	ENTER,
+	ESC,
+	SPACE,
+};
 
-	Config C;
-	RunMainLoop();
-	Release();
-	exit(0);
-}
+bool GetKey(KEY K);
+int GetKeyCount(void);

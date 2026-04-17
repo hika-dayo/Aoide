@@ -8,33 +8,7 @@
 
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
+#pragma once
 
-#include "../includes/config.hpp"
-#include "../includes/loop.hpp"
-#include "../includes/player.hpp"
-#include "../includes/audio_engine.hpp"
-#include "../includes/gui.hpp"
-#include <cstdlib>
-#include <stdio.h>
-#include <thread>
-#include <unistd.h>
-#include <iostream>
-#include <string>
-#include <vector>
-
-void Release(void)
-{
-	ReleaseMiniaudioEngine();
-	GUIRelease();
-	return;
-}
-int main(int argc, char *argv[])
-{
-	atexit(Release);
-	InitMiniaudio();
-
-	Config C;
-	RunMainLoop();
-	Release();
-	exit(0);
-}
+bool FileExists(const char* Path);//そのファイルが存在しているか確認する
+bool DirExsists(const char* Dir);

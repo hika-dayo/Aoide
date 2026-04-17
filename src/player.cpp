@@ -10,7 +10,8 @@
   */
 
 #include "../includes/player.hpp"
-#include "../includes/audio.hpp"
+#include "../includes/audio_engine.hpp"
+#include "../includes/file.hpp"
 #include <miniaudio/miniaudio.h>
 #include <string>
 

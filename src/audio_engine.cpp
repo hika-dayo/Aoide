@@ -9,8 +9,9 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/audio.hpp"
-#include "../includes/utility.hpp"
+#include "../includes/audio_engine.hpp"
+#include "../includes/file.hpp"
+#include "../includes/config.hpp"
 #include <sstream>
 #include <fstream>
 #include <taglib/tstring.h>

@@ -9,11 +9,10 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/utility.hpp"
+#include "../includes/error.hpp"
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
-#include "../includes/gui.hpp"
 #include <SDL3_ttf/SDL_ttf.h>
 int ReportError(const char* Context, ERROR_SCALE SCALE, const char* FILE, int LINE, const char* FUNCNAME)
 {
