@@ -26,7 +26,6 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
-	P = new Player("/home/hika/Music/album/Akeboshi - STONED TOWN/01. Akeboshi - Wind.flac");
 	P->Play();
 	MList = MusicList;
 	TmpKey = false;
