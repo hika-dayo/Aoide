@@ -11,24 +11,23 @@
 
 #include "../includes/player.hpp"
 #include "../includes/audio.hpp"
-#include <vlc/libvlc.h>
-#include <vlc/libvlc_media.h>
-#include <vlc/libvlc_media_player.h>
+#include <miniaudio/miniaudio.h>
 #include <string>
 
 //プレーヤークラスの関数
 Player::Player(const char* Path)
 {
+	Error = false;
+	Error = !FileExists(Path);
 	FilePath = Path;
-	Instance = GetVLCInstance();
-	Media = libvlc_media_new_path(Instance, FilePath.c_str());//メディアを作成
-	MediaPlayer = libvlc_media_player_new_from_media(Media);//プレーヤーの再生環境を作成
-	libvlc_media_release(Media);//メディアの参照カウントを減少
+
+	Engine = GetMiniaudioEngine();
+	SoundInitFromFile(FilePath.c_str(), &Sound);
 	return;
 }
 Player::~Player()
 {
-	libvlc_media_player_release(MediaPlayer);
+	ma_sound_uninit(&Sound);
 	return;
 }
 
@@ -37,70 +36,79 @@ const char* Player::GetFilePath(void)
 	return FilePath.c_str();
 }
 
-libvlc_state_t Player::GetState(void)
-{
-	return libvlc_media_player_get_state(MediaPlayer);
-}
-
-
-
 //プレーヤーの状態確認する関数
 bool Player::isEnded(void)
 {
-	
-	return (libvlc_state_t::libvlc_Ended == GetState());
+	ma_uint64 Length;
+	ma_uint64 Cursor;
+	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
+	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
+	return (Length == Cursor);
 }
 
 bool Player::isPlaying(void)
 {
-	return (libvlc_state_t::libvlc_Playing == GetState());
+	return ma_sound_is_playing(&Sound);
 }
 
 bool Player::isPaused(void)
 {
-	return (libvlc_state_t::libvlc_Paused == GetState());
+	ma_uint64 Length;
+	ma_uint64 Cursor;
+	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
+	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
+	return (Length != Cursor) && !ma_sound_is_playing(&Sound);
 }
 bool Player::hasError(void)
 {
-	return (libvlc_state_t::libvlc_Error == GetState());
+	return Error;
 }
 int Player::GetAudioLength(void)
 {
-	return libvlc_media_player_get_length(MediaPlayer);
+	ma_uint64 Length;
+	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
+	return Length * 1000 / ma_engine_get_sample_rate(Engine);
 }
 
 int Player::GetAudioTime(void)
 {
-	return libvlc_media_player_get_time(MediaPlayer);
+	ma_uint64 Cursor;
+	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
+	return Cursor * 1000 / ma_engine_get_sample_rate(Engine);
 }
-float Player::GetAudioPosition(void)
+double Player::GetAudioPosition(void)
 {
-	return libvlc_media_player_get_position(MediaPlayer);
+	ma_uint64 Length;
+	ma_uint64 Cursor;
+	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
+	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
+	return (Cursor / Length);
 }
 
 
 //プレーヤーの状態変更関数
 int Player::Stop(void)
 {
-	if(libvlc_state_t::libvlc_Stopped != GetState())//変更前と変更後が同じだったら変更しない
+	if(ma_sound_is_playing(&Sound) == true)//変更前と変更後が同じだったら変更しない
 	{
-		libvlc_media_player_stop(MediaPlayer);
+		ma_sound_seek_to_second(&Sound, 0);
+		ma_sound_stop(&Sound);
 	}
 	return 0;
 }
 int Player::Pause(void)
 {
-	if(libvlc_state_t::libvlc_Paused != GetState())
+	if(ma_sound_is_playing(&Sound) == true)//変更前と変更後が同じだったら変更しない
 	{
-		libvlc_media_player_pause(MediaPlayer);
+		ma_sound_stop(&Sound);
 	}
 	return 0;
 }
 int Player::Play(void)
 {
-	if(libvlc_state_t::libvlc_Playing != GetState())
+	if(ma_sound_is_playing(&Sound) != true)//変更前と変更後が同じだったら変更しない
 	{
-		libvlc_media_player_play(MediaPlayer);
+		ma_sound_start(&Sound);
 	}
 	return 0;
 }

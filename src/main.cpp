@@ -23,14 +23,14 @@
 
 void Release(void)
 {
-	ReleaseVLCInstance();
+	ReleaseMiniaudioEngine();
 	GUIRelease();
 	return;
 }
 int main(int argc, char *argv[])
 {
 	atexit(Release);
-	InitVLCInstance();	
+	InitMiniaudio();
 
 	Config C;
 	RunMainLoop();

@@ -17,47 +17,51 @@
 #include <taglib/flacfile.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <vlc/deprecated.h>
-#include <vlc/libvlc.h>
 #include <string>
-#include <vlc/libvlc_events.h>
-#include <vlc/libvlc_media.h>
 #include <iostream>
 #include <stdlib.h>
-#include <vlc/libvlc_media_player.h>
 #include <taglib/tag.h>
 #include <taglib/fileref.h>
+#include <miniaudio/miniaudio.h>
 
-static libvlc_instance_t* VLCInstance;
+static ma_engine Engine;
 static bool Initialized = false;
-int InitVLCInstance(void)
+int InitMiniaudio(void)
 {
-	std::cout << "aa";
 	if(Initialized == true)
 	{
 		return 1;
 	}
-//	const char* Args[] = {"--no-video"};
-	VLCInstance = libvlc_new(0, NULL);
+	ma_result Result = ma_engine_init(NULL, &Engine);
 	Initialized = true;
 	return 0;
 }
-bool isLibVLCInitialized(void)
+bool isMiniaudioInitialized(void)
 {
 	return Initialized;
 }
-libvlc_instance_t* GetVLCInstance(void)
+ma_engine *GetMiniaudioEngine(void)
 {
-	return VLCInstance;
+	return &Engine;
 }
-int ReleaseVLCInstance(void)
+int SoundInitFromFile(const char* Path, ma_sound* S)
 {
-	if(isLibVLCInitialized())
-	{
-	libvlc_release(VLCInstance);
+	ma_engine *E = GetMiniaudioEngine();
+	return -(ma_sound_init_from_file(E, Path, 0, NULL, NULL, S) != MA_SUCCESS);
+}
+int ReleaseSound(ma_sound* S)
+{
+	ma_sound_uninit(S);
 	return 0;
+}
+int ReleaseMiniaudioEngine(void)
+{
+	if(isMiniaudioInitialized())
+	{
+		ma_engine_uninit(&Engine);
+		Initialized = false;
 	}
-	return 1;
+	return 0;
 }
 
 Music GetAudioMetaData(const char* Path)

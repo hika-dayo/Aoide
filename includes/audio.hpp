@@ -10,11 +10,16 @@
   */
 #pragma once
 #include "utility.hpp"
-#include <vlc/vlc.h>
-int InitVLCInstance(void);//VLCの初期化
-libvlc_instance_t* GetVLCInstance(void);//VLCインスタンスを返す
-int ReleaseVLCInstance(void);//VLCの解放
-bool isLibVLCInitialized(void);//VLCが初期化されているか
+#include <miniaudio/miniaudio.h>
+
+
+int InitMiniaudio(void);//miniaudioを初期化
+ma_engine *GetMiniaudioEngine(void);//miniaudioのインスタンスを返す
+int ReleaseMiniaudioEngine(void);//VLCの解放
+bool isMiniaudioInitialized(void);//miniaudioが初期化されているか
+
+
+
 enum METADATA
 {
 	ARTIST,
@@ -48,6 +53,7 @@ public:
 
 Music GetAudioMetaData(const char* Path);//音楽ファイルのメタデータを返す
 
+int SoundInitFromFile(const char* Path, ma_sound* S);//音楽を取得する関数
 
 std::string GetTitlePath(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName, const std::string TitleName);
 std::vector<Music> SearchDir(const char *Path);//ディレクトリを検索する

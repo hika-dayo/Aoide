@@ -12,22 +12,19 @@
 #pragma once
 
 
-
-#include <vlc/vlc.h>
 #include <string>
-
+#include <miniaudio/miniaudio.h>
 
 
 
 class Player
 {
 	private:
-		libvlc_instance_t* Instance;
+		ma_engine *Engine;
+		ma_sound Sound;
 		//VLCの読み込み
-		libvlc_media_t* Media;
-		libvlc_media_player_t* MediaPlayer;
 		std::string FilePath;
-		libvlc_state_t GetState(void);
+		bool Error;		
 	public:
 		~Player();
 		Player(const char* Path);
@@ -41,5 +38,5 @@ class Player
 		int Play(void);
 		int GetAudioLength(void);//音楽ファイルの長さをミリ秒で返す
 		int GetAudioTime(void);//現在の再生位置をミリ秒で返す
-		float GetAudioPosition(void);//0.0〜1.0までに正規化された、現在の再生位置
+		double GetAudioPosition(void);//0.0〜1.0までに正規化された、現在の再生位置
 };

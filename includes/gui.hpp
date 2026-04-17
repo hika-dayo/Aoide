@@ -59,8 +59,8 @@ class UI
 {
 	private:
 		Config C;
-		std::vector<Music> MList;//音楽の情報を保持
 		Player *P;
+		std::vector<Music> MList;//音楽の情報を保持
 		int ChoosingLine;
 		int ProcessKey(void);//キーを処理する
 		Color FontColor;
