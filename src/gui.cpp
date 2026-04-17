@@ -22,9 +22,9 @@
 #include <iostream>
 #include <vector>
 
-UI::UI(std::vector<Music> &Music)
+UI::UI(std::vector<Music> &MusicList)
 {
-	M = Music;
+	MList = MusicList;
 	TmpKey = false;
 	FontColor =  0x00ffffff;
 		Font = InitFont(C.GetFontSize(), C.GetFontPath());
@@ -48,7 +48,10 @@ int UI::Process(void)
 		if(i == ChoosingLine)
 		{
 			DrawRect(0, C.GetFontSize() * i, C.GetWindowWidth(), C.GetFontSize(), FontColor);
-			DrawText(Font, Texts[i].c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+//			int W = 0;
+//			int H = 0;
+//			TTF_GetStringSize(Font, Texts[i].c_str(), 0, &W, &H);
+			DrawText(Font, Texts[i].c_str(), 0x00ffffff - FontColor, C.GetFontSize() / 2, i * C.GetFontSize());
 		}
 		else
 		{
@@ -61,6 +64,10 @@ int UI::Process(void)
 }
 int UI::ProcessKey(void)
 {
+	if(GetKey(LEFT))
+	{
+		ChoosingLine = 0;
+	}
 	if(GetKey(UP))
 	{
 		if(TmpKey == false)

@@ -59,7 +59,8 @@ class UI
 {
 	private:
 		Config C;
-		std::vector<Music> M;//音楽の情報を保持
+		std::vector<Music> MList;//音楽の情報を保持
+		Player *P;
 		int ChoosingLine;
 		int ProcessKey(void);//キーを処理する
 		Color FontColor;
@@ -69,7 +70,7 @@ class UI
 		int LoopCount;
 		std::vector<std::string> Texts;
 	public:
-		UI(std::vector<Music> &M);
+		UI(std::vector<Music> &MusicLists);
 		int Process(void);
 };
 
@@ -87,5 +88,4 @@ class Image
 		int GetHeight(void);
 		int DrawImage(int X, int Y, int Width = 0, int Height = 0);
 };
-
 
