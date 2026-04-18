@@ -141,5 +141,9 @@ bool GetKey(KEY K)
 	{
 		return Keys[SDL_SCANCODE_ESCAPE];
 	}
+	if(K == SPACE)
+	{
+		return Keys[SDL_SCANCODE_SPACE];
+	}
 	return false;
 }

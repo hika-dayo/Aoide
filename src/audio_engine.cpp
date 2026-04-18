@@ -12,10 +12,11 @@
 #include "../includes/audio_engine.hpp"
 #include "../includes/file.hpp"
 #include "../includes/config.hpp"
-#include <sstream>
 #include <fstream>
 #include <taglib/tstring.h>
 #include <taglib/flacfile.h>
+#include <taglib/tstringlist.h>
+#include <taglib/tpropertymap.h>
 #include <unistd.h>
 #include <stdio.h>
 #include <string>
@@ -89,11 +90,23 @@ Music GetAudioMetaData(const char* Path)
 		Music M("", "", "", "", 0);
 		return M;
 	}
+	TagLib::PropertyMap Props = T->properties();
+	TagLib::StringList DiscNumtmp = Props["DISCNUMBER"];
 	std::string Artist = T->artist().to8Bit(true);
 	std::string Album = T->album().to8Bit(true);
 	std::string Title = T->title().to8Bit(true);
-	int TrackNum = T->track();
-	Music M(Path, Artist, Album, Title, TrackNum, ExtractFromFlacFile(Path, Artist.c_str(), Album.c_str()));
+	int TrackNum = T->track();	
+	int IntDiscNum = 1;
+
+	if(DiscNumtmp.isEmpty())
+	{
+		IntDiscNum = 1;	
+	}
+	else
+	{
+		IntDiscNum = std::stoi(DiscNumtmp[0].to8Bit(true));
+	}
+	Music M(Path, Artist, Album, Title, TrackNum, ExtractFromFlacFile(Path, Artist.c_str(), Album.c_str()), IntDiscNum);
 	return M;
 		
 }
@@ -263,7 +276,7 @@ std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::str
 	return Titles;
 }
 
-Music::Music(std::string Path, std::string Artist, std::string Album, std::string Title, int TrackNum, std::string ArtworkPath)
+Music::Music(std::string Path, std::string Artist, std::string Album, std::string Title, int TrackNum, std::string ArtworkPath, int DiscNum)
 {
 	this->Artist = Artist;
 	this->Title = Title;
@@ -271,6 +284,7 @@ Music::Music(std::string Path, std::string Artist, std::string Album, std::strin
 	this->Path = Path;
 	this->TrackNum = TrackNum;
 	this->ArtworkPath = ArtworkPath;
+	this->DiscNum = DiscNum;
 	return;
 }
 std::string Music::GetAlbum(void)
@@ -296,4 +310,8 @@ std::string Music::GetPath()
 std::string Music::GetArtworkPath()
 {
 	return ArtworkPath;
+}
+int Music::GetDiscNum()
+{
+	return DiscNum;
 }

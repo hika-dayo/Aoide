@@ -107,7 +107,7 @@ am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgdatadir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) \
 	audio_engine.$(OBJEXT) loop.$(OBJEXT) error.$(OBJEXT) \
-	gui.$(OBJEXT) sdl.$(OBJEXT) file.$(OBJEXT)
+	gui.$(OBJEXT) sdl.$(OBJEXT) file.$(OBJEXT) config.$(OBJEXT)
 aoide_OBJECTS = $(am_aoide_OBJECTS)
 aoide_DEPENDENCIES =
 AM_V_P = $(am__v_P_@AM_V@)
@@ -125,9 +125,10 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/audio_engine.Po ./$(DEPDIR)/error.Po \
-	./$(DEPDIR)/file.Po ./$(DEPDIR)/gui.Po ./$(DEPDIR)/loop.Po \
-	./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po ./$(DEPDIR)/sdl.Po
+am__depfiles_remade = ./$(DEPDIR)/audio_engine.Po \
+	./$(DEPDIR)/config.Po ./$(DEPDIR)/error.Po ./$(DEPDIR)/file.Po \
+	./$(DEPDIR)/gui.Po ./$(DEPDIR)/loop.Po ./$(DEPDIR)/main.Po \
+	./$(DEPDIR)/player.Po ./$(DEPDIR)/sdl.Po
 am__mv = mv -f
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -325,7 +326,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-aoide_SOURCES = src/main.cpp src/player.cpp src/audio_engine.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp \
+aoide_SOURCES = src/main.cpp src/player.cpp src/audio_engine.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp src/config.cpp \
 				includes/audio_engine.hpp includes/config.hpp icludes/error.hpp includes/gui.hpp includes/input.hpp includes/loop.hpp includes/player.hpp
 
 aoide_LDADD = -lminiaudio -lSDL3 -lSDL3_ttf -lSDL3_image -ltag
@@ -437,6 +438,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/audio_engine.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/config.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/error.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/file.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gui.Po@am__quote@ # am--include-marker
@@ -576,6 +578,20 @@ file.obj: src/file.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/file.cpp' object='file.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o file.obj `if test -f 'src/file.cpp'; then $(CYGPATH_W) 'src/file.cpp'; else $(CYGPATH_W) '$(srcdir)/src/file.cpp'; fi`
+
+config.o: src/config.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT config.o -MD -MP -MF $(DEPDIR)/config.Tpo -c -o config.o `test -f 'src/config.cpp' || echo '$(srcdir)/'`src/config.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/config.Tpo $(DEPDIR)/config.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/config.cpp' object='config.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o config.o `test -f 'src/config.cpp' || echo '$(srcdir)/'`src/config.cpp
+
+config.obj: src/config.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT config.obj -MD -MP -MF $(DEPDIR)/config.Tpo -c -o config.obj `if test -f 'src/config.cpp'; then $(CYGPATH_W) 'src/config.cpp'; else $(CYGPATH_W) '$(srcdir)/src/config.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/config.Tpo $(DEPDIR)/config.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/config.cpp' object='config.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o config.obj `if test -f 'src/config.cpp'; then $(CYGPATH_W) 'src/config.cpp'; else $(CYGPATH_W) '$(srcdir)/src/config.cpp'; fi`
 install-dist_pkgdataDATA: $(dist_pkgdata_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(dist_pkgdata_DATA)'; test -n "$(pkgdatadir)" || list=; \
@@ -879,6 +895,7 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 distclean: distclean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -f ./$(DEPDIR)/audio_engine.Po
+	-rm -f ./$(DEPDIR)/config.Po
 	-rm -f ./$(DEPDIR)/error.Po
 	-rm -f ./$(DEPDIR)/file.Po
 	-rm -f ./$(DEPDIR)/gui.Po
@@ -934,6 +951,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f $(am__CONFIG_DISTCLEAN_FILES)
 	-rm -rf $(top_srcdir)/autom4te.cache
 	-rm -f ./$(DEPDIR)/audio_engine.Po
+	-rm -f ./$(DEPDIR)/config.Po
 	-rm -f ./$(DEPDIR)/error.Po
 	-rm -f ./$(DEPDIR)/file.Po
 	-rm -f ./$(DEPDIR)/gui.Po

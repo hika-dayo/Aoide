@@ -26,10 +26,11 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
+	Scroll = 0;
 	MList = MusicList;
 	TmpKey = false;
 	FontColor =  0x00ffffff;
-		Font = InitFont(C.GetFontSize(), C.GetFontPath());
+	Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)
 	{
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
@@ -45,24 +46,44 @@ UI::UI(std::vector<Music> &MusicList)
 int UI::Process(void)
 {
 	Config C;
-	for(int i = 0; i < Texts.size(); i++)
+	ProcessKey();
+	if(Scroll == MList.size())
+	{
+		Scroll = MList.size() - 1;
+	}
+	if(Scroll == -1)
+	{
+		Scroll = 0;
+	}
+	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() - 1)
+	{
+		Scroll++;
+		ChoosingLine--;
+	}
+	std::cout << ChoosingLine << std::endl;
+	if(ChoosingLine == -1)
+	{
+		Scroll--;
+		ChoosingLine++;
+	}
+	for(int i = 0; i + Scroll < MList.size(); i++)
 	{
 		if(i == ChoosingLine)
 		{
-			DrawRect(0, C.GetFontSize() * i, C.GetWindowWidth(), C.GetFontSize(), FontColor);
+			DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
 //			int W = 0;
 //			int H = 0;
 //			TTF_GetStringSize(Font, Texts[i].c_str(), 0, &W, &H);
-			DrawText(Font, Texts[i].c_str(), 0x00ffffff - FontColor, C.GetFontSize() / 2, i * C.GetFontSize());
+//			DrawText(Font, MList[i].GetAlbum().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize() - j * C.GetFontSize());
+			DrawText(Font, MList[Scroll + i].GetTitle().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
 		}
 		else
 		{
-			DrawText(Font, Texts[i].c_str(), FontColor, 0, i * C.GetFontSize());
+			std::string Text = std::to_string(MList[Scroll + i].GetDiscNum()) + MList[Scroll + i].GetTitle();
+			DrawText(Font, Text.c_str(), FontColor, 0, i * C.GetFontSize());
 		}
 	}
-	ProcessKey();
 	return 0;
-
 }
 int UI::ProcessKey(void)
 {
@@ -86,12 +107,14 @@ int UI::ProcessKey(void)
 	{
 		TmpKey = false;
 	}
-	if(0 > ChoosingLine)
+	if(0 > ChoosingLine + Scroll)
 	{
-		ChoosingLine = Texts.size() - 1;
+		Scroll = MList.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
+		ChoosingLine = MList.size() - Scroll - 1;
 	}
-	if(Texts.size() <= ChoosingLine)
+	if(MList.size() <= ChoosingLine + Scroll)
 	{
+		Scroll = 0;
 		ChoosingLine = 0;
 	}
 	return 0;

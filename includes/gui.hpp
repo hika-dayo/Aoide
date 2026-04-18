@@ -62,11 +62,11 @@ class UI
 	private:
 		Config C;
 		Player *P;
+		int Scroll;
 		std::vector<Music> MList;//音楽の情報を保持
 		int ChoosingLine;
 		int ProcessKey(void);//キーを処理する
 		Color FontColor;
-		int ChoiceLine;
 		TTF_Font* Font;
 		bool TmpKey;
 		int LoopCount;
