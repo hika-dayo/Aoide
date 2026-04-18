@@ -114,8 +114,8 @@ int Config::MakeConfAndCacheDir(void)
 		ConfDir += "/aoide/";
 		ConfigPath = ConfDir + "/aoide.conf";
 	}
-	std::filesystem::create_directory(ConfDir.c_str());
-	std::filesystem::create_directory(CacheDir.c_str());
+	std::filesystem::create_directories(ConfDir.c_str());
+	std::filesystem::create_directories(CacheDir.c_str());
 	SubstitutedPath = true;
 	return 0;
 
