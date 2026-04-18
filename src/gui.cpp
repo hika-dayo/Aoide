@@ -11,7 +11,7 @@
 
 #include "../includes/error.hpp"
 #include "../includes/input.hpp"
-#include "../includes/gui.hpp""
+#include "../includes/gui.hpp"
 #include "../includes/file.hpp"
 #include "../includes/player.hpp"
 #include <SDL3/SDL_surface.h>
@@ -26,7 +26,6 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
-	P->Play();
 	MList = MusicList;
 	TmpKey = false;
 	FontColor =  0x00ffffff;

@@ -132,7 +132,7 @@ int Config::InitConf(void)
 		}
 		DefaultConf << "#ハッシュから始まる行はコメントになります\n";
 		DefaultConf << "###検索するディレクトリ(デフォルトはホームディレクトリ)\n";
-		DefaultConf << "#SearchDirectory=/home/hika/\n";
+		DefaultConf << "#SearchDirectory=" << getenv("HOME") << "\n";
 		DefaultConf << "\n";
 		DefaultConf << "###ウィンドウの横幅(デフォルトは640px)\n";
 		DefaultConf << "#WindowWidth=640\n";
