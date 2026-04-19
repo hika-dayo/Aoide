@@ -36,7 +36,7 @@ int RunMainLoop(void)
 	{
 		CleanWindow();
 		UIobj.Process();
-		if(GetKey(ESC))
+	if(GetKey(ESC))
 		{
 			break;
 		}

@@ -17,12 +17,9 @@
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
-#include <iterator>
-#include <ostream>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
-#include <iostream>
 #include <vector>
 
 UI::UI(std::vector<Music> &MusicList)
@@ -60,14 +57,33 @@ UI::UI(std::vector<Music> &MusicList)
 	Texts.push_back("Songs");
 	Texts.push_back("Options");
 	Texts.push_back("Exit");
+	return;
 }
+
 int UI::Process(void)
 {
 	Config C;
 	ProcessKey();
-	if(Scroll == MList.size())
+	ProcessScroll();
+	for(int i = 0; i + Scroll < Texts.size(); i++)
 	{
-		Scroll = MList.size() - 1;
+		if(i == ChoosingLine)
+		{
+			DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
+			DrawText(Font, Texts[Scroll + i].c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+		}
+		else
+		{
+			DrawText(Font, Texts[i].c_str(), FontColor, 0, i * C.GetFontSize());			
+		}
+	}
+	return 0;
+}
+int UI::ProcessScroll(void)
+{
+	if(Scroll == Texts.size())
+	{
+		Scroll = Texts.size() - 1;
 	}
 	if(Scroll == -1)
 	{
@@ -83,28 +99,33 @@ int UI::Process(void)
 		Scroll--;
 		ChoosingLine++;
 	}
-
-	for(int i = 0; i + Scroll < MList.size(); i++)
+	if(0 > ChoosingLine + Scroll)
 	{
-		if(i == ChoosingLine)
+		Scroll = Texts.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
+		if(Scroll < 0)
 		{
-			DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
-//			int W = 0;
-//			int H = 0;
-//			TTF_GetStringSize(Font, Texts[i].c_str(), 0, &W, &H);
-//			DrawText(Font, MList[i].GetAlbum().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize() - j * C.GetFontSize());
-			DrawText(Font, MList[Scroll + i].GetTitle().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+			Scroll = 0;
 		}
-		else
-		{
-			std::string Text = std::to_string(MList[Scroll + i].GetDiscNum()) + MList[Scroll + i].GetTitle();
-			DrawText(Font, Text.c_str(), FontColor, 0, i * C.GetFontSize());			
-		}
+		ChoosingLine = Texts.size() - Scroll - 1;
+	}
+	if(Texts.size() <= ChoosingLine + Scroll)
+	{
+		Scroll = 0;
+		ChoosingLine = 0;
 	}
 	return 0;
 }
 int UI::ProcessKey(void)
 {
+	if(GetKey(ENTER))
+	{
+//		if(P != nullptr)
+//		{
+//			delete P;
+//		}
+//		P = new Player(MList[Scroll + ChoosingLine].GetPath().c_str());
+//		P->Play();
+	}
 	if(GetKey(LEFT))
 	{
 		ChoosingLine = 0;

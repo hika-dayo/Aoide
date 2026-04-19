@@ -85,6 +85,7 @@ class UI
 		std::vector<Image> ArtworkList;
 		int ChoosingLine;
 		int ProcessKey(void);//キーを処理する
+		int ProcessScroll(void);
 		Color FontColor;
 		TTF_Font* Font;
 		bool TmpKey;
