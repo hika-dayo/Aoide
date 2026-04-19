@@ -56,6 +56,24 @@ int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
 int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画する(X、Y、横の長さ、縦の長さ)
 
+class Image
+{
+	private:
+		std::string Path;
+		int Width;
+		int Height;
+		SDL_Surface* ImgData;
+	public:
+		Image(std::string ImagePath);
+		Image(const Image &Copy);
+		~Image(void);
+		int ChangeImage(std::string ImagePath);
+		int GetWidth(void);
+		int GetHeight(void);
+		int DrawImage(int X, int Y, int Width = 0, int Height = 0);
+		std::string GetPath(void);
+};
+
 
 class UI
 {
@@ -64,6 +82,7 @@ class UI
 		Player *P;
 		int Scroll;
 		std::vector<Music> MList;//音楽の情報を保持
+		std::vector<Image> ArtworkList;
 		int ChoosingLine;
 		int ProcessKey(void);//キーを処理する
 		Color FontColor;
@@ -74,20 +93,5 @@ class UI
 	public:
 		UI(std::vector<Music> &MusicLists);
 		int Process(void);
-};
-
-class Image
-{
-	private:
-		std::string Path;
-		int Width;
-		int Height;
-		SDL_Surface* ImgData;
-	public:
-		Image(std::string Path);
-		~Image(void);
-		int GetWidth(void);
-		int GetHeight(void);
-		int DrawImage(int X, int Y, int Width = 0, int Height = 0);
 };
 

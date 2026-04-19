@@ -18,6 +18,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
 #include <iterator>
+#include <ostream>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -36,6 +37,23 @@ UI::UI(std::vector<Music> &MusicList)
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
 		exit(1);
 	}
+		for(int i = 0; i < MList.size(); i++)
+		{
+			bool tmp = false;
+			for(int j = 0; j < ArtworkList.size(); j++)
+			{
+				if(ArtworkList[j].GetPath() == MList[i].GetArtworkPath())
+				{
+					tmp = true;
+				}
+			}
+			if(!tmp)
+			{
+				Image I(MList[i].GetArtworkPath());
+				ArtworkList.push_back(I);
+			}
+
+		}
 	ChoosingLine = 0;
 	Texts.push_back("Artists");
 	Texts.push_back("Albums");
@@ -60,12 +78,12 @@ int UI::Process(void)
 		Scroll++;
 		ChoosingLine--;
 	}
-	std::cout << ChoosingLine << std::endl;
 	if(ChoosingLine == -1)
 	{
 		Scroll--;
 		ChoosingLine++;
 	}
+
 	for(int i = 0; i + Scroll < MList.size(); i++)
 	{
 		if(i == ChoosingLine)
@@ -80,7 +98,7 @@ int UI::Process(void)
 		else
 		{
 			std::string Text = std::to_string(MList[Scroll + i].GetDiscNum()) + MList[Scroll + i].GetTitle();
-			DrawText(Font, Text.c_str(), FontColor, 0, i * C.GetFontSize());
+			DrawText(Font, Text.c_str(), FontColor, 0, i * C.GetFontSize());			
 		}
 	}
 	return 0;
@@ -186,12 +204,14 @@ int DrawRect(int X, int Y, int W, int H, Color RectColor)
 }
 
 
-Image::Image(std::string Path)
+Image::Image(std::string ImagePath)
 {
-	if(!FileExists(Path.c_str()))
+	this->Path = "";
+	if(!FileExists(ImagePath.c_str()))
 	{
 		return;
 	}
+	Path = ImagePath;
 	ImgData = IMG_Load(Path.c_str());
 	Width = ImgData->w;
 	Height = ImgData->h;
@@ -202,7 +222,24 @@ Image::~Image(void)
 	SDL_DestroySurface(ImgData);
 	return;
 }
-
+Image::Image(const Image &Copy)
+{
+	if(!FileExists(Copy.Path.c_str()))
+	{
+		Path = "";
+		ImgData = nullptr;
+		return;
+	}
+	Path = Copy.Path;
+	ImgData = IMG_Load(Path.c_str());
+	Height = ImgData->h;
+	Width = ImgData->w;
+	return;
+}
+std::string Image::GetPath(void)
+{
+	return this->Path;
+}
 int Image::GetWidth(void)
 {
 	return Width;
@@ -211,7 +248,19 @@ int Image::GetHeight(void)
 {
 	return Height;
 }
-
+int Image::ChangeImage(std::string ImagePath)
+{
+	SDL_DestroySurface(ImgData);
+	if(!FileExists(ImagePath.c_str()))
+	{
+		return 1;
+	}
+	Path = ImagePath;
+	ImgData = IMG_Load(Path.c_str());
+	Width = ImgData->w;
+	Height = ImgData->h;
+	return 0;
+}
 int Image::DrawImage(int X, int Y, int Width, int Height)
 {
 	SDL_Rect Rect, Scr_Rect;
