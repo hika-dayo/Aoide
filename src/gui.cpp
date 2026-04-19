@@ -24,6 +24,8 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
+	Hold = false;
+	KeyIntervalCount = 0;
 	Scroll = 0;
 	MList = MusicList;
 	TmpKey = false;
@@ -74,11 +76,14 @@ int UI::Process(void)
 		}
 		else
 		{
-			DrawText(Font, Texts[i].c_str(), FontColor, 0, i * C.GetFontSize());			
+			DrawText(Font, Texts[Scroll + i].c_str(), FontColor, 0, i * C.GetFontSize());			
 		}
 	}
+		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, Scroll / (float)Texts.size() * (float)C.GetWindowHeight() , C.GetFontSize() / 2, (C.GetWindowHeight() / C.GetFontSize() - 1) / (float)Texts.size() * (float)C.GetWindowHeight(), 0x00999999);
 	return 0;
 }
+
+
 int UI::ProcessScroll(void)
 {
 	if(Scroll == Texts.size())
@@ -132,19 +137,43 @@ int UI::ProcessKey(void)
 	}
 	if(GetKey(UP))
 	{
-		if(TmpKey == false)
+		if(KeyIntervalCount > 90)
+		{
+			Hold = true;
+		}
+		if(TmpKey == false || (KeyIntervalCount > 2 && Hold))
+		{
 			ChoosingLine--;
+			KeyIntervalCount = 0;
+		}
+		else
+		{
+			KeyIntervalCount++;
+		}
 		TmpKey = true;
 	}
 	else if(GetKey(DOWN))
 	{
-		if(TmpKey == false)
+		if(KeyIntervalCount > 120)
+		{
+			Hold = true;
+		}
+		if(TmpKey == false || (KeyIntervalCount > 2 && Hold))
+		{
 			ChoosingLine++;
+			KeyIntervalCount = 0;
+		}
+		else
+		{
+			KeyIntervalCount++;
+		}
 		TmpKey = true;
 	}
 	else
 	{
+		KeyIntervalCount = 0;
 		TmpKey = false;
+		Hold = false;
 	}
 	return 0;
 }

@@ -81,6 +81,8 @@ class UI
 		Config C;
 		Player *P;
 		int Scroll;
+		bool Hold;
+
 		std::vector<Music> MList;//音楽の情報を保持
 		std::vector<Image> ArtworkList;
 		int ChoosingLine;
@@ -89,6 +91,7 @@ class UI
 		Color FontColor;
 		TTF_Font* Font;
 		bool TmpKey;
+		int KeyIntervalCount;
 		int LoopCount;
 		std::vector<std::string> Texts;
 	public:
