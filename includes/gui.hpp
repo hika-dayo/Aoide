@@ -26,7 +26,7 @@ bool isSDLInitialized(void);//SDLが初期化されているか
 int GUIInit(void);//GUIを初期化
 int GUIRelease(void);//SDLをリリース
 bool ProcessMessage(void);//ウィンドウのメッセージを処理。
-						  //この関数を定期的に呼びだす。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
+						  //この関数を定期的に呼びだす必要がある。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
 
 enum UI_MODE
@@ -65,9 +65,9 @@ class Image
 		SDL_Surface* ImgData;
 	public:
 		Image(std::string ImagePath);
-		Image(const Image &Copy);
+		Image(const Image &Copy);//コピーコンストラクタ
 		~Image(void);
-		int ChangeImage(std::string ImagePath);
+		int ChangeImage(std::string ImagePath);//コンストラクタ
 		int GetWidth(void);
 		int GetHeight(void);
 		int DrawImage(int X, int Y, int Width = 0, int Height = 0);
@@ -80,20 +80,22 @@ class UI
 	private:
 		Config C;
 		Player *P;
-		int Scroll;
-		bool Hold;
 
+		int Scroll;//スクロール位置の保存
+		bool Hold;//キーが長押しされているか
+		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
+		bool TmpKey;
+		
 		std::vector<Music> MList;//音楽の情報を保持
 		std::vector<Image> ArtworkList;
-		int ChoosingLine;
+		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
 		int ProcessKey(void);//キーを処理する
 		int ProcessScroll(void);
+
 		Color FontColor;
 		TTF_Font* Font;
-		bool TmpKey;
-		int KeyIntervalCount;
-		int LoopCount;
-		std::vector<std::string> Texts;
+
+		std::vector<std::string> Texts;//描画する内容
 	public:
 		UI(std::vector<Music> &MusicLists);
 		int Process(void);

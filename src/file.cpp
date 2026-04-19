@@ -74,7 +74,6 @@ std::vector<Music>SearchDir(const char *Path)
 	}
 	std::string CmpStr;
 	FTSENT* Ent = nullptr;
-//	int FileMtime;
 	Config C;
 	while((Ent = fts_read(Fts))!= nullptr)
 	{
@@ -82,10 +81,6 @@ std::vector<Music>SearchDir(const char *Path)
 		{
 			CmpStr = Ent->fts_path;
 			
-	//		if(Ent->fts_statp->st_mtime)
-	//		{
-	//			std::cout << CmpStr << "\n" << Ent->fts_statp->st_mtime;
-	//		}
 			for(int i = 0; i < C.GetSearchExtension().size(); i++)
 			{
 				if(CheckExtension(CmpStr, C.GetSearchExtension()[i]))

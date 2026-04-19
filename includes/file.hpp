@@ -11,4 +11,4 @@
 #pragma once
 
 bool FileExists(const char* Path);//そのファイルが存在しているか確認する
-bool DirExsists(const char* Dir);
+bool DirExsists(const char* Dir);//そのディレクトリが存在しているか確認する

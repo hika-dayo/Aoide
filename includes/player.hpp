@@ -29,11 +29,11 @@ class Player
 		~Player();
 		Player(const char* Path);
 		const char* GetFilePath(void);
-		bool isEnded(void);	
+		bool isEnded(void);	//状態を取得
 		bool isPlaying(void);
 		bool isPaused(void);
 		bool hasError(void);
-		int Stop(void);
+		int Stop(void);//状態を変更する
 		int Pause(void);
 		int Play(void);
 		int GetAudioLength(void);//音楽ファイルの長さをミリ秒で返す
