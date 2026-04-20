@@ -24,6 +24,7 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
+	Mode = MAINMENU;
 	Hold = false;
 	KeyIntervalCount = 0;
 	Scroll = 0;
@@ -67,6 +68,9 @@ int UI::Process(void)
 	Config C;
 	ProcessKey();
 	ProcessScroll();
+
+	
+
 	for(int i = 0; i + Scroll < Texts.size(); i++)
 	{
 		if(i == ChoosingLine)
@@ -79,7 +83,9 @@ int UI::Process(void)
 			DrawText(Font, Texts[Scroll + i].c_str(), FontColor, 0, i * C.GetFontSize());			
 		}
 	}
-		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, Scroll / (float)Texts.size() * (float)C.GetWindowHeight() , C.GetFontSize() / 2, (C.GetWindowHeight() / C.GetFontSize() - 1) / (float)Texts.size() * (float)C.GetWindowHeight(), 0x00999999);
+		float BarY = Scroll / (float)Texts.size() * (float)C.GetWindowHeight();
+		float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Texts.size() + 1) * (float)C.GetWindowHeight();
+		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize() / 2, BarHeight, 0x00999999);
 	return 0;
 }
 
@@ -124,12 +130,7 @@ int UI::ProcessKey(void)
 {
 	if(GetKey(ENTER))
 	{
-//		if(P != nullptr)
-//		{
-//			delete P;
-//		}
-//		P = new Player(MList[Scroll + ChoosingLine].GetPath().c_str());
-//		P->Play();
+		ProcessChoice();
 	}
 	if(GetKey(LEFT))
 	{
@@ -178,3 +179,34 @@ int UI::ProcessKey(void)
 	return 0;
 }
 
+int UI::ProcessChoice(void)
+{
+		if(Mode == MAINMENU)
+		{
+			if(Texts[Scroll + ChoosingLine] == "Artists")
+			{
+				Scroll = 0;
+				ChoosingLine = 1;
+				Mode = CHOOSE_ARTIST;
+				Texts = GetSortedArtists(MList);
+				Texts.insert(Texts.begin(), "< Back");
+			}
+			if(Texts[Scroll + ChoosingLine] == "Albums")
+			{
+				Scroll = 0;
+				ChoosingLine = 1;
+				Mode = CHOOSE_ALBUM;
+				Texts = GetSortedAlbums(MList);
+				Texts.insert(Texts.begin(), "< Back");
+			}
+			if(Texts[Scroll + ChoosingLine] == "Songs")
+			{
+				Scroll = 0;
+				ChoosingLine = 1;
+				Mode = CHOOSE_TITLE;
+				Texts = GetSortedTitles(MList);
+				Texts.insert(Texts.begin(), "< Back");
+			}
+		}
+	return 0;
+}

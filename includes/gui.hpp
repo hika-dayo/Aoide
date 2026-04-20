@@ -80,7 +80,7 @@ class UI
 	private:
 		Config C;
 		Player *P;
-
+		UI_MODE Mode;
 		int Scroll;//スクロール位置の保存
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
@@ -91,7 +91,7 @@ class UI
 		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
 		int ProcessKey(void);//キーを処理する
 		int ProcessScroll(void);
-
+		int ProcessChoice(void);//選択したときの処理を行う
 		Color FontColor;
 		TTF_Font* Font;
 
