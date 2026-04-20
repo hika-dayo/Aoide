@@ -207,6 +207,10 @@ int UI::ProcessChoice(void)
 				Texts = GetSortedTitles(MList);
 				Texts.insert(Texts.begin(), "< Back");
 			}
+			if(Texts[Scroll + ChoosingLine] == "Exit")
+			{
+				exit(0);
+			}
 		}
 	return 0;
 }
