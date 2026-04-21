@@ -18,6 +18,7 @@
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 #include <vector>
+#include <utility>
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
 
@@ -74,6 +75,13 @@ class Image
 		std::string GetPath(void);
 };
 
+class MenuText
+{
+public:
+	std::string Text;
+	Music &M;
+	int Event;
+};
 
 class UI
 {
@@ -94,8 +102,8 @@ class UI
 		int ProcessChoice(void);//選択したときの処理を行う
 		Color FontColor;
 		TTF_Font* Font;
-
-		std::vector<std::string> Texts;//描画する内容
+		std::vector<std::string> Texts;//テキスト
+		std::vector<MenuText> Object;//描画する内容
 	public:
 		UI(std::vector<Music> &MusicLists);
 		int Process(void);
