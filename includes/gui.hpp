@@ -16,8 +16,10 @@
 #include "player.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <optional>
 #include <string>
 #include <vector>
+#include <optional>
 #include <utility>
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
@@ -77,10 +79,20 @@ class Image
 
 class MenuText
 {
-public:
 	std::string Text;
-	Music &M;
+	std::string Artist;
+	std::string Album;
+	std::string Title;
+	std::string Path;
 	int Event;
+public:
+	MenuText(std::string Text,int Event, std::optional<Music> M = std::nullopt);
+	std::string GetText(void);
+	int GetEvent(void);
+	std::string GetArtist(void);
+	std::string GetAlbum(void);
+	std::string GetTitle(void);
+	std::string GetPath(void);
 };
 
 class UI

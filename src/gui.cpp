@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <vector>
+#include <optional>
 
 UI::UI(std::vector<Music> &MusicList)
 {
@@ -55,11 +56,11 @@ UI::UI(std::vector<Music> &MusicList)
 
 		}
 	ChoosingLine = 0;
-	Texts.push_back("Artists");
-	Texts.push_back("Albums");
-	Texts.push_back("Songs");
-	Texts.push_back("Options");
-	Texts.push_back("Exit");
+	Object.push_back(MenuText("Artists", 0));
+	Object.push_back(MenuText("Albums", 0));
+	Object.push_back(MenuText("Songs", 0));
+	Object.push_back(MenuText("Options", 0));
+	Object.push_back(MenuText("Exit", 0));
 	return;
 }
 
@@ -71,20 +72,21 @@ int UI::Process(void)
 
 	
 
-	for(int i = 0; i + Scroll < Texts.size(); i++)
+	for(int i = 0; i + Scroll < Object.size(); i++)
 	{
 		if(i == ChoosingLine)
 		{
 			DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
-			DrawText(Font, Texts[Scroll + i].c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+			DrawText(Font, Object[Scroll + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+
 		}
 		else
 		{
-			DrawText(Font, Texts[Scroll + i].c_str(), FontColor, 0, i * C.GetFontSize());			
+			DrawText(Font, Object[Scroll + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
 		}
 	}
-		float BarY = Scroll / (float)Texts.size() * (float)C.GetWindowHeight();
-		float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Texts.size() + 1) * (float)C.GetWindowHeight();
+		float BarY = Scroll / (float)Object.size() * (float)C.GetWindowHeight();
+		float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size() + 1) * (float)C.GetWindowHeight();
 		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize() / 2, BarHeight, 0x00999999);
 	return 0;
 }
@@ -92,9 +94,10 @@ int UI::Process(void)
 
 int UI::ProcessScroll(void)
 {
-	if(Scroll == Texts.size())
+	if(Scroll == Object.size())
 	{
-		Scroll = Texts.size() - 1;
+		Scroll = Object.size() - 1;
+
 	}
 	if(Scroll == -1)
 	{
@@ -112,14 +115,15 @@ int UI::ProcessScroll(void)
 	}
 	if(0 > ChoosingLine + Scroll)
 	{
-		Scroll = Texts.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
+		Scroll = Object.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
+
 		if(Scroll < 0)
 		{
 			Scroll = 0;
 		}
-		ChoosingLine = Texts.size() - Scroll - 1;
+		ChoosingLine = Object.size() - Scroll - 1;
 	}
-	if(Texts.size() <= ChoosingLine + Scroll)
+	if(Object.size() <= ChoosingLine + Scroll)
 	{
 		Scroll = 0;
 		ChoosingLine = 0;
@@ -183,34 +187,73 @@ int UI::ProcessChoice(void)
 {
 		if(Mode == MAINMENU)
 		{
-			if(Texts[Scroll + ChoosingLine] == "Artists")
+			if(Object[Scroll + ChoosingLine].GetText() == "Artists")
 			{
 				Scroll = 0;
 				ChoosingLine = 1;
 				Mode = CHOOSE_ARTIST;
-				Texts = GetSortedArtists(MList);
-				Texts.insert(Texts.begin(), "< Back");
+				Object.clear();
+				Object.insert(Object.begin(), MenuText("< Back", 0));
 			}
-			if(Texts[Scroll + ChoosingLine] == "Albums")
+			if(Object[Scroll + ChoosingLine].GetText() == "Albums")
 			{
 				Scroll = 0;
 				ChoosingLine = 1;
 				Mode = CHOOSE_ALBUM;
-				Texts = GetSortedAlbums(MList);
-				Texts.insert(Texts.begin(), "< Back");
+				Object.clear();
+				Object.insert(Object.begin(), MenuText("< Back", 0));
 			}
-			if(Texts[Scroll + ChoosingLine] == "Songs")
+			if(Object[Scroll + ChoosingLine].GetText() == "Songs")
 			{
 				Scroll = 0;
 				ChoosingLine = 1;
 				Mode = CHOOSE_TITLE;
-				Texts = GetSortedTitles(MList);
-				Texts.insert(Texts.begin(), "< Back");
+				Object.clear();
+				Object.insert(Object.begin(), MenuText("< Back", 0));
 			}
-			if(Texts[Scroll + ChoosingLine] == "Exit")
+			if(Object[Scroll + ChoosingLine].GetText() == "Exit")
 			{
 				exit(0);
 			}
 		}
 	return 0;
+}
+
+MenuText::MenuText(std::string Text,int Event, std::optional<Music> M)
+{
+	Artist = "";
+	Album = "";
+	Title = "";
+	Path = "";
+	if(M.has_value())
+	{
+		Artist = M.value().GetArtist();
+		Album = M.value().GetAlbum();
+		Title = M.value().GetTitle();
+		Path = M.value().GetPath();
+	}
+	this->Text = Text;
+	this->Event = Event;
+	return;
+}
+
+std::string MenuText::GetArtist(void)
+{
+	return Artist;
+}
+std::string MenuText::GetAlbum(void)
+{
+	return Album;
+}
+std::string MenuText::GetTitle(void)
+{
+	return Title;
+}
+std::string MenuText::GetPath(void)
+{
+	return Path;
+}
+std::string MenuText::GetText(void)
+{
+	return Text;
 }
