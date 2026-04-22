@@ -77,7 +77,7 @@ class Image
 		std::string GetPath(void);
 };
 
-class MenuText
+class MenuItem
 {
 	std::string Text;
 	std::string Artist;
@@ -86,7 +86,7 @@ class MenuText
 	std::string Path;
 	int Event;
 public:
-	MenuText(std::string Text,int Event, std::optional<Music> M = std::nullopt);
+	MenuItem(std::string Text,int Event, std::optional<Music> M = std::nullopt);
 	std::string GetText(void);
 	int GetEvent(void);
 	std::string GetArtist(void);
@@ -115,7 +115,7 @@ class UI
 		Color FontColor;
 		TTF_Font* Font;
 		std::vector<std::string> Texts;//テキスト
-		std::vector<MenuText> Object;//描画する内容
+		std::vector<MenuItem> Object;//描画する内容
 	public:
 		UI(std::vector<Music> &MusicLists);
 		int Process(void);

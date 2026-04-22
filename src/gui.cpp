@@ -56,11 +56,11 @@ UI::UI(std::vector<Music> &MusicList)
 
 		}
 	ChoosingLine = 0;
-	Object.push_back(MenuText("Artists", 0));
-	Object.push_back(MenuText("Albums", 0));
-	Object.push_back(MenuText("Songs", 0));
-	Object.push_back(MenuText("Options", 0));
-	Object.push_back(MenuText("Exit", 0));
+	Object.push_back(MenuItem("Artists", 0));
+	Object.push_back(MenuItem("Albums", 0));
+	Object.push_back(MenuItem("Songs", 0));
+	Object.push_back(MenuItem("Options", 0));
+	Object.push_back(MenuItem("Exit", 0));
 	return;
 }
 
@@ -193,7 +193,7 @@ int UI::ProcessChoice(void)
 				ChoosingLine = 1;
 				Mode = CHOOSE_ARTIST;
 				Object.clear();
-				Object.insert(Object.begin(), MenuText("< Back", 0));
+				Object.insert(Object.begin(), MenuItem("< Back", 0));
 			}
 			if(Object[Scroll + ChoosingLine].GetText() == "Albums")
 			{
@@ -201,7 +201,7 @@ int UI::ProcessChoice(void)
 				ChoosingLine = 1;
 				Mode = CHOOSE_ALBUM;
 				Object.clear();
-				Object.insert(Object.begin(), MenuText("< Back", 0));
+				Object.insert(Object.begin(), MenuItem("< Back", 0));
 			}
 			if(Object[Scroll + ChoosingLine].GetText() == "Songs")
 			{
@@ -209,7 +209,7 @@ int UI::ProcessChoice(void)
 				ChoosingLine = 1;
 				Mode = CHOOSE_TITLE;
 				Object.clear();
-				Object.insert(Object.begin(), MenuText("< Back", 0));
+				Object.insert(Object.begin(), MenuItem("< Back", 0));
 			}
 			if(Object[Scroll + ChoosingLine].GetText() == "Exit")
 			{
@@ -219,7 +219,7 @@ int UI::ProcessChoice(void)
 	return 0;
 }
 
-MenuText::MenuText(std::string Text,int Event, std::optional<Music> M)
+MenuItem::MenuItem(std::string Text,int Event, std::optional<Music> M)
 {
 	Artist = "";
 	Album = "";
@@ -237,23 +237,23 @@ MenuText::MenuText(std::string Text,int Event, std::optional<Music> M)
 	return;
 }
 
-std::string MenuText::GetArtist(void)
+std::string MenuItem::GetArtist(void)
 {
 	return Artist;
 }
-std::string MenuText::GetAlbum(void)
+std::string MenuItem::GetAlbum(void)
 {
 	return Album;
 }
-std::string MenuText::GetTitle(void)
+std::string MenuItem::GetTitle(void)
 {
 	return Title;
 }
-std::string MenuText::GetPath(void)
+std::string MenuItem::GetPath(void)
 {
 	return Path;
 }
-std::string MenuText::GetText(void)
+std::string MenuItem::GetText(void)
 {
 	return Text;
 }
