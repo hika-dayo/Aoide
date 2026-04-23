@@ -189,37 +189,12 @@ const std::vector<Music> GetSortedArtists(std::vector<Music> &M)
 
 const std::vector<Music> GetSortedAlbums(std::vector<Music> &M, const std::string ArtistName)
 {
-/*	std::vector<std::string> Albums;
-//	Albums.push_back((M[0].GetAlbum()));
-	for(int i = 0; i < M.size(); i++)
-	{
-		int n = 0;
-		bool Repeat = false;
-		bool ArtistMatch = (ArtistName == "" || ArtistName == M[i].GetArtist());
-		if(ArtistMatch)
-		{
-			for(n = 0; n < Albums.size(); n++)//重複していないかチェック
-			{
-				if(Albums[n] == M[i].GetAlbum())
-				{
-					Repeat = true;
-				}
-			}
-			if(!Repeat)
-			{
-				Albums.push_back(M[i].GetAlbum());
-			}
-		}
-	}
-	std::sort(Albums.begin(),Albums.end());
-	
-	return Albums;*/
 	std::vector<Music> Albums;
 	for(int i = 0; i < M.size(); i++)//Musicのリスト文検索
 	{
 		int n = 0;
 		bool Repeat = false;
-		bool ArtistMatch = (ArtistName == "" || ArtistName == M[i].GetArtist());
+		bool ArtistMatch = (ArtistName == "" || ArtistName == M[i].GetArtist());//ArtistNameが空なら、全てのアーティスト
 		if(ArtistMatch)
 		{
 		for(n = 0; n < Albums.size(); n++)//重複を防ぐ
