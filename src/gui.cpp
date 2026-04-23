@@ -12,8 +12,6 @@
 #include "../includes/error.hpp"
 #include "../includes/input.hpp"
 #include "../includes/gui.hpp"
-#include "../includes/file.hpp"
-#include "../includes/player.hpp"
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
@@ -22,15 +20,21 @@
 #include <sys/stat.h>
 #include <vector>
 #include <optional>
+#include <iostream>
 
 UI::UI(std::vector<Music> &MusicList)
 {
 	Mode = MAINMENU;
+	PrevMode = MAINMENU;
+
 	Hold = false;
 	KeyIntervalCount = 0;
+	TmpKey = false;
+	TmpEnter = false;
+
+
 	Scroll = 0;
 	MList = MusicList;
-	TmpKey = false;
 	FontColor =  0x00ffffff;
 	Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)
@@ -56,11 +60,11 @@ UI::UI(std::vector<Music> &MusicList)
 
 		}
 	ChoosingLine = 0;
-	Object.push_back(MenuItem("Artists", 0));
-	Object.push_back(MenuItem("Albums", 0));
-	Object.push_back(MenuItem("Songs", 0));
-	Object.push_back(MenuItem("Options", 0));
-	Object.push_back(MenuItem("Exit", 0));
+	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
+	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
+	Object.push_back(MenuItem("Songs", LIST_TITLES));
+//	Object.push_back(MenuItem("Options", NOTHING));
+	Object.push_back(MenuItem("Exit", EXIT));
 	return;
 }
 
@@ -68,9 +72,7 @@ int UI::Process(void)
 {
 	Config C;
 	ProcessKey();
-	ProcessScroll();
-
-	
+	ProcessScroll();	
 
 	for(int i = 0; i + Scroll < Object.size(); i++)
 	{
@@ -94,6 +96,23 @@ int UI::Process(void)
 
 int UI::ProcessScroll(void)
 {
+	if(0 > ChoosingLine + Scroll)
+	{
+		Scroll = Object.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
+
+		if(Scroll < 0)
+		{
+			Scroll = 0;
+		}
+		ChoosingLine = Object.size() - Scroll - 1;
+	}
+	if(Object.size() <= ChoosingLine + Scroll)
+	{
+		Scroll = 0;
+		ChoosingLine = 0;
+	}
+
+
 	if(Scroll == Object.size())
 	{
 		Scroll = Object.size() - 1;
@@ -113,28 +132,19 @@ int UI::ProcessScroll(void)
 		Scroll--;
 		ChoosingLine++;
 	}
-	if(0 > ChoosingLine + Scroll)
-	{
-		Scroll = Object.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
-
-		if(Scroll < 0)
-		{
-			Scroll = 0;
-		}
-		ChoosingLine = Object.size() - Scroll - 1;
-	}
-	if(Object.size() <= ChoosingLine + Scroll)
-	{
-		Scroll = 0;
-		ChoosingLine = 0;
-	}
 	return 0;
 }
 int UI::ProcessKey(void)
 {
 	if(GetKey(ENTER))
 	{
-		ProcessChoice();
+		if(TmpEnter == false)
+			ProcessChoice();
+		TmpEnter = true;
+	}
+	else
+	{
+		TmpEnter = false;
 	}
 	if(GetKey(LEFT))
 	{
@@ -185,41 +195,76 @@ int UI::ProcessKey(void)
 
 int UI::ProcessChoice(void)
 {
-		if(Mode == MAINMENU)
+	if(Object[Scroll + ChoosingLine].GetEvent() == BACK)
+	{
+		int Tmp = Scroll;
+		Scroll = PrevScroll;
+		PrevScroll = Tmp;
+		Tmp = ChoosingLine;
+		ChoosingLine = PrevChoosingLine;
+		PrevChoosingLine = Tmp;
+
+
+		if(PrevMode == MAINMENU)
 		{
-			if(Object[Scroll + ChoosingLine].GetText() == "Artists")
-			{
-				Scroll = 0;
-				ChoosingLine = 1;
-				Mode = CHOOSE_ARTIST;
-				Object.clear();
-				Object.insert(Object.begin(), MenuItem("< Back", 0));
-			}
-			if(Object[Scroll + ChoosingLine].GetText() == "Albums")
-			{
-				Scroll = 0;
-				ChoosingLine = 1;
-				Mode = CHOOSE_ALBUM;
-				Object.clear();
-				Object.insert(Object.begin(), MenuItem("< Back", 0));
-			}
-			if(Object[Scroll + ChoosingLine].GetText() == "Songs")
-			{
-				Scroll = 0;
-				ChoosingLine = 1;
-				Mode = CHOOSE_TITLE;
-				Object.clear();
-				Object.insert(Object.begin(), MenuItem("< Back", 0));
-			}
-			if(Object[Scroll + ChoosingLine].GetText() == "Exit")
-			{
-				exit(0);
-			}
+			Mode = MAINMENU;
+			PrevMode = MAINMENU;
+			Object.clear();
+			Object.push_back(MenuItem("Artists", LIST_ARTISTS));
+			Object.push_back(MenuItem("Albums", LIST_ALBUMS));
+			Object.push_back(MenuItem("Songs", LIST_TITLES));
+//			Object.push_back(MenuItem("Options", NOTHING));
+			Object.push_back(MenuItem("Exit", EXIT));
 		}
+		return 0;
+	}
+	if(Mode == MAINMENU)
+	{
+		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ARTISTS)
+		{
+			PrevScroll = Scroll;
+			PrevChoosingLine = ChoosingLine;
+			Scroll = 0;
+			ChoosingLine = 1;
+			PrevMode = Mode;
+			Mode = CHOOSE_ARTIST;
+			Object.clear();
+			Object.insert(Object.begin(), MenuItem("< Back", BACK));
+			return 0;
+		}
+		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
+		{
+			PrevScroll = Scroll;
+			PrevChoosingLine = ChoosingLine;
+			Scroll = 0;
+			ChoosingLine = 1;
+			PrevMode = Mode;
+			Mode = CHOOSE_ALBUM;
+			Object.clear();
+			Object.insert(Object.begin(), MenuItem("< Back", BACK));
+			return 0;
+		}
+		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)
+		{
+			PrevScroll = Scroll;
+			PrevChoosingLine = ChoosingLine;
+			Scroll = 0;
+			ChoosingLine = 1;
+			PrevMode = Mode;
+			Mode = CHOOSE_TITLE;
+			Object.clear();
+			Object.insert(Object.begin(), MenuItem("< Back", BACK));
+			return 0;
+		}
+		if(Object[Scroll + ChoosingLine].GetEvent() == EXIT)
+		{
+			exit(0);
+		}
+	}
 	return 0;
 }
 
-MenuItem::MenuItem(std::string Text,int Event, std::optional<Music> M)
+MenuItem::MenuItem(std::string Text,EVENT Event, std::optional<Music> M)
 {
 	Artist = "";
 	Album = "";
@@ -256,4 +301,8 @@ std::string MenuItem::GetPath(void)
 std::string MenuItem::GetText(void)
 {
 	return Text;
+}
+EVENT MenuItem::GetEvent(void)
+{
+	return Event;
 }

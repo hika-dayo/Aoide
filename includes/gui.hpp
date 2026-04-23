@@ -48,6 +48,16 @@ enum COLOR
 	BLUE,
 };
 
+enum EVENT
+{
+	NOTHING,
+	PLAY_MUSIC,
+	EXIT,
+	LIST_ARTISTS,
+	LIST_ALBUMS,
+	LIST_TITLES,
+	BACK,
+};
 typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する
 
 SDL_Color ToSDLPixel(Color Arg);//符号無し32bit整数で表現された色をSDL用の表現に変換する
@@ -84,11 +94,11 @@ class MenuItem
 	std::string Album;
 	std::string Title;
 	std::string Path;
-	int Event;
+	EVENT Event;
 public:
-	MenuItem(std::string Text,int Event, std::optional<Music> M = std::nullopt);
+	MenuItem(std::string Text,EVENT Event, std::optional<Music> M = std::nullopt);
 	std::string GetText(void);
-	int GetEvent(void);
+	EVENT GetEvent(void);
 	std::string GetArtist(void);
 	std::string GetAlbum(void);
 	std::string GetTitle(void);
@@ -101,17 +111,23 @@ class UI
 		Config C;
 		Player *P;
 		UI_MODE Mode;
+		UI_MODE PrevMode;//前のモード
 		int Scroll;//スクロール位置の保存
+		int PrevScroll;//前のスクロール位置の保存
+		int PrevChoosingLine;//前のスクロール位置の保存
+		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
+		
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
-		bool TmpKey;
-		
-		std::vector<Music> MList;//音楽の情報を保持
-		std::vector<Image> ArtworkList;
-		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
+		bool TmpKey;//方向キーが押されている間はtrue
+		bool TmpEnter;//エンターキーが押されている間はtrue	
+
 		int ProcessKey(void);//キーを処理する
 		int ProcessScroll(void);
 		int ProcessChoice(void);//選択したときの処理を行う
+
+		std::vector<Music> MList;//音楽の情報を保持
+		std::vector<Image> ArtworkList;
 		Color FontColor;
 		TTF_Font* Font;
 		std::vector<std::string> Texts;//テキスト
