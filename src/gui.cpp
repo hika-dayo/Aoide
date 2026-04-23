@@ -229,7 +229,15 @@ int UI::ProcessChoice(void)
 			PrevMode = Mode;
 			Mode = CHOOSE_ARTIST;
 			Object.clear();
+			std::vector<Music> Tmp = GetSortedArtists(MList);
+			std::vector<MenuItem> TmpMenu;
+			for(int i = 0; i < Tmp.size(); i++)
+			{
+				TmpMenu.push_back(MenuItem(Tmp[i].GetArtist(), LIST_ALBUMS, Tmp[i]));
+			}
+			Object = TmpMenu;
 			Object.insert(Object.begin(), MenuItem("< Back", BACK));
+			
 			return 0;
 		}
 		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
@@ -241,6 +249,13 @@ int UI::ProcessChoice(void)
 			PrevMode = Mode;
 			Mode = CHOOSE_ALBUM;
 			Object.clear();
+			std::vector<Music> Tmp = GetSortedAlbums(MList);
+			std::vector<MenuItem> TmpMenu;
+			for(int i = 0; i < Tmp.size(); i++)
+			{
+				TmpMenu.push_back(MenuItem(Tmp[i].GetArtist(), LIST_ALBUMS, Tmp[i]));
+			}
+			Object = TmpMenu;
 			Object.insert(Object.begin(), MenuItem("< Back", BACK));
 			return 0;
 		}

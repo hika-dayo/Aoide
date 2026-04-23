@@ -9,6 +9,7 @@ AC_CONFIG_FILES([Makefile])
 # Checks for programs.
 AC_PROG_CXX
 
+CXXFLAGS="-std=c++20"
 # Checks for libraries.
 
 # Checks for header files.
