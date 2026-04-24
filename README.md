@@ -1,6 +1,6 @@
 # 概要  
   
-本ソフトウェアは、LibVLCとSDL等を利用して作成した音楽再生ソフトウェアです。現在は開発途中ですが、音楽再生用のUIの実装などを予定しています。 
+本ソフトウェアは、MiniaudioとSDL等を利用して作成した音楽再生ソフトウェアです。現在は開発途中ですが、音楽再生用のUIの実装などを予定しています。 
 
 ## 機能
 - 音楽の再生停止
@@ -24,7 +24,7 @@
 - miniaudio
 - SDL3-devel
 - taglib
-### libVLCのセットアップ
+### ライブラリのセットアップ
 - パッケージマネージャーからインストールする  
 ArchLinuxの場合
 ```bash
@@ -36,7 +36,7 @@ Archの場合
 ```bash
 $ sudo pacman -S base-devel git pkg-config autoconf automake cmake
 ```
-#### miniaudioのビルド
+#### Miniaudioのビルド
 ```bash
 $ cd Aoide/libraries/miniaudio
 $ tar xf miniaudio-0.11.25.tar.gz
