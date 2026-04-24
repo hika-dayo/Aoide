@@ -63,7 +63,7 @@ std::vector<Music> SearchDir(const char *Path);//ディレクトリを検索す�
 
 const std::vector<Music> GetSortedArtists(std::vector<Music> &M);
 const std::vector<Music> GetSortedAlbums(std::vector<Music> &M, const std::string ArtistName = "");
-std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName = "", const std::string AlbumName = "");
-std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName);
+const std::vector<Music> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName = "", const std::string AlbumName = "");
+const std::vector<Music> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName);
 std::string ExtractFromFlacFile(const char* Path, const char* ArtistName, const char* AlbumName);
 //std::vector<std::string> GetSortedTitles(std::vector<Music> M);

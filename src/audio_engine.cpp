@@ -27,6 +27,7 @@
 #include <miniaudio/miniaudio.h>
 #include <algorithm>
 #include <ranges>
+#include <vector>
 
 static ma_engine Engine;
 static bool Initialized = false;
@@ -206,7 +207,7 @@ const std::vector<Music> GetSortedAlbums(std::vector<Music> &M, const std::strin
 		}
 		if(!Repeat)//重複してないなら
 		{
-			Music Tmp("", M[i].GetAlbum(), M[i].GetAlbum());
+			Music Tmp("", M[i].GetAlbum(), M[i].GetArtist());
 			Albums.push_back(Tmp);
 		}
 
@@ -216,10 +217,9 @@ const std::vector<Music> GetSortedAlbums(std::vector<Music> &M, const std::strin
 	
 	return Albums;
 }
-std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName)
+const std::vector<Music> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName)
 {
-	std::vector<std::string> Titles;
-//	Titles.push_back((M[0].GetTitle()));
+	std::vector<Music> Titles;
 	for(int i = 0; i < M.size(); i++)
 	{
 
@@ -231,25 +231,26 @@ std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::strin
 		{
 			for(n = 0; n < Titles.size(); n++)
 			{
-				if(Titles[n] == M[i].GetTitle())
+				if(Titles[n].GetTitle() == M[i].GetTitle())
 				{
 					Repeat = true;
 				}
 			}
 			if(!Repeat)
 			{
-				Titles.push_back(M[i].GetTitle());
+				Music Tmp("", M[i].GetAlbum(), M[i].GetArtist(), M[i].GetTitle());
+				Titles.push_back(Tmp);
 			}
 		}
 	}
-	std::sort(Titles.begin(),Titles.end());
+	std::ranges::sort(Titles, {}, &Music::GetTitle);
 	
 	return Titles;
 }
 
-std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName)
+const std::vector<Music> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName)
 {
-	std::vector<std::pair<int, std::string>> TitlesWithTrackNum;
+	std::vector<std::vector<Music>> Titles;
 	for(int i = 0; i < M.size(); i++)
 	{
 		int n = 0;
@@ -258,26 +259,26 @@ std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::str
 		bool AlbumMatch = (AlbumName == "" || AlbumName == M[i].GetAlbum());
 		if(ArtistMatch && AlbumMatch)
 		{
-			for(n = 0; n < TitlesWithTrackNum.size(); n++)
+			for(n = 0; n < Titles.size(); n++)
 			{
-				if(TitlesWithTrackNum[n].second == M[i].GetTitle())
+				if(Titles[n][M[i].GetDiscNum() - 1].GetTitle() == M[i].GetTitle())
 				{
 					Repeat = true;
 				}
 			}
 			if(!Repeat)
 			{
-				TitlesWithTrackNum.push_back(std::make_pair(M[i].GetTrackNum(), M[i].GetTitle()));
+				Titles[M[i].GetDiscNum() - 1].push_back(M[i]);
 			}
 		}
+
 	}
-	std::sort(TitlesWithTrackNum.begin(), TitlesWithTrackNum.end());
-	std::vector<std::string> Titles;
-	for(int i = 0; i < TitlesWithTrackNum.size(); i++)
+	std::vector<Music> Tmp;
+	for(int i = 0; i < Titles.size(); i++)
 	{
-		Titles.push_back(TitlesWithTrackNum[i].second);
+		std::ranges::sort(Titles[i], {}, &Music::GetTrackNum);
 	}
-	return Titles;
+	return Titles[0];//後でディスク番号順にソートする
 }
 
 Music::Music(std::string Path, std::string Artist, std::string Album, std::string Title, int TrackNum, std::string ArtworkPath, int DiscNum)

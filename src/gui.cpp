@@ -96,7 +96,7 @@ int UI::Process(void)
 
 int UI::ProcessScroll(void)
 {
-	if(0 > ChoosingLine + Scroll)
+	if(0 > ChoosingLine + Scroll && !Hold)
 	{
 		Scroll = Object.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
 
@@ -106,7 +106,7 @@ int UI::ProcessScroll(void)
 		}
 		ChoosingLine = Object.size() - Scroll - 1;
 	}
-	if(Object.size() <= ChoosingLine + Scroll)
+	if(Object.size() <= ChoosingLine + Scroll && !Hold)
 	{
 		Scroll = 0;
 		ChoosingLine = 0;
@@ -148,6 +148,7 @@ int UI::ProcessKey(void)
 	}
 	if(GetKey(LEFT))
 	{
+		Scroll = 0;
 		ChoosingLine = 0;
 	}
 	if(GetKey(UP))
@@ -268,6 +269,13 @@ int UI::ProcessChoice(void)
 			PrevMode = Mode;
 			Mode = CHOOSE_TITLE;
 			Object.clear();
+			std::vector<Music> Tmp = GetSortedTitles(MList);
+			std::vector<MenuItem> TmpMenu;
+			for(int i = 0; i < Tmp.size(); i++)
+			{
+				TmpMenu.push_back(MenuItem(Tmp[i].GetTitle(), PLAY_MUSIC, Tmp[i]));
+			}
+			Object = TmpMenu;
 			Object.insert(Object.begin(), MenuItem("< Back", BACK));
 			return 0;
 		}
