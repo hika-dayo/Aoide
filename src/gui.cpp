@@ -96,22 +96,41 @@ int UI::Process(void)
 
 int UI::ProcessScroll(void)
 {
-	if(0 > ChoosingLine + Scroll && !Hold)
+	if(0 > ChoosingLine + Scroll)
 	{
-		Scroll = Object.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
-
-		if(Scroll < 0)
+		if(Hold)//ホールドされてるなら止まる
 		{
 			Scroll = 0;
+			ChoosingLine = 0;
 		}
-		ChoosingLine = Object.size() - Scroll - 1;
-	}
-	if(Object.size() <= ChoosingLine + Scroll && !Hold)
-	{
-		Scroll = 0;
-		ChoosingLine = 0;
+		else
+		{
+			Scroll = Object.size() - (C.GetWindowHeight() / C.GetFontSize());
+	
+			if(Scroll < 0)
+			{
+				Scroll = 0;
+			}
+			ChoosingLine = Object.size() - Scroll - 1;
+	
+		}
 	}
 
+
+	if(Object.size() <= ChoosingLine + Scroll)//選択したところが範囲外なら
+	{
+		if(Hold)//ホールドされてるなら止まる
+		{
+			ChoosingLine--;
+		}
+		else
+		{
+			Scroll = 0;
+			ChoosingLine = 0;
+
+		}
+	}
+	
 
 	if(Scroll == Object.size())
 	{
