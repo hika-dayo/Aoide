@@ -125,7 +125,8 @@ class UI
 		int ProcessKey(void);//キーを処理する
 		int ProcessScroll(void);
 		int ProcessChoice(void);//選択したときの処理を行う
-
+		
+		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE);
 		std::vector<Music> MList;//音楽の情報を保持
 		std::vector<Image> ArtworkList;
 		Color FontColor;

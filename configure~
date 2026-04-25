@@ -3600,6 +3600,7 @@ fi
 
 
 
+CXXFLAGS="-std=c++20"
 # Checks for libraries.
 
 # Checks for header files.

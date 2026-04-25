@@ -242,60 +242,18 @@ int UI::ProcessChoice(void)
 	{
 		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ARTISTS)
 		{
-			PrevScroll = Scroll;
-			PrevChoosingLine = ChoosingLine;
-			Scroll = 0;
-			ChoosingLine = 1;
-			PrevMode = Mode;
-			Mode = CHOOSE_ARTIST;
-			Object.clear();
-			std::vector<Music> Tmp = GetSortedArtists(MList);
-			std::vector<MenuItem> TmpMenu;
-			for(int i = 0; i < Tmp.size(); i++)
-			{
-				TmpMenu.push_back(MenuItem(Tmp[i].GetArtist(), LIST_ALBUMS, Tmp[i]));
-			}
-			Object = TmpMenu;
-			Object.insert(Object.begin(), MenuItem("< Back", BACK));
-			
+			ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ALBUM);
 			return 0;
 		}
 		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
 		{
-			PrevScroll = Scroll;
-			PrevChoosingLine = ChoosingLine;
-			Scroll = 0;
-			ChoosingLine = 1;
-			PrevMode = Mode;
-			Mode = CHOOSE_ALBUM;
-			Object.clear();
-			std::vector<Music> Tmp = GetSortedAlbums(MList);
-			std::vector<MenuItem> TmpMenu;
-			for(int i = 0; i < Tmp.size(); i++)
-			{
-				TmpMenu.push_back(MenuItem(Tmp[i].GetArtist(), LIST_ALBUMS, Tmp[i]));
-			}
-			Object = TmpMenu;
-			Object.insert(Object.begin(), MenuItem("< Back", BACK));
+			ListItem(GetSortedAlbums(MList), LIST_ALBUMS, LIST_TITLES, CHOOSE_TITLE);
+//			ListItem(GetSortedAlbums(MList), LIST_ALBUMS, LIST_TITLES, CHOOSE_ALBUM);
 			return 0;
 		}
 		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)
 		{
-			PrevScroll = Scroll;
-			PrevChoosingLine = ChoosingLine;
-			Scroll = 0;
-			ChoosingLine = 1;
-			PrevMode = Mode;
-			Mode = CHOOSE_TITLE;
-			Object.clear();
-			std::vector<Music> Tmp = GetSortedTitles(MList);
-			std::vector<MenuItem> TmpMenu;
-			for(int i = 0; i < Tmp.size(); i++)
-			{
-				TmpMenu.push_back(MenuItem(Tmp[i].GetTitle(), PLAY_MUSIC, Tmp[i]));
-			}
-			Object = TmpMenu;
-			Object.insert(Object.begin(), MenuItem("< Back", BACK));
+			ListItem(GetSortedTitles(MList), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
 			return 0;
 		}
 		if(Object[Scroll + ChoosingLine].GetEvent() == EXIT)
@@ -347,4 +305,39 @@ std::string MenuItem::GetText(void)
 EVENT MenuItem::GetEvent(void)
 {
 	return Event;
+}
+int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
+{
+	PrevScroll = Scroll;
+	PrevChoosingLine = ChoosingLine;
+	Scroll = 0;
+	ChoosingLine = 1;
+	PrevMode = Mode;
+	Mode = MODE;
+	Object.clear();
+	std::vector<MenuItem> TmpMenu;
+	if(E == LIST_TITLES)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetTitle(), PLAY_MUSIC, M[i]));
+		}	
+	}
+	if(E == LIST_ALBUMS)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetAlbum(), LIST_TITLES, M[i]));
+		}	
+	}
+	if(E == LIST_ARTISTS)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetArtist(), LIST_ALBUMS, M[i]));
+		}	
+	}
+	Object = TmpMenu;
+	Object.insert(Object.begin(), MenuItem("< Back", BACK));
+	return 0;
 }
