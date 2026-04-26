@@ -248,7 +248,6 @@ int UI::ProcessChoice(void)
 		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
 		{
 			ListItem(GetSortedAlbums(MList), LIST_ALBUMS, LIST_TITLES, CHOOSE_TITLE);
-//			ListItem(GetSortedAlbums(MList), LIST_ALBUMS, LIST_TITLES, CHOOSE_ALBUM);
 			return 0;
 		}
 		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)

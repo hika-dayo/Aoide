@@ -200,14 +200,14 @@ const std::vector<Music> GetSortedAlbums(std::vector<Music> &M, const std::strin
 		{
 		for(n = 0; n < Albums.size(); n++)//重複を防ぐ
 		{
-			if(Albums[n].GetArtist() == M[i].GetAlbum())//重複してるならRepeat
+			if(Albums[n].GetAlbum() == M[i].GetAlbum())//重複してるならRepeat
 			{
 				Repeat = true;
 			}
 		}
 		if(!Repeat)//重複してないなら
 		{
-			Music Tmp("", M[i].GetAlbum(), M[i].GetArtist());
+			Music Tmp("", M[i].GetArtist(), M[i].GetAlbum());
 			Albums.push_back(Tmp);
 		}
 
