@@ -238,7 +238,7 @@ const std::vector<Music> GetSortedTitles(std::vector<Music> &M, const std::strin
 			}
 			if(!Repeat)
 			{
-				Music Tmp("", M[i].GetAlbum(), M[i].GetArtist(), M[i].GetTitle());
+				Music Tmp(M[i].GetPath(), M[i].GetAlbum(), M[i].GetArtist(), M[i].GetTitle());
 				Titles.push_back(Tmp);
 			}
 		}

@@ -87,6 +87,8 @@ class Image
 		std::string GetPath(void);
 };
 
+
+
 class MenuItem
 {
 	std::string Text;
@@ -97,6 +99,7 @@ class MenuItem
 	EVENT Event;
 public:
 	MenuItem(std::string Text,EVENT Event, std::optional<Music> M = std::nullopt);
+	MenuItem(const MenuItem &Copy);//コピーコンストラクタ
 	std::string GetText(void);
 	EVENT GetEvent(void);
 	std::string GetArtist(void);
@@ -113,10 +116,11 @@ class UI
 		UI_MODE Mode;
 		UI_MODE PrevMode;//前のモード
 		int Scroll;//スクロール位置の保存
-		int PrevScroll;//前のスクロール位置の保存
-		int PrevChoosingLine;//前のスクロール位置の保存
+				   
+		std::vector<int> PrevScroll;//前のスクロール位置の保存
+		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
-		
+
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 		bool TmpKey;//方向キーが押されている間はtrue
@@ -133,6 +137,7 @@ class UI
 		TTF_Font* Font;
 		std::vector<std::string> Texts;//テキスト
 		std::vector<MenuItem> Object;//描画する内容
+		std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
 	public:
 		UI(std::vector<Music> &MusicLists);
 		int Process(void);

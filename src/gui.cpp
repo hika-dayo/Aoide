@@ -15,6 +15,7 @@
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
+#include <cinttypes>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -24,6 +25,8 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
+	P = nullptr;
+
 	Mode = MAINMENU;
 	PrevMode = MAINMENU;
 
@@ -65,6 +68,7 @@ UI::UI(std::vector<Music> &MusicList)
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
 //	Object.push_back(MenuItem("Options", NOTHING));
 	Object.push_back(MenuItem("Exit", EXIT));
+	ObjectBuf.push_back(Object);//バッファとして
 	return;
 }
 
@@ -217,13 +221,14 @@ int UI::ProcessChoice(void)
 {
 	if(Object[Scroll + ChoosingLine].GetEvent() == BACK)
 	{
-		int Tmp = Scroll;
-		Scroll = PrevScroll;
-		PrevScroll = Tmp;
-		Tmp = ChoosingLine;
-		ChoosingLine = PrevChoosingLine;
-		PrevChoosingLine = Tmp;
+		Scroll = PrevScroll[PrevScroll.size() - 1];
+		PrevScroll.pop_back();
 
+		ChoosingLine = PrevChoosingLine[PrevChoosingLine.size() - 1];
+		PrevChoosingLine.pop_back();
+		
+		Object = ObjectBuf[ObjectBuf.size() - 1];
+		ObjectBuf.pop_back();
 
 		if(PrevMode == MAINMENU)
 		{
@@ -233,32 +238,39 @@ int UI::ProcessChoice(void)
 			Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 			Object.push_back(MenuItem("Albums", LIST_ALBUMS));
 			Object.push_back(MenuItem("Songs", LIST_TITLES));
-//			Object.push_back(MenuItem("Options", NOTHING));
 			Object.push_back(MenuItem("Exit", EXIT));
 		}
 		return 0;
 	}
-	if(Mode == MAINMENU)
+	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ARTISTS)
 	{
-		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ARTISTS)
+		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ALBUM);
+		return 0;
+	}
+	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
+	{
+		ListItem(GetSortedAlbums(MList, Object[Scroll + ChoosingLine].GetArtist()), LIST_ALBUMS, LIST_TITLES, CHOOSE_TITLE);
+		return 0;
+	}
+	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)
+	{
+		ListItem(GetSortedTitles(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
+		return 0;
+	}
+	if(Object[Scroll + ChoosingLine].GetEvent() == EXIT)
+	{
+		exit(0);
+	}
+	if(Object[Scroll + ChoosingLine].GetEvent() == PLAY_MUSIC)
+	{
+		if(P != nullptr)
 		{
-			ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ALBUM);
-			return 0;
+			delete P;
 		}
-		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
-		{
-			ListItem(GetSortedAlbums(MList), LIST_ALBUMS, LIST_TITLES, CHOOSE_TITLE);
-			return 0;
-		}
-		if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)
-		{
-			ListItem(GetSortedTitles(MList), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
-			return 0;
-		}
-		if(Object[Scroll + ChoosingLine].GetEvent() == EXIT)
-		{
-			exit(0);
-		}
+		P = new Player(Object[Scroll + ChoosingLine].GetPath().c_str());
+;
+		P->Play();
+		return 0;
 	}
 	return 0;
 }
@@ -305,10 +317,23 @@ EVENT MenuItem::GetEvent(void)
 {
 	return Event;
 }
+MenuItem::MenuItem(const MenuItem &Copy)
+{
+	Text = Copy.Text;
+	Artist = Copy.Artist;
+	Album = Copy.Album;
+	Title = Copy.Title;
+	Path = Copy.Path;
+	Event = Copy.Event;
+	return;
+}
+
 int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 {
-	PrevScroll = Scroll;
-	PrevChoosingLine = ChoosingLine;
+	ObjectBuf.push_back(Object);
+	PrevScroll.push_back(Scroll);
+	PrevChoosingLine.push_back(ChoosingLine);
+
 	Scroll = 0;
 	ChoosingLine = 1;
 	PrevMode = Mode;
@@ -338,5 +363,9 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	}
 	Object = TmpMenu;
 	Object.insert(Object.begin(), MenuItem("< Back", BACK));
+
+	
+
 	return 0;
 }
+
