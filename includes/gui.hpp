@@ -56,6 +56,7 @@ enum EVENT
 	LIST_ARTISTS,
 	LIST_ALBUMS,
 	LIST_TITLES,
+	LIST_TITLES_BY_TRACKNUM,
 	BACK,
 };
 typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する
@@ -107,6 +108,7 @@ public:
 	std::string GetTitle(void);
 	std::string GetPath(void);
 };
+
 
 class UI
 {

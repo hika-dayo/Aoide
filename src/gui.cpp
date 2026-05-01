@@ -221,24 +221,16 @@ int UI::ProcessChoice(void)
 {
 	if(Object[Scroll + ChoosingLine].GetEvent() == BACK)
 	{
-		Scroll = PrevScroll[PrevScroll.size() - 1];
-		PrevScroll.pop_back();
-
-		ChoosingLine = PrevChoosingLine[PrevChoosingLine.size() - 1];
-		PrevChoosingLine.pop_back();
-		
-		Object = ObjectBuf[ObjectBuf.size() - 1];
-		ObjectBuf.pop_back();
-
-		if(PrevMode == MAINMENU)
+		if(ObjectBuf.size() != 0)
 		{
-			Mode = MAINMENU;
-			PrevMode = MAINMENU;
-			Object.clear();
-			Object.push_back(MenuItem("Artists", LIST_ARTISTS));
-			Object.push_back(MenuItem("Albums", LIST_ALBUMS));
-			Object.push_back(MenuItem("Songs", LIST_TITLES));
-			Object.push_back(MenuItem("Exit", EXIT));
+			Scroll = PrevScroll[PrevScroll.size() - 1];
+			PrevScroll.pop_back();
+
+			ChoosingLine = PrevChoosingLine[PrevChoosingLine.size() - 1];
+			PrevChoosingLine.pop_back();
+			
+			Object = ObjectBuf[ObjectBuf.size() - 1];
+			ObjectBuf.pop_back();
 		}
 		return 0;
 	}
@@ -255,6 +247,11 @@ int UI::ProcessChoice(void)
 	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)
 	{
 		ListItem(GetSortedTitles(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
+		return 0;
+	}
+	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
+	{
+		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ALBUM);
 		return 0;
 	}
 	if(Object[Scroll + ChoosingLine].GetEvent() == EXIT)
