@@ -113,15 +113,19 @@ public:
 class UI
 {
 	private:
-		Config C;
 		Player *P;
+
+
+		Config C;
 		UI_MODE Mode;
 		UI_MODE PrevMode;//前のモード
+
 		int Scroll;//スクロール位置の保存
 				   
 		std::vector<int> PrevScroll;//前のスクロール位置の保存
 		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
+		int CurrentLine;//何行目を選択しているか
 
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
@@ -133,8 +137,13 @@ class UI
 		int ProcessChoice(void);//選択したときの処理を行う
 		
 		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE);
+
 		std::vector<Music> MList;//音楽の情報を保持
+		std::vector<Music> Playlist;//プレイリスト
 		std::vector<Image> ArtworkList;
+
+
+
 		Color FontColor;
 		TTF_Font* Font;
 		std::vector<std::string> Texts;//テキスト
@@ -143,5 +152,6 @@ class UI
 	public:
 		UI(std::vector<Music> &MusicLists);
 		int Process(void);
+
 };
 

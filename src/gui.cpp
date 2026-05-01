@@ -76,8 +76,19 @@ int UI::Process(void)
 {
 	Config C;
 	ProcessKey();
+	CurrentLine = Scroll + ChoosingLine;
 	ProcessScroll();	
 
+	if(Playlist.size() != 0)
+	{
+		if(P == nullptr || (P != nullptr && P->isEnded()))
+		{
+			P = new Player(Playlist[0].GetPath().c_str());
+			Playlist.erase(Playlist.begin());
+			P->Play();
+		}
+
+	}
 	for(int i = 0; i + Scroll < Object.size(); i++)
 	{
 		if(i == ChoosingLine)
@@ -219,7 +230,7 @@ int UI::ProcessKey(void)
 
 int UI::ProcessChoice(void)
 {
-	if(Object[Scroll + ChoosingLine].GetEvent() == BACK)
+	if(Object[CurrentLine].GetEvent() == BACK)
 	{
 		if(ObjectBuf.size() != 0)
 		{
@@ -234,44 +245,38 @@ int UI::ProcessChoice(void)
 		}
 		return 0;
 	}
-	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ARTISTS)
+	if(Object[CurrentLine].GetEvent() == LIST_ARTISTS)
 	{
 		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ARTIST);
 		return 0;
 	}
-	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
+	if(Object[CurrentLine].GetEvent() == LIST_ALBUMS)
 	{
-		ListItem(GetSortedAlbums(MList, Object[Scroll + ChoosingLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM, CHOOSE_TITLE);
+		ListItem(GetSortedAlbums(MList, Object[CurrentLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM, CHOOSE_TITLE);
 		return 0;
 	}
 
-	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
+	if(Object[CurrentLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
 	{
-		ListItem(GetSortedTrackNum(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
+		ListItem(GetSortedTrackNum(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
 		return 0;
 	}
 
-	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)
+	if(Object[CurrentLine].GetEvent() == LIST_TITLES)
 	{
-		ListItem(GetSortedTitles(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
+		ListItem(GetSortedTitles(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
 		return 0;
 	}
 
+	if(Object[CurrentLine].GetEvent() == PLAY_MUSIC)
+	{
+		Playlist.push_back(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+		return 0;
+	}
 
-	if(Object[Scroll + ChoosingLine].GetEvent() == EXIT)
+	if(Object[CurrentLine].GetEvent() == EXIT)
 	{
 		exit(0);
-	}
-	if(Object[Scroll + ChoosingLine].GetEvent() == PLAY_MUSIC)
-	{
-		if(P != nullptr)
-		{
-			delete P;
-		}
-		P = new Player(Object[Scroll + ChoosingLine].GetPath().c_str());
-;
-		P->Play();
-		return 0;
 	}
 	return 0;
 }

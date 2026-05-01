@@ -44,6 +44,7 @@ private:
 	int DiscNum = 1;
 public:
 	Music(std::string Path, std::string Artist = "", std::string Album = "", std::string Title = "",int TrackNum = 0, std::string ArtworkPath = "", int DiscNum = 1);
+	Music(const Music &Copy);
 	const std::string GetArtist(void);
 	const std::string GetTitle(void);
 	const std::string GetAlbum(void);
@@ -56,6 +57,7 @@ public:
 	bool operator==(const Music& Other) const;
 	bool operator<(const Music& Other) const;
 };
+
 
 Music GetAudioMetaData(const char* Path);//音楽ファイルのメタデータを返す
 

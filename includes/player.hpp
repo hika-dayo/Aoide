@@ -11,7 +11,6 @@
 
 #pragma once
 
-
 #include <string>
 #include <miniaudio/miniaudio.h>
 
@@ -40,3 +39,4 @@ class Player
 		int GetAudioTime(void);//現在の再生位置をミリ秒で返す
 		double GetAudioPosition(void);//0.0〜1.0までに正規化された、現在の再生位置
 };
+

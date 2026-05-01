@@ -233,7 +233,7 @@ const std::vector<Music> GetSortedTitles(std::vector<Music> &M, const std::strin
 		{
 			for(n = 0; n < Titles.size(); n++)
 			{
-				if(Titles[n].GetTitle() == M[i].GetTitle())
+				if(Titles[n].GetTitle() == M[i].GetTitle() && Titles[n].GetTrackNum() == M[i].GetTrackNum())
 				{
 					Repeat = true;
 				}
@@ -264,7 +264,7 @@ const std::vector<Music> GetSortedTrackNum(std::vector<Music> &M, const std::str
 		{
 			for(n = 0; n < Titles.size(); n++)
 			{
-				if(Titles[n].GetTitle() == M[i].GetTitle())
+				if(Titles[n].GetTitle() == M[i].GetTitle() && Titles[n].GetTrackNum() == Titles[n].GetDiscNum())
 				{
 					Repeat = true;
 				}
@@ -293,6 +293,7 @@ Music::Music(std::string Path, std::string Artist, std::string Album, std::strin
 	this->DiscNum = DiscNum;
 	return;
 }
+
 const std::string Music::GetAlbum(void)
 {
 	return Album;
@@ -333,4 +334,16 @@ bool Music::operator<(const Music& Other) const
 		return this->TrackNum < Other.TrackNum;
 	}
 	return (this->DiscNum < Other.DiscNum);
+}
+Music::Music(const Music &Copy)
+{
+	Artist = Copy.Artist;
+	Title = Copy.Title;
+	Path = Copy.Path;
+	Album = Copy.Album;
+	ArtworkPath = Copy.ArtworkPath;
+	TrackNum = Copy.TrackNum;
+	DiscNum = Copy.DiscNum;
+	Initialized = true;
+	return;
 }
