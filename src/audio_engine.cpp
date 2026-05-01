@@ -273,7 +273,6 @@ const std::vector<Music> GetSortedTrackNum(std::vector<Music> &M, const std::str
 			{
 				Music Tmp(M[i].GetPath(), M[i].GetAlbum(), M[i].GetArtist(), M[i].GetTitle(), M[i].GetTrackNum(), M[i].GetArtworkPath(), M[i].GetDiscNum());
 				Titles.push_back(Tmp);
-				std::cout << Tmp.GetTrackNum() << " " << Tmp.GetDiscNum() << " " << Tmp.GetTitle() << std::endl;
 			}
 		}
 	}

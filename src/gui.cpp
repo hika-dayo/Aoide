@@ -176,11 +176,11 @@ int UI::ProcessKey(void)
 	}
 	if(GetKey(UP))
 	{
-		if(KeyIntervalCount > 90)
+		if(KeyIntervalCount > 120)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > 2 && Hold))
+		if(TmpKey == false || (KeyIntervalCount > 4 && Hold))
 		{
 			ChoosingLine--;
 			KeyIntervalCount = 0;
@@ -197,7 +197,7 @@ int UI::ProcessKey(void)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > 2 && Hold))
+		if(TmpKey == false || (KeyIntervalCount > 4 && Hold))
 		{
 			ChoosingLine++;
 			KeyIntervalCount = 0;
@@ -241,15 +241,12 @@ int UI::ProcessChoice(void)
 	}
 	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
 	{
-		std::cout << "aaa\n";
 		ListItem(GetSortedAlbums(MList, Object[Scroll + ChoosingLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM, CHOOSE_TITLE);
 		return 0;
 	}
 
 	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
 	{
-		std::cout << "aa\n";
-//		ListItem(GetSortedTrackNum(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
 		ListItem(GetSortedTrackNum(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
 		return 0;
 	}
