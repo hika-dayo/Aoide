@@ -52,6 +52,9 @@ public:
 	const int GetTrackNum(void);
 	const int GetDiscNum(void);
 	bool isThisInitialized(void);
+
+	bool operator==(const Music& Other) const;
+	bool operator<(const Music& Other) const;
 };
 
 Music GetAudioMetaData(const char* Path);//音楽ファイルのメタデータを返す

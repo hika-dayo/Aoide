@@ -236,24 +236,31 @@ int UI::ProcessChoice(void)
 	}
 	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ARTISTS)
 	{
-		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ALBUM);
+		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ARTIST);
 		return 0;
 	}
 	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_ALBUMS)
 	{
-		ListItem(GetSortedAlbums(MList, Object[Scroll + ChoosingLine].GetArtist()), LIST_ALBUMS, LIST_TITLES, CHOOSE_TITLE);
+		std::cout << "aaa\n";
+		ListItem(GetSortedAlbums(MList, Object[Scroll + ChoosingLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM, CHOOSE_TITLE);
 		return 0;
 	}
+
+	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
+	{
+		std::cout << "aa\n";
+//		ListItem(GetSortedTrackNum(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
+		ListItem(GetSortedTrackNum(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
+		return 0;
+	}
+
 	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES)
 	{
 		ListItem(GetSortedTitles(MList, Object[Scroll + ChoosingLine].GetArtist(), Object[Scroll + ChoosingLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
 		return 0;
 	}
-	if(Object[Scroll + ChoosingLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
-	{
-		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ALBUM);
-		return 0;
-	}
+
+
 	if(Object[Scroll + ChoosingLine].GetEvent() == EXIT)
 	{
 		exit(0);
@@ -341,21 +348,28 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	{
 		for(int i = 0; i < M.size(); i++)
 		{
-			TmpMenu.push_back(MenuItem(M[i].GetTitle(), PLAY_MUSIC, M[i]));
+			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
 		}	
 	}
 	if(E == LIST_ALBUMS)
 	{
 		for(int i = 0; i < M.size(); i++)
 		{
-			TmpMenu.push_back(MenuItem(M[i].GetAlbum(), LIST_TITLES, M[i]));
+			TmpMenu.push_back(MenuItem(M[i].GetAlbum(), SetE, M[i]));
 		}	
 	}
 	if(E == LIST_ARTISTS)
 	{
 		for(int i = 0; i < M.size(); i++)
 		{
-			TmpMenu.push_back(MenuItem(M[i].GetArtist(), LIST_ALBUMS, M[i]));
+			TmpMenu.push_back(MenuItem(M[i].GetArtist(), SetE, M[i]));
+		}	
+	}
+	if(E == LIST_TITLES_BY_TRACKNUM)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
 		}	
 	}
 	Object = TmpMenu;
