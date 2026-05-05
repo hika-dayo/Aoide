@@ -33,7 +33,6 @@ int main(int argc, char *argv[])
 	atexit(Release);
 	InitMiniaudio();
 
-	Config C;
 	RunMainLoop();
 	Release();
 	exit(0);

@@ -64,6 +64,10 @@ SDL_Surface* GetGUISurface(void)
 {
 	return Surface;
 }
+SDL_Window* GetWindow(void)
+{
+	return Window;
+}
 bool ProcessMessage(void)
 {
 	if(!Initialized)
