@@ -8,11 +8,12 @@
 
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
-
+#include "../includes/gui.hpp"
 #include "../includes/config.hpp"
 #include "../includes/file.hpp"
 #include "../includes/error.hpp"
-#include "../includes/audio_engine.hpp"
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_video.h>
 #include <filesystem>
 #include <string>
 #include <fstream>
@@ -309,6 +310,7 @@ std::string Config::GetFontPath(void)
 	}
 	return "";
 }
+
 int Config::GetWindowWidth(void)
 {
 	return WINDOW_WIDTH;

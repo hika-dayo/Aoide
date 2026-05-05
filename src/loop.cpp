@@ -14,13 +14,14 @@
 #include "../includes/gui.hpp"
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_pixels.h>
+#include <SDL3/SDL_timer.h>
 
 
 
 int RunMainLoop(void)
-{	
-	Config C;
+{
 	GUIInit();
+	Config C;
 /*	TTF_Font* Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)
 	{
@@ -34,13 +35,14 @@ int RunMainLoop(void)
 	CleanWindow();
 	while(1)
 	{
+		SDL_Delay(14);
 		CleanWindow();
 		UIobj.Process();
-	if(ProcessMessage())
-	{
-		break;
-	}
-	//ここに処理を書く
+		if(ProcessMessage())
+		{
+			break;
+		}
+		//ここに処理を書く
 
 	}
 	return 0;

@@ -13,6 +13,7 @@
 #include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 #include <SDL3/SDL_surface.h>
+#include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
 #include <cinttypes>
@@ -66,7 +67,6 @@ UI::UI(std::vector<Music> &MusicList)
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
-//	Object.push_back(MenuItem("Options", NOTHING));
 	Object.push_back(MenuItem("Exit", EXIT));
 	ObjectBuf.push_back(Object);//バッファとして
 	return;
@@ -74,15 +74,19 @@ UI::UI(std::vector<Music> &MusicList)
 
 int UI::Process(void)
 {
-	Config C;
 	ProcessKey();
 	CurrentLine = Scroll + ChoosingLine;
 	ProcessScroll();	
 
 	if(Playlist.size() != 0)
 	{
+
 		if(P == nullptr || (P != nullptr && P->isEnded()))
 		{
+			if(P == nullptr)
+			{
+				delete P;
+			}
 			P = new Player(Playlist[0].GetPath().c_str());
 			Playlist.erase(Playlist.begin());
 			P->Play();
@@ -187,11 +191,11 @@ int UI::ProcessKey(void)
 	}
 	if(GetKey(UP))
 	{
-		if(KeyIntervalCount > 120)
+		if(KeyIntervalCount > WAIT_TIME_FOR_HOLD)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > 4 && Hold))
+		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
 		{
 			ChoosingLine--;
 			KeyIntervalCount = 0;
@@ -204,11 +208,11 @@ int UI::ProcessKey(void)
 	}
 	else if(GetKey(DOWN))
 	{
-		if(KeyIntervalCount > 120)
+		if(KeyIntervalCount > WAIT_TIME_FOR_HOLD)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > 4 && Hold))
+		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
 		{
 			ChoosingLine++;
 			KeyIntervalCount = 0;
@@ -265,6 +269,17 @@ int UI::ProcessChoice(void)
 	if(Object[CurrentLine].GetEvent() == LIST_TITLES)
 	{
 		ListItem(GetSortedTitles(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
+		return 0;
+	}
+	if(Object[CurrentLine].GetEvent() == PLAY_ALL)
+	{
+		for(int i = 0; i < Object.size();i++)
+		{
+			if(!Object[i].GetPath().empty())
+			{
+				Playlist.push_back(Music(Object[i].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+			}
+		}
 		return 0;
 	}
 
@@ -348,6 +363,8 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	std::vector<MenuItem> TmpMenu;
 	if(E == LIST_TITLES)
 	{
+		TmpMenu.push_back(MenuItem("< Back", BACK));
+		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
 		for(int i = 0; i < M.size(); i++)
 		{
 			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
@@ -355,6 +372,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	}
 	if(E == LIST_ALBUMS)
 	{
+		TmpMenu.push_back(MenuItem("< Back", BACK));
 		for(int i = 0; i < M.size(); i++)
 		{
 			TmpMenu.push_back(MenuItem(M[i].GetAlbum(), SetE, M[i]));
@@ -362,6 +380,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	}
 	if(E == LIST_ARTISTS)
 	{
+		TmpMenu.push_back(MenuItem("< Back", BACK));
 		for(int i = 0; i < M.size(); i++)
 		{
 			TmpMenu.push_back(MenuItem(M[i].GetArtist(), SetE, M[i]));
@@ -369,13 +388,14 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	}
 	if(E == LIST_TITLES_BY_TRACKNUM)
 	{
+		TmpMenu.push_back(MenuItem("< Back", BACK));
+		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
 		for(int i = 0; i < M.size(); i++)
 		{
 			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
 		}	
 	}
 	Object = TmpMenu;
-	Object.insert(Object.begin(), MenuItem("< Back", BACK));
 
 	
 

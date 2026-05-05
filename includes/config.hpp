@@ -43,7 +43,7 @@ public:
 	std::string GetFontPath(void);//フォントのパス
 	std::string GetSearchDir(void);//検索対象のディレクトリ
 	std::vector<std::string>GetSearchExtension();//検索対象の拡張子
-	int GetWindowWidth(void);//ウィンドウサイズ(横)
+	int GetWindowWidth(void);//ウィンドウサイズ(横)	
 	int GetWindowHeight(void);//ウィンドウサイズ(縦)
 	float GetFontSize(void);//フォントのサイズ
 	bool DidConfigLoad(void);//コンフィグファイルが読み込まれたか(インストラクタで読み込むからほとんど使う用が無い)

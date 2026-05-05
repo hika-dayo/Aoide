@@ -20,9 +20,12 @@
 #include <string>
 #include <vector>
 #include <optional>
-#include <utility>
+
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
+
+const int WAIT_TIME_FOR_HOLD = 40;
+const int HOLD_DELAY = 2;
 
 
 bool isSDLInitialized(void);//SDLが初期化されているか
@@ -31,7 +34,7 @@ int GUIRelease(void);//SDLをリリース
 bool ProcessMessage(void);//ウィンドウのメッセージを処理。
 						  //この関数を定期的に呼びだす必要がある。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
-
+SDL_Window* GetWindow(void);//ウィンドウを得る
 enum UI_MODE
 {
 	MAINMENU,
@@ -52,6 +55,7 @@ enum EVENT
 {
 	NOTHING,
 	PLAY_MUSIC,
+	PLAY_ALL,
 	EXIT,
 	LIST_ARTISTS,
 	LIST_ALBUMS,
