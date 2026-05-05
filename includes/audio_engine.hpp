@@ -44,15 +44,20 @@ private:
 	int DiscNum = 1;
 public:
 	Music(std::string Path, std::string Artist = "", std::string Album = "", std::string Title = "",int TrackNum = 0, std::string ArtworkPath = "", int DiscNum = 1);
-	std::string GetArtist(void);
-	std::string GetTitle(void);
-	std::string GetAlbum(void);
-	std::string GetPath(void);
-	std::string GetArtworkPath(void);
-	int GetTrackNum(void);
-	int GetDiscNum(void);
+	Music(const Music &Copy);
+	const std::string GetArtist(void);
+	const std::string GetTitle(void);
+	const std::string GetAlbum(void);
+	const std::string GetPath(void);
+	const std::string GetArtworkPath(void);
+	const int GetTrackNum(void);
+	const int GetDiscNum(void);
 	bool isThisInitialized(void);
+
+	bool operator==(const Music& Other) const;
+	bool operator<(const Music& Other) const;
 };
+
 
 Music GetAudioMetaData(const char* Path);//音楽ファイルのメタデータを返す
 
@@ -61,9 +66,9 @@ int SoundInitFromFile(const char* Path, ma_sound* S);//音楽を取得する関�
 std::string GetTitlePath(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName, const std::string TitleName);
 std::vector<Music> SearchDir(const char *Path);//ディレクトリを検索する
 
-std::vector<std::string> GetSortedArtists(std::vector<Music> &M);
-std::vector<std::string> GetSortedAlbums(std::vector<Music> &M, const std::string ArtistName = "");
-std::vector<std::string> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName = "", const std::string AlbumName = "");
-std::vector<std::string> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName);
+const std::vector<Music> GetSortedArtists(std::vector<Music> &M);
+const std::vector<Music> GetSortedAlbums(std::vector<Music> &M, const std::string ArtistName = "");
+const std::vector<Music> GetSortedTitles(std::vector<Music> &M, const std::string ArtistName = "", const std::string AlbumName = "");
+const std::vector<Music> GetSortedTrackNum(std::vector<Music> &M, const std::string ArtistName, const std::string AlbumName);
 std::string ExtractFromFlacFile(const char* Path, const char* ArtistName, const char* AlbumName);
 //std::vector<std::string> GetSortedTitles(std::vector<Music> M);

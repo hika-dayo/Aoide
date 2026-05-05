@@ -36,14 +36,10 @@ int RunMainLoop(void)
 	{
 		CleanWindow();
 		UIobj.Process();
-	if(GetKey(ESC))
-		{
-			break;
-		}
-		if(ProcessMessage())
-		{
-			break;
-		}
+	if(ProcessMessage())
+	{
+		break;
+	}
 	//ここに処理を書く
 
 	}

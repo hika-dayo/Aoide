@@ -12,24 +12,32 @@
 #include "../includes/error.hpp"
 #include "../includes/input.hpp"
 #include "../includes/gui.hpp"
-#include "../includes/file.hpp"
-#include "../includes/player.hpp"
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
+#include <cinttypes>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <vector>
+#include <optional>
+#include <iostream>
 
 UI::UI(std::vector<Music> &MusicList)
 {
+	P = nullptr;
+
 	Mode = MAINMENU;
+	PrevMode = MAINMENU;
+
 	Hold = false;
 	KeyIntervalCount = 0;
+	TmpKey = false;
+	TmpEnter = false;
+
+
 	Scroll = 0;
 	MList = MusicList;
-	TmpKey = false;
 	FontColor =  0x00ffffff;
 	Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	if(Font == 0)
@@ -55,11 +63,12 @@ UI::UI(std::vector<Music> &MusicList)
 
 		}
 	ChoosingLine = 0;
-	Texts.push_back("Artists");
-	Texts.push_back("Albums");
-	Texts.push_back("Songs");
-	Texts.push_back("Options");
-	Texts.push_back("Exit");
+	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
+	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
+	Object.push_back(MenuItem("Songs", LIST_TITLES));
+//	Object.push_back(MenuItem("Options", NOTHING));
+	Object.push_back(MenuItem("Exit", EXIT));
+	ObjectBuf.push_back(Object);//バッファとして
 	return;
 }
 
@@ -67,24 +76,34 @@ int UI::Process(void)
 {
 	Config C;
 	ProcessKey();
-	ProcessScroll();
+	CurrentLine = Scroll + ChoosingLine;
+	ProcessScroll();	
 
-	
+	if(Playlist.size() != 0)
+	{
+		if(P == nullptr || (P != nullptr && P->isEnded()))
+		{
+			P = new Player(Playlist[0].GetPath().c_str());
+			Playlist.erase(Playlist.begin());
+			P->Play();
+		}
 
-	for(int i = 0; i + Scroll < Texts.size(); i++)
+	}
+	for(int i = 0; i + Scroll < Object.size(); i++)
 	{
 		if(i == ChoosingLine)
 		{
 			DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
-			DrawText(Font, Texts[Scroll + i].c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+			DrawText(Font, Object[Scroll + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+
 		}
 		else
 		{
-			DrawText(Font, Texts[Scroll + i].c_str(), FontColor, 0, i * C.GetFontSize());			
+			DrawText(Font, Object[Scroll + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
 		}
 	}
-		float BarY = Scroll / (float)Texts.size() * (float)C.GetWindowHeight();
-		float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Texts.size() + 1) * (float)C.GetWindowHeight();
+		float BarY = Scroll / (float)Object.size() * (float)C.GetWindowHeight();
+		float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size() + 1) * (float)C.GetWindowHeight();
 		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize() / 2, BarHeight, 0x00999999);
 	return 0;
 }
@@ -92,9 +111,46 @@ int UI::Process(void)
 
 int UI::ProcessScroll(void)
 {
-	if(Scroll == Texts.size())
+	if(0 > ChoosingLine + Scroll)
 	{
-		Scroll = Texts.size() - 1;
+		if(Hold)//ホールドされてるなら止まる
+		{
+			Scroll = 0;
+			ChoosingLine = 0;
+		}
+		else
+		{
+			Scroll = Object.size() - (C.GetWindowHeight() / C.GetFontSize());
+	
+			if(Scroll < 0)
+			{
+				Scroll = 0;
+			}
+			ChoosingLine = Object.size() - Scroll - 1;
+	
+		}
+	}
+
+
+	if(Object.size() <= ChoosingLine + Scroll)//選択したところが範囲外なら
+	{
+		if(Hold)//ホールドされてるなら止まる
+		{
+			ChoosingLine--;
+		}
+		else
+		{
+			Scroll = 0;
+			ChoosingLine = 0;
+
+		}
+	}
+	
+
+	if(Scroll == Object.size())
+	{
+		Scroll = Object.size() - 1;
+
 	}
 	if(Scroll == -1)
 	{
@@ -110,39 +166,32 @@ int UI::ProcessScroll(void)
 		Scroll--;
 		ChoosingLine++;
 	}
-	if(0 > ChoosingLine + Scroll)
-	{
-		Scroll = Texts.size() - C.GetWindowHeight() / C.GetFontSize() / 2;
-		if(Scroll < 0)
-		{
-			Scroll = 0;
-		}
-		ChoosingLine = Texts.size() - Scroll - 1;
-	}
-	if(Texts.size() <= ChoosingLine + Scroll)
-	{
-		Scroll = 0;
-		ChoosingLine = 0;
-	}
 	return 0;
 }
 int UI::ProcessKey(void)
 {
 	if(GetKey(ENTER))
 	{
-		ProcessChoice();
+		if(TmpEnter == false)
+			ProcessChoice();
+		TmpEnter = true;
+	}
+	else
+	{
+		TmpEnter = false;
 	}
 	if(GetKey(LEFT))
 	{
+		Scroll = 0;
 		ChoosingLine = 0;
 	}
 	if(GetKey(UP))
 	{
-		if(KeyIntervalCount > 90)
+		if(KeyIntervalCount > 120)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > 2 && Hold))
+		if(TmpKey == false || (KeyIntervalCount > 4 && Hold))
 		{
 			ChoosingLine--;
 			KeyIntervalCount = 0;
@@ -159,7 +208,7 @@ int UI::ProcessKey(void)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > 2 && Hold))
+		if(TmpKey == false || (KeyIntervalCount > 4 && Hold))
 		{
 			ChoosingLine++;
 			KeyIntervalCount = 0;
@@ -181,36 +230,155 @@ int UI::ProcessKey(void)
 
 int UI::ProcessChoice(void)
 {
-		if(Mode == MAINMENU)
+	if(Object[CurrentLine].GetEvent() == BACK)
+	{
+		if(ObjectBuf.size() != 0)
 		{
-			if(Texts[Scroll + ChoosingLine] == "Artists")
-			{
-				Scroll = 0;
-				ChoosingLine = 1;
-				Mode = CHOOSE_ARTIST;
-				Texts = GetSortedArtists(MList);
-				Texts.insert(Texts.begin(), "< Back");
-			}
-			if(Texts[Scroll + ChoosingLine] == "Albums")
-			{
-				Scroll = 0;
-				ChoosingLine = 1;
-				Mode = CHOOSE_ALBUM;
-				Texts = GetSortedAlbums(MList);
-				Texts.insert(Texts.begin(), "< Back");
-			}
-			if(Texts[Scroll + ChoosingLine] == "Songs")
-			{
-				Scroll = 0;
-				ChoosingLine = 1;
-				Mode = CHOOSE_TITLE;
-				Texts = GetSortedTitles(MList);
-				Texts.insert(Texts.begin(), "< Back");
-			}
-			if(Texts[Scroll + ChoosingLine] == "Exit")
-			{
-				exit(0);
-			}
+			Scroll = PrevScroll[PrevScroll.size() - 1];
+			PrevScroll.pop_back();
+
+			ChoosingLine = PrevChoosingLine[PrevChoosingLine.size() - 1];
+			PrevChoosingLine.pop_back();
+			
+			Object = ObjectBuf[ObjectBuf.size() - 1];
+			ObjectBuf.pop_back();
 		}
+		return 0;
+	}
+	if(Object[CurrentLine].GetEvent() == LIST_ARTISTS)
+	{
+		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ARTIST);
+		return 0;
+	}
+	if(Object[CurrentLine].GetEvent() == LIST_ALBUMS)
+	{
+		ListItem(GetSortedAlbums(MList, Object[CurrentLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM, CHOOSE_TITLE);
+		return 0;
+	}
+
+	if(Object[CurrentLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
+	{
+		ListItem(GetSortedTrackNum(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
+		return 0;
+	}
+
+	if(Object[CurrentLine].GetEvent() == LIST_TITLES)
+	{
+		ListItem(GetSortedTitles(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
+		return 0;
+	}
+
+	if(Object[CurrentLine].GetEvent() == PLAY_MUSIC)
+	{
+		Playlist.push_back(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+		return 0;
+	}
+
+	if(Object[CurrentLine].GetEvent() == EXIT)
+	{
+		exit(0);
+	}
 	return 0;
 }
+
+MenuItem::MenuItem(std::string Text,EVENT Event, std::optional<Music> M)
+{
+	Artist = "";
+	Album = "";
+	Title = "";
+	Path = "";
+	if(M.has_value())
+	{
+		Artist = M.value().GetArtist();
+		Album = M.value().GetAlbum();
+		Title = M.value().GetTitle();
+		Path = M.value().GetPath();
+	}
+	this->Text = Text;
+	this->Event = Event;
+	return;
+}
+
+std::string MenuItem::GetArtist(void)
+{
+	return Artist;
+}
+std::string MenuItem::GetAlbum(void)
+{
+	return Album;
+}
+std::string MenuItem::GetTitle(void)
+{
+	return Title;
+}
+std::string MenuItem::GetPath(void)
+{
+	return Path;
+}
+std::string MenuItem::GetText(void)
+{
+	return Text;
+}
+EVENT MenuItem::GetEvent(void)
+{
+	return Event;
+}
+MenuItem::MenuItem(const MenuItem &Copy)
+{
+	Text = Copy.Text;
+	Artist = Copy.Artist;
+	Album = Copy.Album;
+	Title = Copy.Title;
+	Path = Copy.Path;
+	Event = Copy.Event;
+	return;
+}
+
+int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
+{
+	ObjectBuf.push_back(Object);
+	PrevScroll.push_back(Scroll);
+	PrevChoosingLine.push_back(ChoosingLine);
+
+	Scroll = 0;
+	ChoosingLine = 1;
+	PrevMode = Mode;
+	Mode = MODE;
+	Object.clear();
+	std::vector<MenuItem> TmpMenu;
+	if(E == LIST_TITLES)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
+		}	
+	}
+	if(E == LIST_ALBUMS)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetAlbum(), SetE, M[i]));
+		}	
+	}
+	if(E == LIST_ARTISTS)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetArtist(), SetE, M[i]));
+		}	
+	}
+	if(E == LIST_TITLES_BY_TRACKNUM)
+	{
+		for(int i = 0; i < M.size(); i++)
+		{
+			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
+		}	
+	}
+	Object = TmpMenu;
+	Object.insert(Object.begin(), MenuItem("< Back", BACK));
+
+	
+
+	return 0;
+}
+

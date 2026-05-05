@@ -16,8 +16,11 @@
 #include "player.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
+#include <optional>
 #include <string>
 #include <vector>
+#include <optional>
+#include <utility>
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
 
@@ -45,6 +48,17 @@ enum COLOR
 	BLUE,
 };
 
+enum EVENT
+{
+	NOTHING,
+	PLAY_MUSIC,
+	EXIT,
+	LIST_ARTISTS,
+	LIST_ALBUMS,
+	LIST_TITLES,
+	LIST_TITLES_BY_TRACKNUM,
+	BACK,
+};
 typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する
 
 SDL_Color ToSDLPixel(Color Arg);//符号無し32bit整数で表現された色をSDL用の表現に変換する
@@ -75,29 +89,69 @@ class Image
 };
 
 
+
+class MenuItem
+{
+	std::string Text;
+	std::string Artist;
+	std::string Album;
+	std::string Title;
+	std::string Path;
+	EVENT Event;
+public:
+	MenuItem(std::string Text,EVENT Event, std::optional<Music> M = std::nullopt);
+	MenuItem(const MenuItem &Copy);//コピーコンストラクタ
+	std::string GetText(void);
+	EVENT GetEvent(void);
+	std::string GetArtist(void);
+	std::string GetAlbum(void);
+	std::string GetTitle(void);
+	std::string GetPath(void);
+};
+
+
 class UI
 {
 	private:
-		Config C;
 		Player *P;
+
+
+		Config C;
 		UI_MODE Mode;
+		UI_MODE PrevMode;//前のモード
+
 		int Scroll;//スクロール位置の保存
+				   
+		std::vector<int> PrevScroll;//前のスクロール位置の保存
+		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
+		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
+		int CurrentLine;//何行目を選択しているか
+
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
-		bool TmpKey;
-		
-		std::vector<Music> MList;//音楽の情報を保持
-		std::vector<Image> ArtworkList;
-		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
+		bool TmpKey;//方向キーが押されている間はtrue
+		bool TmpEnter;//エンターキーが押されている間はtrue	
+
 		int ProcessKey(void);//キーを処理する
 		int ProcessScroll(void);
 		int ProcessChoice(void);//選択したときの処理を行う
+		
+		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE);
+
+		std::vector<Music> MList;//音楽の情報を保持
+		std::vector<Music> Playlist;//プレイリスト
+		std::vector<Image> ArtworkList;
+
+
+
 		Color FontColor;
 		TTF_Font* Font;
-
-		std::vector<std::string> Texts;//描画する内容
+		std::vector<std::string> Texts;//テキスト
+		std::vector<MenuItem> Object;//描画する内容
+		std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
 	public:
 		UI(std::vector<Music> &MusicLists);
 		int Process(void);
+
 };
 

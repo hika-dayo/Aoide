@@ -36,7 +36,7 @@ Archの場合
 ```bash
 $ sudo pacman -S base-devel git pkg-config autoconf automake cmake
 ```
-#### miniaudioのビルド
+#### Miniaudioのビルド
 ```bash
 $ cd Aoide/libraries/miniaudio
 $ tar xf miniaudio-0.11.25.tar.gz
