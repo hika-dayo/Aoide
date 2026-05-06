@@ -146,7 +146,7 @@ class UI
 		std::vector<Music> Playlist;//プレイリスト
 		std::vector<Image> ArtworkList;
 
-
+		int ShufflePlaylist(void);
 
 		Color FontColor;
 		TTF_Font* Font;
