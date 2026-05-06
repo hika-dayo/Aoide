@@ -1,4 +1,5 @@
 /*
+
 	(C)Copyright 2025-2026 Hika h1ka.net 
 	   This file is part of Aoide.
 
@@ -278,10 +279,9 @@ int UI::ProcessChoice(void)
 		{
 			if(!Object[i].GetPath().empty())
 			{
-				Playlist.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+				Playlist.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
 			}
 		}
-		ShufflePlaylist();
 		return 0;
 	}
 
@@ -409,9 +409,5 @@ int UI::ShufflePlaylist(void)
 	std::random_device Rd;
 	std::default_random_engine Engine(Rd());
 	std::shuffle(Playlist.begin(), Playlist.end(), Engine);
-	for(int i = 0; i < Playlist.size(); i++)
-	{
-		std::cout << Playlist[i].GetTitle() << std::endl;
-	}
 	return 0;
 }
