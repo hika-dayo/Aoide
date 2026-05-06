@@ -1,4 +1,5 @@
 /*
+
 	(C)Copyright 2025-2026 Hika h1ka.net 
 	   This file is part of Aoide.
 
@@ -16,12 +17,13 @@
 #include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
-#include <cinttypes>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <vector>
 #include <optional>
+#include <random>
+#include <algorithm>
 #include <iostream>
 
 UI::UI(std::vector<Music> &MusicList)
@@ -277,7 +279,7 @@ int UI::ProcessChoice(void)
 		{
 			if(!Object[i].GetPath().empty())
 			{
-				Playlist.push_back(Music(Object[i].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+				Playlist.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
 			}
 		}
 		return 0;
@@ -402,3 +404,10 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	return 0;
 }
 
+int UI::ShufflePlaylist(void)
+{
+	std::random_device Rd;
+	std::default_random_engine Engine(Rd());
+	std::shuffle(Playlist.begin(), Playlist.end(), Engine);
+	return 0;
+}
