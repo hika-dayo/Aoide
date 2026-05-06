@@ -367,9 +367,11 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	{
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
+		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
-			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
+			Title = std::to_string(i + 1) + "  " + M[i].GetTitle();
+			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
 	}
 	if(E == LIST_ALBUMS)
@@ -392,9 +394,11 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	{
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
+		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
-			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
+			Title = "  " + M[i].GetTitle();
+			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
 	}
 	Object = TmpMenu;
