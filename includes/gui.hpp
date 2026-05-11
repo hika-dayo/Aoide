@@ -118,7 +118,7 @@ class UI
 {
 	private:
 		Player *P;
-
+		Music *CurrentMusic;
 
 		Config C;
 		UI_MODE Mode;

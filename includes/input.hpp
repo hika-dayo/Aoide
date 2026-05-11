@@ -21,6 +21,9 @@ enum KEY
 	ENTER,
 	ESC,
 	SPACE,
+	PAUSE_PLAY,
+	PLAY_FORWARD,
+	PLAY_BACK
 };
 
 bool GetKey(KEY K);

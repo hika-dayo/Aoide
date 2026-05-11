@@ -29,9 +29,9 @@
 UI::UI(std::vector<Music> &MusicList)
 {
 	P = nullptr;
-
 	Mode = MAINMENU;
 	PrevMode = MAINMENU;
+	CurrentMusic = new Music("");
 
 	Hold = false;
 	KeyIntervalCount = 0;
@@ -91,10 +91,18 @@ int UI::Process(void)
 				delete P;
 			}
 			P = new Player(Playlist[0].GetPath().c_str());
+			if(CurrentMusic != nullptr)
+			{
+				delete CurrentMusic;
+			}
+			CurrentMusic = new Music("");
+			*CurrentMusic = Playlist[0];
+
 			Playlist.erase(Playlist.begin());
 			P->Play();
 		}
 	}
+
 	for(int i = 0; i + Scroll < Object.size(); i++)
 	{
 		if(i == ChoosingLine)
