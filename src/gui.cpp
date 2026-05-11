@@ -184,6 +184,51 @@ int UI::ProcessScroll(void)
 }
 int UI::ProcessKey(void)
 {
+	if(GetKey(PLAY_BACK))
+	{
+		if(TmpFB == false)
+		{
+			delete P;
+			P = nullptr;
+		}
+		TmpFB = true;
+	}
+	else if(GetKey(PLAY_FORWARD))
+	{
+		if(TmpFB == false)
+		{
+			delete P;
+			P = nullptr;
+		}
+		TmpFB = true;
+	}
+	else
+	{
+		TmpFB = false;
+	}
+	if(GetKey(PAUSE_PLAY))
+	{
+		if(TmpPause == false)
+		{
+			if(P != nullptr)
+			{
+				if(P->isPaused())
+				{
+					P->Play();
+				}
+				else
+				{
+					P->Pause();
+				}
+			}
+		}
+		TmpPause = true;
+	}
+	else
+	{
+		TmpPause= false;
+	}
+
 	if(GetKey(SPACE))
 	{
 		if(TmpSpace == false)
