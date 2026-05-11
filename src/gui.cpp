@@ -29,14 +29,15 @@
 UI::UI(std::vector<Music> &MusicList)
 {
 	P = nullptr;
-
 	Mode = MAINMENU;
 	PrevMode = MAINMENU;
+	CurrentMusic = new Music("");
 
 	Hold = false;
 	KeyIntervalCount = 0;
 	TmpKey = false;
 	TmpEnter = false;
+	TmpSpace = false;
 
 
 	Scroll = 0;
@@ -85,16 +86,23 @@ int UI::Process(void)
 
 		if(P == nullptr || (P != nullptr && P->isEnded()))
 		{
-			if(P == nullptr)
+			if(P != nullptr)
 			{
 				delete P;
 			}
 			P = new Player(Playlist[0].GetPath().c_str());
+			if(CurrentMusic != nullptr)
+			{
+				delete CurrentMusic;
+			}
+			CurrentMusic = new Music("");
+			*CurrentMusic = Playlist[0];
+
 			Playlist.erase(Playlist.begin());
 			P->Play();
 		}
-
 	}
+
 	for(int i = 0; i + Scroll < Object.size(); i++)
 	{
 		if(i == ChoosingLine)
@@ -176,6 +184,16 @@ int UI::ProcessScroll(void)
 }
 int UI::ProcessKey(void)
 {
+	if(GetKey(SPACE))
+	{
+		if(TmpSpace == false)
+			ProcessChoice(false);
+		TmpSpace = true;
+	}
+	else
+	{
+		TmpSpace = false;
+	}
 	if(GetKey(ENTER))
 	{
 		if(TmpEnter == false)
@@ -234,7 +252,7 @@ int UI::ProcessKey(void)
 	return 0;
 }
 
-int UI::ProcessChoice(void)
+int UI::ProcessChoice(bool End)
 {
 	if(Object[CurrentLine].GetEvent() == BACK)
 	{
@@ -275,19 +293,56 @@ int UI::ProcessChoice(void)
 	}
 	if(Object[CurrentLine].GetEvent() == PLAY_ALL)
 	{
+		int n = 0;
 		for(int i = 0; i < Object.size();i++)
 		{
-			if(!Object[i].GetPath().empty())
+			if(End)
 			{
-				Playlist.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+				if(!Object[i].GetPath().empty())
+				{
+						Playlist.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+				}
+
 			}
+			else
+			{
+				if(!Object[i].GetPath().empty())
+				{
+						Playlist.insert(Playlist.begin() + n, Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+						n++;
+				}
+			}
+		}
+		if(!End)
+		{
+			if(P != nullptr)
+			{
+				P->Stop();
+				delete P;
+			}
+					
+			P = nullptr;
 		}
 		return 0;
 	}
 
 	if(Object[CurrentLine].GetEvent() == PLAY_MUSIC)
 	{
-		Playlist.push_back(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+		if(End)
+		{
+			Playlist.push_back(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+		}
+		else
+		{
+			if(P != nullptr)
+			{
+				P->Stop();
+				delete P;
+			}
+					
+			P = nullptr;
+			Playlist.insert(Playlist.begin(), Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+		}
 		return 0;
 	}
 
@@ -370,7 +425,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
-			Title = std::to_string(i + 1) + "  " + M[i].GetTitle();
+			std::string Title = "  " + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
 	}

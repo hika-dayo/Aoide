@@ -118,7 +118,7 @@ class UI
 {
 	private:
 		Player *P;
-
+		Music *CurrentMusic;
 
 		Config C;
 		UI_MODE Mode;
@@ -135,10 +135,11 @@ class UI
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 		bool TmpKey;//方向キーが押されている間はtrue
 		bool TmpEnter;//エンターキーが押されている間はtrue	
+		bool TmpSpace;//スペースキーが押されている間はtrue	
 
 		int ProcessKey(void);//キーを処理する
 		int ProcessScroll(void);
-		int ProcessChoice(void);//選択したときの処理を行う
+		int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
 		
 		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE);
 
