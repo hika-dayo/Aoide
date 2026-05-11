@@ -307,8 +307,12 @@ int UI::ProcessChoice(bool End)
 		}
 		if(!End)
 		{
-			P->Stop();
-			delete P;
+			if(P != nullptr)
+			{
+				P->Stop();
+				delete P;
+			}
+					
 			P = nullptr;
 		}
 		return 0;
@@ -322,8 +326,12 @@ int UI::ProcessChoice(bool End)
 		}
 		else
 		{
-			P->Stop();
-			delete P;
+			if(P != nullptr)
+			{
+				P->Stop();
+				delete P;
+			}
+					
 			P = nullptr;
 			Playlist.insert(Playlist.begin(), Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
 		}
@@ -408,12 +416,8 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
 		for(int i = 0; i < M.size(); i++)
 		{
-<<<<<<< Updated upstream
-			TmpMenu.push_back(MenuItem(M[i].GetTitle(), SetE, M[i]));
-=======
-			Title = "  " + M[i].GetTitle();
+			std::string Title = "  " + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
->>>>>>> Stashed changes
 		}	
 	}
 	if(E == LIST_ALBUMS)
