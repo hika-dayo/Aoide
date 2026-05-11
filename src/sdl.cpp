@@ -149,5 +149,17 @@ bool GetKey(KEY K)
 	{
 		return Keys[SDL_SCANCODE_SPACE];
 	}
+	if(K == PLAY_FORWARD)
+	{
+		return Keys[SDL_SCANCODE_F];
+	}
+	if(K == PLAY_BACK)
+	{
+		return Keys[SDL_SCANCODE_B];
+	}
+	if(K == PAUSE_PLAY)
+	{
+		return Keys[SDL_SCANCODE_P];
+	}
 	return false;
 }

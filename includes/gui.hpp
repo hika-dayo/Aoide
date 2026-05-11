@@ -137,6 +137,10 @@ class UI
 		bool TmpEnter;//エンターキーが押されている間はtrue	
 		bool TmpSpace;//スペースキーが押されている間はtrue	
 
+		bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
+		bool TmpPause;//一時停止キーが押されている間はtrue	
+
+
 		int ProcessKey(void);//キーを処理する
 		int ProcessScroll(void);
 		int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
