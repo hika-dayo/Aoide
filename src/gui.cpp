@@ -31,7 +31,6 @@ UI::UI(std::vector<Music> &MusicList)
 	P = nullptr;
 	Mode = MAINMENU;
 	PrevMode = MAINMENU;
-	CurrentMusic = new Music("");
 
 	Hold = false;
 	KeyIntervalCount = 0;
@@ -91,13 +90,7 @@ int UI::Process(void)
 				delete P;
 			}
 			P = new Player(Playlist[0].GetPath().c_str());
-			if(CurrentMusic != nullptr)
-			{
-				delete CurrentMusic;
-			}
-			CurrentMusic = new Music("");
-			*CurrentMusic = Playlist[0];
-
+			History.push_back(Playlist[0]);
 			Playlist.erase(Playlist.begin());
 			P->Play();
 		}
@@ -338,6 +331,7 @@ int UI::ProcessChoice(bool End)
 	}
 	if(Object[CurrentLine].GetEvent() == PLAY_ALL)
 	{
+
 		int n = 0;
 		for(int i = 0; i < Object.size();i++)
 		{
@@ -367,6 +361,7 @@ int UI::ProcessChoice(bool End)
 			}
 					
 			P = nullptr;
+			History.push_back(Playlist[0]);
 		}
 		return 0;
 	}
@@ -379,6 +374,7 @@ int UI::ProcessChoice(bool End)
 		}
 		else
 		{
+			Playlist.push_back(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
 			if(P != nullptr)
 			{
 				P->Stop();

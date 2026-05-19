@@ -118,7 +118,6 @@ class UI
 {
 	private:
 		Player *P;
-		Music *CurrentMusic;
 
 		Config C;
 		UI_MODE Mode;
@@ -148,7 +147,10 @@ class UI
 		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE);
 
 		std::vector<Music> MList;//音楽の情報を保持
+				
 		std::vector<Music> Playlist;//プレイリスト
+		std::vector<Music> History;//履歴を保存する
+		
 		std::vector<Image> ArtworkList;
 
 		int ShufflePlaylist(void);
