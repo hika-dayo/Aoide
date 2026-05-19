@@ -90,11 +90,24 @@ int UI::Process(void)
 				delete P;
 			}
 			P = new Player(Playlist[0].GetPath().c_str());
-			History.push_back(Playlist[0]);
 			Playlist.erase(Playlist.begin());
+			History.push_back(Playlist[0]);
 			P->Play();
 		}
 	}
+
+	for(int i = 0; i < History.size(); i++)
+	{
+		std::cout << History[i].GetTitle() << std::endl;
+	}
+	std::cout << std::endl;
+	for(int i = 0; i < Playlist.size(); i++)
+	{
+		std::cout << Playlist[i].GetTitle() << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 
 	for(int i = 0; i + Scroll < Object.size(); i++)
 	{
@@ -116,71 +129,14 @@ int UI::Process(void)
 }
 
 
-int UI::ProcessScroll(void)
-{
-	if(0 > ChoosingLine + Scroll)
-	{
-		if(Hold)//ホールドされてるなら止まる
-		{
-			Scroll = 0;
-			ChoosingLine = 0;
-		}
-		else
-		{
-			Scroll = Object.size() - (C.GetWindowHeight() / C.GetFontSize());
-	
-			if(Scroll < 0)
-			{
-				Scroll = 0;
-			}
-			ChoosingLine = Object.size() - Scroll - 1;
-	
-		}
-	}
-
-
-	if(Object.size() <= ChoosingLine + Scroll)//選択したところが範囲外なら
-	{
-		if(Hold)//ホールドされてるなら止まる
-		{
-			ChoosingLine--;
-		}
-		else
-		{
-			Scroll = 0;
-			ChoosingLine = 0;
-
-		}
-	}
-	
-
-	if(Scroll == Object.size())
-	{
-		Scroll = Object.size() - 1;
-
-	}
-	if(Scroll == -1)
-	{
-		Scroll = 0;
-	}
-	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() - 1)
-	{
-		Scroll++;
-		ChoosingLine--;
-	}
-	if(ChoosingLine == -1)
-	{
-		Scroll--;
-		ChoosingLine++;
-	}
-	return 0;
-}
 int UI::ProcessKey(void)
 {
 	if(GetKey(PLAY_BACK))
 	{
 		if(TmpFB == false)
 		{
+			Playlist.insert(Playlist.begin(), History[History.size() - 1]);
+			History.pop_back();
 			delete P;
 			P = nullptr;
 		}
@@ -374,7 +330,6 @@ int UI::ProcessChoice(bool End)
 		}
 		else
 		{
-			Playlist.push_back(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
 			if(P != nullptr)
 			{
 				P->Stop();
@@ -509,5 +464,66 @@ int UI::ShufflePlaylist(void)
 	std::random_device Rd;
 	std::default_random_engine Engine(Rd());
 	std::shuffle(Playlist.begin(), Playlist.end(), Engine);
+	return 0;
+}
+
+int ScrollState::ProcessScroll(void)
+{
+	if(0 > ChoosingLine + Scroll)
+	{
+		if(Hold)//ホールドされてるなら止まる
+		{
+			Scroll = 0;
+			ChoosingLine = 0;
+		}
+		else
+		{
+			Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
+	
+			if(Scroll < 0)
+			{
+				Scroll = 0;
+			}
+			ChoosingLine = ListLength - Scroll - 1;
+	
+		}
+	}
+
+
+	if(ListLength <= ChoosingLine + Scroll)//選択したところが範囲外なら
+	{
+		if(Hold)//ホールドされてるなら止まる
+		{
+			ChoosingLine--;
+		}
+		else
+		{
+			Scroll = 0;
+			ChoosingLine = 0;
+
+		}
+	}
+	
+
+	if(Scroll == ListLength)
+	{
+		Scroll = Object.size() - 1;
+
+	}
+	if(Scroll == -1)
+	{
+		Scroll = 0;
+	}
+	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() - 1)
+	{
+		Scroll++;
+		ChoosingLine--;
+	}
+	if(ChoosingLine == -1)
+	{
+		Scroll--;
+		ChoosingLine++;
+	}
+	return 0;
 	return 0;
 }
