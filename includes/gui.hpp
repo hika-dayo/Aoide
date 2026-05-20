@@ -119,16 +119,17 @@ class ScrollState
 		Config C;
 		int Scroll;//スクロール位置の保存
 		int ListLength;//リストの長さ
-		std::vector<int> PrevScroll;//前のスクロール位置の保存
-		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
-		int CurrentLine;//何行目を選択しているか
-		int ProcessScroll(void);
+		int ProcessScroll(bool Hold);
 	public:
-		int ScrollUp(void);
-		int ScrollDown(void);
+		ScrollState(int DefScroll, int DefChoosingLine, int DefLength);
+		int ScrollUp(int Length, bool Hold);
+		int ScrollDown(int Length, bool Hold);
+		int GoBegin(int Length);
+		int GoEnd(int Length);
 		int GetCurrentLine(void);
 		int GetChoosingLine(void);
+		int GetScroll(void);
 };
 
 class UI
@@ -138,14 +139,17 @@ class UI
 
 		Config C;
 		
-		ScrollState S;
+		std::vector<int> PrevScroll;//前のスクロール位置の保存
+		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
+		
+		ScrollState *S;
+		bool Hold;//キーが長押しされているか
+		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 
 		UI_MODE Mode;
 		UI_MODE PrevMode;//前のモード
 
 
-		bool Hold;//キーが長押しされているか
-		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 		bool TmpKey;//方向キーが押されている間はtrue
 		bool TmpEnter;//エンターキーが押されている間はtrue	
 		bool TmpSpace;//スペースキーが押されている間はtrue	
