@@ -28,10 +28,8 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
+	S = new ScrollState(0, 0, 0);
 	P = nullptr;
-	Mode = MAINMENU;
-	PrevMode = MAINMENU;
-	CurrentMusic = new Music("");
 
 	Hold = false;
 	KeyIntervalCount = 0;
@@ -40,7 +38,6 @@ UI::UI(std::vector<Music> &MusicList)
 	TmpSpace = false;
 
 
-	Scroll = 0;
 	MList = MusicList;
 	FontColor =  0x00ffffff;
 	Font = InitFont(C.GetFontSize(), C.GetFontPath());
@@ -59,6 +56,7 @@ UI::UI(std::vector<Music> &MusicList)
 					tmp = true;
 				}
 			}
+		
 			if(!tmp)
 			{
 				Image I(MList[i].GetArtworkPath());
@@ -66,7 +64,8 @@ UI::UI(std::vector<Music> &MusicList)
 			}
 
 		}
-	ChoosingLine = 0;
+	
+	
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
@@ -77,10 +76,10 @@ UI::UI(std::vector<Music> &MusicList)
 
 int UI::Process(void)
 {
+	
 	ProcessKey();
-	CurrentLine = Scroll + ChoosingLine;
-	ProcessScroll();	
-
+		
+	
 	if(Playlist.size() != 0)
 	{
 
@@ -91,103 +90,53 @@ int UI::Process(void)
 				delete P;
 			}
 			P = new Player(Playlist[0].GetPath().c_str());
-			if(CurrentMusic != nullptr)
-			{
-				delete CurrentMusic;
-			}
-			CurrentMusic = new Music("");
-			*CurrentMusic = Playlist[0];
-
 			Playlist.erase(Playlist.begin());
+			History.push_back(Playlist[0]);
 			P->Play();
 		}
 	}
 
-	for(int i = 0; i + Scroll < Object.size(); i++)
+	for(int i = 0; i < History.size(); i++)
 	{
-		if(i == ChoosingLine)
+		std::cout << History[i].GetTitle() << std::endl;
+	}
+	std::cout << std::endl;
+	for(int i = 0; i < Playlist.size(); i++)
+	{
+		std::cout << Playlist[i].GetTitle() << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
+
+	for(int i = 0; i + S->GetScroll() < Object.size(); i++)
+	{
+		if(i == S->GetChoosingLine())
 		{
 			DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
-			DrawText(Font, Object[Scroll + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+			DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
 
 		}
 		else
 		{
-			DrawText(Font, Object[Scroll + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
+			DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
 		}
 	}
-		float BarY = Scroll / (float)Object.size() * (float)C.GetWindowHeight();
+		float BarY = S->GetScroll() / (float)Object.size() * (float)C.GetWindowHeight();
 		float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size() + 1) * (float)C.GetWindowHeight();
 		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize() / 2, BarHeight, 0x00999999);
 	return 0;
 }
 
 
-int UI::ProcessScroll(void)
-{
-	if(0 > ChoosingLine + Scroll)
-	{
-		if(Hold)//ホールドされてるなら止まる
-		{
-			Scroll = 0;
-			ChoosingLine = 0;
-		}
-		else
-		{
-			Scroll = Object.size() - (C.GetWindowHeight() / C.GetFontSize());
-	
-			if(Scroll < 0)
-			{
-				Scroll = 0;
-			}
-			ChoosingLine = Object.size() - Scroll - 1;
-	
-		}
-	}
-
-
-	if(Object.size() <= ChoosingLine + Scroll)//選択したところが範囲外なら
-	{
-		if(Hold)//ホールドされてるなら止まる
-		{
-			ChoosingLine--;
-		}
-		else
-		{
-			Scroll = 0;
-			ChoosingLine = 0;
-
-		}
-	}
-	
-
-	if(Scroll == Object.size())
-	{
-		Scroll = Object.size() - 1;
-
-	}
-	if(Scroll == -1)
-	{
-		Scroll = 0;
-	}
-	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() - 1)
-	{
-		Scroll++;
-		ChoosingLine--;
-	}
-	if(ChoosingLine == -1)
-	{
-		Scroll--;
-		ChoosingLine++;
-	}
-	return 0;
-}
 int UI::ProcessKey(void)
 {
 	if(GetKey(PLAY_BACK))
 	{
 		if(TmpFB == false)
 		{
+			Playlist.insert(Playlist.begin(), History[History.size() - 1]);
+			History.pop_back();
 			delete P;
 			P = nullptr;
 		}
@@ -251,8 +200,7 @@ int UI::ProcessKey(void)
 	}
 	if(GetKey(LEFT))
 	{
-		Scroll = 0;
-		ChoosingLine = 0;
+		S->GoBegin(Object.size());
 	}
 	if(GetKey(UP))
 	{
@@ -262,7 +210,7 @@ int UI::ProcessKey(void)
 		}
 		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
 		{
-			ChoosingLine--;
+			S->ScrollDown(Object.size(), Hold);
 			KeyIntervalCount = 0;
 		}
 		else
@@ -279,7 +227,7 @@ int UI::ProcessKey(void)
 		}
 		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
 		{
-			ChoosingLine++;
+			S->ScrollUp(Object.size(), Hold);
 			KeyIntervalCount = 0;
 		}
 		else
@@ -298,46 +246,46 @@ int UI::ProcessKey(void)
 }
 
 int UI::ProcessChoice(bool End)
-{
+{ 
+	int CurrentLine = S->GetCurrentLine();
 	if(Object[CurrentLine].GetEvent() == BACK)
 	{
 		if(ObjectBuf.size() != 0)
 		{
-			Scroll = PrevScroll[PrevScroll.size() - 1];
-			PrevScroll.pop_back();
-
-			ChoosingLine = PrevChoosingLine[PrevChoosingLine.size() - 1];
-			PrevChoosingLine.pop_back();
-			
 			Object = ObjectBuf[ObjectBuf.size() - 1];
+			delete S;
+			S = new ScrollState(PrevScroll[PrevScroll.size() - 1], PrevChoosingLine[PrevChoosingLine.size() - 1], Object.size());
+			PrevScroll.pop_back();
+			PrevChoosingLine.pop_back();	
 			ObjectBuf.pop_back();
 		}
 		return 0;
 	}
 	if(Object[CurrentLine].GetEvent() == LIST_ARTISTS)
 	{
-		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ARTIST);
+		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS);
 		return 0;
 	}
 	if(Object[CurrentLine].GetEvent() == LIST_ALBUMS)
 	{
-		ListItem(GetSortedAlbums(MList, Object[CurrentLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM, CHOOSE_TITLE);
+		ListItem(GetSortedAlbums(MList, Object[CurrentLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM);
 		return 0;
 	}
 
 	if(Object[CurrentLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
 	{
-		ListItem(GetSortedTrackNum(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
+		ListItem(GetSortedTrackNum(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC);
 		return 0;
 	}
 
 	if(Object[CurrentLine].GetEvent() == LIST_TITLES)
 	{
-		ListItem(GetSortedTitles(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
+		ListItem(GetSortedTitles(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC);
 		return 0;
 	}
 	if(Object[CurrentLine].GetEvent() == PLAY_ALL)
 	{
+
 		int n = 0;
 		for(int i = 0; i < Object.size();i++)
 		{
@@ -367,6 +315,7 @@ int UI::ProcessChoice(bool End)
 			}
 					
 			P = nullptr;
+			History.push_back(Playlist[0]);
 		}
 		return 0;
 	}
@@ -451,16 +400,14 @@ MenuItem::MenuItem(const MenuItem &Copy)
 	return;
 }
 
-int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
+int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 {
 	ObjectBuf.push_back(Object);
-	PrevScroll.push_back(Scroll);
-	PrevChoosingLine.push_back(ChoosingLine);
-
-	Scroll = 0;
-	ChoosingLine = 1;
-	PrevMode = Mode;
-	Mode = MODE;
+	PrevScroll.push_back(S->GetScroll());
+	PrevChoosingLine.push_back(S->GetChoosingLine());
+	
+	delete S;
+	S = new ScrollState(0, 1, 1);
 	Object.clear();
 	std::vector<MenuItem> TmpMenu;
 	if(E == LIST_TITLES)
@@ -513,5 +460,123 @@ int UI::ShufflePlaylist(void)
 	std::random_device Rd;
 	std::default_random_engine Engine(Rd());
 	std::shuffle(Playlist.begin(), Playlist.end(), Engine);
+	return 0;
+}
+
+
+
+int ScrollState::ProcessScroll(bool Hold)
+{
+	if(0 > ChoosingLine + Scroll)
+	{
+		if(Hold)//ホールドされてるなら止まる
+		{
+			Scroll = 0;
+			ChoosingLine = 0;
+		}
+		else
+		{
+			Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
+	
+			if(Scroll < 0)
+			{
+				Scroll = 0;
+			}
+			ChoosingLine = ListLength - Scroll - 1;
+	
+		}
+	}
+
+
+	if(ListLength <= ChoosingLine + Scroll)//選択したところが範囲外なら
+	{
+		if(Hold)//ホールドされてるなら止まる
+		{
+			ChoosingLine--;
+		}
+		else
+		{
+			Scroll = 0;
+			ChoosingLine = 0;
+
+		}
+	}
+	
+
+	if(Scroll == ListLength)
+	{
+		Scroll = ListLength - 1;
+
+	}
+	if(Scroll == -1)
+	{
+		Scroll = 0;
+	}
+	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() - 1)
+	{
+		Scroll++;
+		ChoosingLine--;
+	}
+	if(ChoosingLine == -1)
+	{
+		Scroll--;
+		ChoosingLine++;
+	}
+	
+	return 0;
+}
+
+ScrollState::ScrollState(int DefScroll, int DefChoosingLine, int DefLength)
+{
+	Scroll = DefScroll;
+	ChoosingLine = DefChoosingLine;
+	ListLength = DefLength;
+	return;
+}
+
+int ScrollState::ScrollUp(int Length, bool Hold)
+{
+	ListLength = Length;
+	ChoosingLine++;
+	ProcessScroll(Hold);
+	return 0;
+}
+int ScrollState::ScrollDown(int Length, bool Hold)
+{
+	ListLength = Length;
+	ChoosingLine--;
+	ProcessScroll(Hold);
+	return 0;
+}
+int ScrollState::GetChoosingLine(void)
+{
+	return ChoosingLine;
+}
+int ScrollState::GetCurrentLine(void)
+{
+	return Scroll + ChoosingLine;
+}
+int ScrollState::GetScroll(void)
+{
+	return Scroll;
+}
+
+int ScrollState::GoBegin(int Length)
+{
+	ChoosingLine = 0;
+	Scroll = 0;
+	ProcessScroll(false);
+	return 0;
+}
+int ScrollState::GoEnd(int Length)
+{
+	Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
+
+	if(Scroll < 0)
+	{
+		Scroll = 0;
+	}
+	ChoosingLine = ListLength - Scroll - 1;
+	ProcessScroll(false);
 	return 0;
 }

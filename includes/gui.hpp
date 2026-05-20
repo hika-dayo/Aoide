@@ -35,14 +35,6 @@ bool ProcessMessage(void);//ウィンドウのメッセージを処理。
 						  //この関数を定期的に呼びだす必要がある。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
 SDL_Window* GetWindow(void);//ウィンドウを得る
-enum UI_MODE
-{
-	MAINMENU,
-	OPTION,
-	CHOOSE_ARTIST,
-	CHOOSE_ALBUM,
-	CHOOSE_TITLE,
-};
 //色ゾーン
 enum COLOR
 {
@@ -113,26 +105,41 @@ public:
 	std::string GetPath(void);
 };
 
+class ScrollState
+{
+	private:
+		Config C;
+		int Scroll;//スクロール位置の保存
+		int ListLength;//リストの長さ
+		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
+		int ProcessScroll(bool Hold);
+	public:
+		ScrollState(int DefScroll, int DefChoosingLine, int DefLength);
+		int ScrollUp(int Length, bool Hold);
+		int ScrollDown(int Length, bool Hold);
+		int GoBegin(int Length);
+		int GoEnd(int Length);
+		int GetCurrentLine(void);
+		int GetChoosingLine(void);
+		int GetScroll(void);
+};
 
 class UI
 {
 	private:
 		Player *P;
-		Music *CurrentMusic;
 
 		Config C;
-		UI_MODE Mode;
-		UI_MODE PrevMode;//前のモード
-
-		int Scroll;//スクロール位置の保存
-				   
+		
 		std::vector<int> PrevScroll;//前のスクロール位置の保存
 		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
-		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
-		int CurrentLine;//何行目を選択しているか
-
+		
+		ScrollState *S;
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
+
+
+
 		bool TmpKey;//方向キーが押されている間はtrue
 		bool TmpEnter;//エンターキーが押されている間はtrue	
 		bool TmpSpace;//スペースキーが押されている間はtrue	
@@ -142,13 +149,15 @@ class UI
 
 
 		int ProcessKey(void);//キーを処理する
-		int ProcessScroll(void);
 		int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
 		
-		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE);
+		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE);
 
 		std::vector<Music> MList;//音楽の情報を保持
+				
 		std::vector<Music> Playlist;//プレイリスト
+		std::vector<Music> History;//履歴を保存する
+		
 		std::vector<Image> ArtworkList;
 
 		int ShufflePlaylist(void);
