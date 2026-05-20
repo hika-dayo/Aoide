@@ -35,14 +35,6 @@ bool ProcessMessage(void);//ウィンドウのメッセージを処理。
 						  //この関数を定期的に呼びだす必要がある。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
 SDL_Window* GetWindow(void);//ウィンドウを得る
-enum UI_MODE
-{
-	MAINMENU,
-	OPTION,
-	CHOOSE_ARTIST,
-	CHOOSE_ALBUM,
-	CHOOSE_TITLE,
-};
 //色ゾーン
 enum COLOR
 {
@@ -146,8 +138,6 @@ class UI
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 
-		UI_MODE Mode;
-		UI_MODE PrevMode;//前のモード
 
 
 		bool TmpKey;//方向キーが押されている間はtrue
@@ -161,7 +151,7 @@ class UI
 		int ProcessKey(void);//キーを処理する
 		int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
 		
-		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE);
+		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE);
 
 		std::vector<Music> MList;//音楽の情報を保持
 				

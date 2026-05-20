@@ -30,8 +30,6 @@ UI::UI(std::vector<Music> &MusicList)
 {
 	S = new ScrollState(0, 0, 0);
 	P = nullptr;
-	Mode = MAINMENU;
-	PrevMode = MAINMENU;
 
 	Hold = false;
 	KeyIntervalCount = 0;
@@ -265,24 +263,24 @@ int UI::ProcessChoice(bool End)
 	}
 	if(Object[CurrentLine].GetEvent() == LIST_ARTISTS)
 	{
-		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS, CHOOSE_ARTIST);
+		ListItem(GetSortedArtists(MList), LIST_ARTISTS, LIST_ALBUMS);
 		return 0;
 	}
 	if(Object[CurrentLine].GetEvent() == LIST_ALBUMS)
 	{
-		ListItem(GetSortedAlbums(MList, Object[CurrentLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM, CHOOSE_TITLE);
+		ListItem(GetSortedAlbums(MList, Object[CurrentLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM);
 		return 0;
 	}
 
 	if(Object[CurrentLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
 	{
-		ListItem(GetSortedTrackNum(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC, CHOOSE_TITLE);
+		ListItem(GetSortedTrackNum(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC);
 		return 0;
 	}
 
 	if(Object[CurrentLine].GetEvent() == LIST_TITLES)
 	{
-		ListItem(GetSortedTitles(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC, CHOOSE_TITLE);
+		ListItem(GetSortedTitles(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES, PLAY_MUSIC);
 		return 0;
 	}
 	if(Object[CurrentLine].GetEvent() == PLAY_ALL)
@@ -402,7 +400,7 @@ MenuItem::MenuItem(const MenuItem &Copy)
 	return;
 }
 
-int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
+int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 {
 	ObjectBuf.push_back(Object);
 	PrevScroll.push_back(S->GetScroll());
@@ -410,8 +408,6 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE, UI_MODE MODE)
 	
 	delete S;
 	S = new ScrollState(0, 1, 1);
-	PrevMode = Mode;
-	Mode = MODE;
 	Object.clear();
 	std::vector<MenuItem> TmpMenu;
 	if(E == LIST_TITLES)
