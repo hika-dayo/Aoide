@@ -155,8 +155,6 @@ class UI
 
 		std::vector<Music> MList;//音楽の情報を保持
 				
-		std::vector<Music> Playlist;//プレイリスト
-		std::vector<Music> History;//履歴を保存する
 		
 		std::vector<Image> ArtworkList;
 

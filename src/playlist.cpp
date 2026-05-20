@@ -9,23 +9,12 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#pragma once
-#include <vector>
-#include "player.hpp"
-#include "audio_engine.hpp"
-class Playlist
+#include "../includes/playlist.hpp"
+
+
+
+Player& Playlist::GetPlayer(void)
 {
-private:
-	std::vector<Music> List;
-	std::vector<Music> History;
-	Music PlayingMusic;
-	Player *P;
-public:
-	Player &GetPlayer(void);
-	Playlist(void);
-	int InsertQueue(Music M);//先頭に挿入するか
-	int PushQueue(Music M);//最後尾に挿入するか
-	int PlayNext(void);//次へ進む
-	int PlayPrev(void);//前へ進む
-	int Process(void);//自動的にプレイリストを再生する
-};
+	return *P;
+}
+
