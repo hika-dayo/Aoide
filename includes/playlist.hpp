@@ -10,4 +10,29 @@
   */
 
 #pragma once
-
+#include <vector>
+#include "player.hpp"
+#include "audio_engine.hpp"
+class Playlist
+{
+private:
+	std::vector<Music> List;
+	std::vector<Music> History;
+	Music *PlayingMusic;
+	Player *P;
+	
+public:
+	Music GetPlayingMusic(void);
+	std::vector<Music> GetPlaylist(void);
+	std::vector<Music> GetHistory(void);
+	Player &GetPlayer(void);
+	Playlist(void);
+	~Playlist(void);
+	int Pause(void);
+	int Play(void);
+	int InsertQueue(Music M);//先頭に挿入するか
+	int PushQueue(Music M);//最後尾に挿入するか
+	int PlayNext(void);//次へ進む
+	int PlayPrev(void);//前へ進む
+	int Process(void);//自動的にプレイリストを再生する
+};
