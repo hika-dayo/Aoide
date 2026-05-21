@@ -44,6 +44,10 @@ bool Player::isEnded(void)
 	ma_uint64 Cursor;
 	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
 	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
+	if(Error)
+	{
+		return true;
+	}
 	return (Length == Cursor);
 }
 
@@ -60,10 +64,12 @@ bool Player::isPaused(void)
 	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
 	return (Length != Cursor) && !ma_sound_is_playing(&Sound);
 }
+
 bool Player::hasError(void)
 {
 	return Error;
 }
+
 int Player::GetAudioLength(void)
 {
 	ma_uint64 Length;
@@ -83,6 +89,10 @@ double Player::GetAudioPosition(void)
 	ma_uint64 Cursor;
 	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
 	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
+	if(Length == 0)
+	{
+		return 0;
+	}
 	return (Cursor / Length);
 }
 

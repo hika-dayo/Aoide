@@ -108,7 +108,7 @@ PROGRAMS = $(bin_PROGRAMS)
 am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) \
 	audio_engine.$(OBJEXT) loop.$(OBJEXT) error.$(OBJEXT) \
 	gui.$(OBJEXT) sdl.$(OBJEXT) file.$(OBJEXT) config.$(OBJEXT) \
-	image.$(OBJEXT) toolkit.$(OBJEXT)
+	image.$(OBJEXT) toolkit.$(OBJEXT) playlist.$(OBJEXT)
 aoide_OBJECTS = $(am_aoide_OBJECTS)
 aoide_DEPENDENCIES =
 AM_V_P = $(am__v_P_@AM_V@)
@@ -129,7 +129,8 @@ am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/audio_engine.Po \
 	./$(DEPDIR)/config.Po ./$(DEPDIR)/error.Po ./$(DEPDIR)/file.Po \
 	./$(DEPDIR)/gui.Po ./$(DEPDIR)/image.Po ./$(DEPDIR)/loop.Po \
-	./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po ./$(DEPDIR)/sdl.Po \
+	./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po \
+	./$(DEPDIR)/playlist.Po ./$(DEPDIR)/sdl.Po \
 	./$(DEPDIR)/toolkit.Po
 am__mv = mv -f
 AM_V_lt = $(am__v_lt_@AM_V@)
@@ -328,7 +329,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-aoide_SOURCES = src/main.cpp src/player.cpp src/audio_engine.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp src/config.cpp src/image.cpp src/toolkit.cpp \
+aoide_SOURCES = src/main.cpp src/player.cpp src/audio_engine.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp src/config.cpp src/image.cpp src/toolkit.cpp src/playlist.cpp\
 				includes/audio_engine.hpp includes/config.hpp includes/error.hpp includes/gui.hpp includes/input.hpp includes/loop.hpp includes/player.hpp 
 
 aoide_LDADD = -lminiaudio -lSDL3 -lSDL3_ttf -lSDL3_image -ltag
@@ -449,6 +450,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/loop.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/player.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/playlist.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/toolkit.Po@am__quote@ # am--include-marker
 
@@ -625,6 +627,20 @@ toolkit.obj: src/toolkit.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/toolkit.cpp' object='toolkit.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o toolkit.obj `if test -f 'src/toolkit.cpp'; then $(CYGPATH_W) 'src/toolkit.cpp'; else $(CYGPATH_W) '$(srcdir)/src/toolkit.cpp'; fi`
+
+playlist.o: src/playlist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT playlist.o -MD -MP -MF $(DEPDIR)/playlist.Tpo -c -o playlist.o `test -f 'src/playlist.cpp' || echo '$(srcdir)/'`src/playlist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/playlist.Tpo $(DEPDIR)/playlist.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/playlist.cpp' object='playlist.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o playlist.o `test -f 'src/playlist.cpp' || echo '$(srcdir)/'`src/playlist.cpp
+
+playlist.obj: src/playlist.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT playlist.obj -MD -MP -MF $(DEPDIR)/playlist.Tpo -c -o playlist.obj `if test -f 'src/playlist.cpp'; then $(CYGPATH_W) 'src/playlist.cpp'; else $(CYGPATH_W) '$(srcdir)/src/playlist.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/playlist.Tpo $(DEPDIR)/playlist.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/playlist.cpp' object='playlist.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o playlist.obj `if test -f 'src/playlist.cpp'; then $(CYGPATH_W) 'src/playlist.cpp'; else $(CYGPATH_W) '$(srcdir)/src/playlist.cpp'; fi`
 install-dist_pkgdataDATA: $(dist_pkgdata_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(dist_pkgdata_DATA)'; test -n "$(pkgdatadir)" || list=; \
@@ -936,6 +952,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/loop.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/player.Po
+	-rm -f ./$(DEPDIR)/playlist.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
 	-rm -f ./$(DEPDIR)/toolkit.Po
 	-rm -f Makefile
@@ -994,6 +1011,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/loop.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/player.Po
+	-rm -f ./$(DEPDIR)/playlist.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
 	-rm -f ./$(DEPDIR)/toolkit.Po
 	-rm -f Makefile

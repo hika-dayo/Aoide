@@ -79,31 +79,16 @@ int UI::Process(void)
 	
 	ProcessKey();
 		
-	
-	if(Playlist.size() != 0)
-	{
+	List.Process();
 
-		if(P == nullptr || (P != nullptr && P->isEnded()))
-		{
-			if(P != nullptr)
-			{
-				delete P;
-			}
-			P = new Player(Playlist[0].GetPath().c_str());
-			Playlist.erase(Playlist.begin());
-			History.push_back(Playlist[0]);
-			P->Play();
-		}
-	}
-
-	for(int i = 0; i < History.size(); i++)
+	for(int i = 0; i < List.GetHistory().size(); i++)
 	{
-		std::cout << History[i].GetTitle() << std::endl;
+		std::cout << List.GetHistory()[i].GetTitle() << std::endl;
 	}
-	std::cout << std::endl;
-	for(int i = 0; i < Playlist.size(); i++)
+	std::cout << List.GetPlayingMusic().GetTitle()<< std::endl;
+	for(int i = 0; i < List.GetPlaylist().size(); i++)
 	{
-		std::cout << Playlist[i].GetTitle() << std::endl;
+		std::cout << List.GetPlaylist()[i].GetTitle() << std::endl;
 	}
 	std::cout << std::endl;
 	std::cout << std::endl;
@@ -135,10 +120,7 @@ int UI::ProcessKey(void)
 	{
 		if(TmpFB == false)
 		{
-			Playlist.insert(Playlist.begin(), History[History.size() - 1]);
-			History.pop_back();
-			delete P;
-			P = nullptr;
+			List.PlayPrev();
 		}
 		TmpFB = true;
 	}
@@ -146,8 +128,7 @@ int UI::ProcessKey(void)
 	{
 		if(TmpFB == false)
 		{
-			delete P;
-			P = nullptr;
+			List.PlayNext();
 		}
 		TmpFB = true;
 	}
@@ -158,18 +139,9 @@ int UI::ProcessKey(void)
 	if(GetKey(PAUSE_PLAY))
 	{
 		if(TmpPause == false)
-		{
-			if(P != nullptr)
-			{
-				if(P->isPaused())
-				{
-					P->Play();
-				}
-				else
-				{
-					P->Pause();
-				}
-			}
+		{	
+			List.Pause();
+			std::cout << "aaa" << std::endl;
 		}
 		TmpPause = true;
 	}
@@ -289,20 +261,20 @@ int UI::ProcessChoice(bool End)
 		int n = 0;
 		for(int i = 0; i < Object.size();i++)
 		{
+			n = Object.size() - i;
 			if(End)
 			{
 				if(!Object[i].GetPath().empty())
 				{
-						Playlist.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+						List.PushQueue(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
 				}
 
 			}
 			else
 			{
-				if(!Object[i].GetPath().empty())
+				if(!Object[n].GetPath().empty())
 				{
-						Playlist.insert(Playlist.begin() + n, Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
-						n++;
+						List.InsertQueue(Music(Object[n].GetPath(), Object[n].GetArtist(), Object[n].GetAlbum(), Object[n].GetTitle(), 0));
 				}
 			}
 		}
@@ -315,7 +287,6 @@ int UI::ProcessChoice(bool End)
 			}
 					
 			P = nullptr;
-			History.push_back(Playlist[0]);
 		}
 		return 0;
 	}
@@ -324,7 +295,7 @@ int UI::ProcessChoice(bool End)
 	{
 		if(End)
 		{
-			Playlist.push_back(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+			List.PushQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
 		}
 		else
 		{
@@ -335,7 +306,7 @@ int UI::ProcessChoice(bool End)
 			}
 					
 			P = nullptr;
-			Playlist.insert(Playlist.begin(), Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+			List.InsertQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
 		}
 		return 0;
 	}
@@ -459,7 +430,7 @@ int UI::ShufflePlaylist(void)
 {
 	std::random_device Rd;
 	std::default_random_engine Engine(Rd());
-	std::shuffle(Playlist.begin(), Playlist.end(), Engine);
+//	std::shuffle(Playlist.begin(), Playlist.end(), Engine);
 	return 0;
 }
 

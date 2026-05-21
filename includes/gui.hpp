@@ -14,6 +14,7 @@
 #include "config.hpp"
 #include "audio_engine.hpp"
 #include "player.hpp"
+#include "playlist.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <optional>
@@ -131,6 +132,8 @@ class UI
 
 		Config C;
 		
+		Playlist List;
+
 		std::vector<int> PrevScroll;//前のスクロール位置の保存
 		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 		
