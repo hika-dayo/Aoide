@@ -49,6 +49,7 @@ enum EVENT
 	NOTHING,
 	PLAY_MUSIC,
 	PLAY_ALL,
+	SHUFFLE_PLAY,
 	EXIT,
 	LIST_ARTISTS,
 	LIST_ALBUMS,
@@ -138,6 +139,7 @@ class UI
 		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 		
 		ScrollState *S;
+
 		bool Hold;//キーが長押しされているか
 		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 
@@ -150,7 +152,6 @@ class UI
 		bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
 		bool TmpPause;//一時停止キーが押されている間はtrue	
 
-
 		int ProcessKey(void);//キーを処理する
 		int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
 		
@@ -161,7 +162,7 @@ class UI
 		
 		std::vector<Image> ArtworkList;
 
-		int ShufflePlaylist(void);
+		int ShuffleTitles(std::vector<Music> &ArgMusic);
 
 		Color FontColor;
 		TTF_Font* Font;

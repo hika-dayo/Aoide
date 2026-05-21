@@ -81,7 +81,7 @@ int UI::Process(void)
 		
 	List.Process();
 
-	for(int i = 0; i < List.GetHistory().size(); i++)
+/*	for(int i = 0; i < List.GetHistory().size(); i++)
 	{
 		std::cout << List.GetHistory()[i].GetTitle() << std::endl;
 	}
@@ -92,7 +92,7 @@ int UI::Process(void)
 	}
 	std::cout << std::endl;
 	std::cout << std::endl;
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 
 	for(int i = 0; i + S->GetScroll() < Object.size(); i++)
 	{
@@ -285,6 +285,45 @@ int UI::ProcessChoice(bool End)
 		return 0;
 	}
 
+	if(Object[CurrentLine].GetEvent() == SHUFFLE_PLAY)
+	{
+		std::vector<Music> Tmp;
+		int n = 0;
+		for(int i = 0; i < Object.size();i++)
+		{
+			if(!Object[i].GetPath().empty())
+			{
+				Tmp.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+			}
+		}
+		ShuffleTitles(Tmp);
+		
+		for(int i = 0; i < Tmp.size();i++)
+		{
+			n = Tmp.size() - i - 1;
+			if(End)
+			{
+				if(!Tmp[i].GetPath().empty())
+				{
+						List.PushQueue(Tmp[i]);
+				}
+
+			}
+			else
+			{
+				if(!Tmp[n].GetPath().empty())
+				{
+						List.InsertQueue(Tmp[n]);
+				}
+			}
+		}
+		if(!End)
+		{
+			List.PlayNext();
+		}
+		return 0;
+	}
+
 	if(Object[CurrentLine].GetEvent() == PLAY_MUSIC)
 	{
 		if(End)
@@ -372,7 +411,11 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 	if(E == LIST_TITLES)
 	{
 		TmpMenu.push_back(MenuItem("< Back", BACK));
+		TmpMenu.push_back(MenuItem("Shuffle", SHUFFLE_PLAY));	
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
+		delete S;
+		S = new ScrollState(0, 2, 1);
+
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
@@ -399,7 +442,11 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 	if(E == LIST_TITLES_BY_TRACKNUM)
 	{
 		TmpMenu.push_back(MenuItem("< Back", BACK));
+		TmpMenu.push_back(MenuItem("Shuffle", SHUFFLE_PLAY));
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
+		delete S;
+		S = new ScrollState(0, 2, 1);
+	
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
@@ -414,11 +461,11 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 	return 0;
 }
 
-int UI::ShufflePlaylist(void)
+int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 {
 	std::random_device Rd;
 	std::default_random_engine Engine(Rd());
-//	std::shuffle(Playlist.begin(), Playlist.end(), Engine);
+	std::shuffle(ArgMusic.begin(), ArgMusic.end(), Engine);
 	return 0;
 }
 
