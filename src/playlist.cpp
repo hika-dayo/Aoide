@@ -60,9 +60,9 @@ int Playlist::PlayPrev(void)
 			*PlayingMusic = History[History.size() - 1];
 			History.pop_back();
 		}
+		delete P;
+		P = nullptr;
 	}
-	delete P;
-	P = nullptr;
 	return 0;
 }
 
