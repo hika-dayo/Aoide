@@ -261,7 +261,7 @@ int UI::ProcessChoice(bool End)
 		int n = 0;
 		for(int i = 0; i < Object.size();i++)
 		{
-			n = Object.size() - i;
+			n = Object.size() - i - 1;
 			if(End)
 			{
 				if(!Object[i].GetPath().empty())
@@ -280,13 +280,7 @@ int UI::ProcessChoice(bool End)
 		}
 		if(!End)
 		{
-			if(P != nullptr)
-			{
-				P->Stop();
-				delete P;
-			}
-					
-			P = nullptr;
+			List.PlayNext();
 		}
 		return 0;
 	}
@@ -299,14 +293,8 @@ int UI::ProcessChoice(bool End)
 		}
 		else
 		{
-			if(P != nullptr)
-			{
-				P->Stop();
-				delete P;
-			}
-					
-			P = nullptr;
 			List.InsertQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+			List.PlayNext();
 		}
 		return 0;
 	}
