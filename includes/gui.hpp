@@ -13,7 +13,6 @@
 
 #include "config.hpp"
 #include "audio_engine.hpp"
-#include "player.hpp"
 #include "playlist.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -21,6 +20,7 @@
 #include <string>
 #include <vector>
 #include <optional>
+#include <memory>
 
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
@@ -70,20 +70,20 @@ int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画�
 
 class Image
 {
-	private:
-		std::string Path;
-		int Width;
-		int Height;
-		SDL_Surface* ImgData;
-	public:
-		Image(std::string ImagePath);
-		Image(const Image &Copy);//コピーコンストラクタ
-		~Image(void);
-		int ChangeImage(std::string ImagePath);//コンストラクタ
-		int GetWidth(void);
-		int GetHeight(void);
-		int DrawImage(int X, int Y, int Width = 0, int Height = 0);
-		std::string GetPath(void);
+private:
+	std::string Path;
+	int Width;
+	int Height;
+	SDL_Surface* ImgData;
+public:
+	Image(std::string ImagePath);
+	Image(const Image &Copy);//コピーコンストラクタ
+	~Image(void);
+	int ChangeImage(std::string ImagePath);//コンストラクタ
+	int GetWidth(void);
+	int GetHeight(void);
+	int DrawImage(int X, int Y, int Width = 0, int Height = 0);
+	std::string GetPath(void);
 };
 
 
@@ -109,72 +109,72 @@ public:
 
 class ScrollState
 {
-	private:
-		Config C;
-		int Scroll;//スクロール位置の保存
-		int ListLength;//リストの長さ
-		int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
-		int ProcessScroll(bool Hold);
-	public:
-		ScrollState(int DefScroll, int DefChoosingLine, int DefLength);
-		int ScrollUp(int Length, bool Hold);
-		int ScrollDown(int Length, bool Hold);
-		int GoBegin(int Length);
-		int GoEnd(int Length);
-		int GetCurrentLine(void);
-		int GetChoosingLine(void);
-		int GetScroll(void);
+private:
+	Config C;
+	int Scroll;//スクロール位置の保存
+	int ListLength;//リストの長さ
+	int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
+	int ProcessScroll(bool Hold);
+public:
+	ScrollState(int DefScroll, int DefChoosingLine, int DefLength);
+	int ScrollUp(int Length, bool Hold);
+	int ScrollDown(int Length, bool Hold);
+	int GoBegin(int Length);
+	int GoEnd(int Length);
+	int GetCurrentLine(void);
+	int GetChoosingLine(void);
+	int GetScroll(void);
 };
 
 class UI
 {
-	private:
-		Player *P;
+private:
+	std::unique_ptr<Player> P;
 
-		Config C;
-		
-		Playlist List;
+	Config C;
+	
+	Playlist List;
 
-		std::vector<int> PrevScroll;//前のスクロール位置の保存
-		std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
-		
-		ScrollState *S;
+	std::vector<int> PrevScroll;//前のスクロール位置の保存
+	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
+	
+	std::unique_ptr<ScrollState> S;
 
-		bool Hold;//キーが長押しされているか
-		int KeyIntervalCount;//長押しされるまでの時間のカウンタ
+	bool Hold;//キーが長押しされているか
+	int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 
 
 
-		bool TmpRightKey;//右矢印キーが押されている間はtrue
-		bool TmpKey;//方向キーが押されている間はtrue
-		bool TmpEnter;//エンターキーが押されている間はtrue	
-		bool TmpSpace;//スペースキーが押されている間はtrue	
+	bool TmpRightKey;//右矢印キーが押されている間はtrue
+	bool TmpKey;//方向キーが押されている間はtrue
+	bool TmpEnter;//エンターキーが押されている間はtrue	
+	bool TmpSpace;//スペースキーが押されている間はtrue	
 
-		bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
-		bool TmpPause;//一時停止キーが押されている間はtrue	
+	bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
+	bool TmpPause;//一時停止キーが押されている間はtrue	
 
-		bool PlaylistMode;
+	bool PlaylistMode;
 
-		int ProcessKey(void);//キーを処理する
-		int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
-		
-		int ListItem(std::vector<Music> M, EVENT E, EVENT SetE);
+	int ProcessKey(void);//キーを処理する
+	int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
+	
+	int ListItem(std::vector<Music> M, EVENT E, EVENT SetE);
 
-		std::vector<Music> MList;//音楽の情報を保持
-				
-		
-		std::vector<Image> ArtworkList;
+	std::vector<Music> MList;//音楽の情報を保持
+			
+	
+	std::vector<Image> ArtworkList;
 
-		int ShuffleTitles(std::vector<Music> &ArgMusic);
+	int ShuffleTitles(std::vector<Music> &ArgMusic);
 
-		Color FontColor;
-		TTF_Font* Font;
-		std::vector<std::string> Texts;//テキスト
-		std::vector<MenuItem> Object;//描画する内容
-		std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
-	public:
-		UI(std::vector<Music> &MusicLists);
-		int Process(void);
+	Color FontColor;
+	TTF_Font* Font;
+	std::vector<std::string> Texts;//テキスト
+	std::vector<MenuItem> Object;//描画する内容
+	std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
+public:
+	UI(std::vector<Music> &MusicLists);
+	int Process(void);
 
 };
 

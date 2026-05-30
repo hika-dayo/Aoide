@@ -17,6 +17,7 @@
 #include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
+#include <memory>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -28,7 +29,7 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
-	S = new ScrollState(0, 0, 0);
+	S = std::make_unique<ScrollState>(0, 0, 0);
 	P = nullptr;
 
 	Hold = false;
@@ -244,8 +245,7 @@ int UI::ProcessChoice(bool End)
 		if(ObjectBuf.size() != 0)
 		{
 			Object = ObjectBuf[ObjectBuf.size() - 1];
-			delete S;
-			S = new ScrollState(PrevScroll[PrevScroll.size() - 1], PrevChoosingLine[PrevChoosingLine.size() - 1], Object.size());
+			S = std::make_unique<ScrollState>(PrevScroll[PrevScroll.size() - 1], PrevChoosingLine[PrevChoosingLine.size() - 1], Object.size());
 			PrevScroll.pop_back();
 			PrevChoosingLine.pop_back();	
 			ObjectBuf.pop_back();
@@ -423,8 +423,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 	PrevScroll.push_back(S->GetScroll());
 	PrevChoosingLine.push_back(S->GetChoosingLine());
 	
-	delete S;
-	S = new ScrollState(0, 1, 1);
+	S = std::make_unique<ScrollState>(0, 1, 1);
 	Object.clear();
 	std::vector<MenuItem> TmpMenu;
 	if(E == LIST_TITLES)
@@ -432,8 +431,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		TmpMenu.push_back(MenuItem("Shuffle", SHUFFLE_PLAY));	
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
-		delete S;
-		S = new ScrollState(0, 2, 1);
+		S = std::make_unique<ScrollState>(0, 2, 1);
 
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
@@ -463,8 +461,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		TmpMenu.push_back(MenuItem("Shuffle", SHUFFLE_PLAY));
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
-		delete S;
-		S = new ScrollState(0, 2, 1);
+		S = std::make_unique<ScrollState>(0, 2, 1);
 	
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)

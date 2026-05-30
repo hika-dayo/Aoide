@@ -11,12 +11,7 @@
 
 #include "../includes/config.hpp"
 #include "../includes/file.hpp"
-#include "../includes/error.hpp"
 #include "../includes/audio_engine.hpp"
-#include <cstdlib>
-#include <filesystem>
-#include <iostream>
-#include <fstream>
 #include <string>
 #include <sys/stat.h>
 #include <stdlib.h>
