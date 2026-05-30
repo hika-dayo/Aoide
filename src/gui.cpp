@@ -29,7 +29,12 @@
 
 UI::UI(std::vector<Music> &MusicList)
 {
-	S = std::make_unique<ScrollState>(0, 0, 0);
+	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
+	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
+	Object.push_back(MenuItem("Songs", LIST_TITLES));
+	Object.push_back(MenuItem("Exit", EXIT));
+	S = std::make_unique<ScrollState>(0, 0, Object.size());
+	
 	P = nullptr;
 
 	Hold = false;
@@ -68,11 +73,6 @@ UI::UI(std::vector<Music> &MusicList)
 		}
 	
 	
-	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
-	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
-	Object.push_back(MenuItem("Songs", LIST_TITLES));
-	Object.push_back(MenuItem("Exit", EXIT));
-	ObjectBuf.push_back(Object);//バッファとして
 	return;
 }
 
@@ -423,7 +423,6 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 	PrevScroll.push_back(S->GetScroll());
 	PrevChoosingLine.push_back(S->GetChoosingLine());
 	
-	S = std::make_unique<ScrollState>(0, 1, 1);
 	Object.clear();
 	std::vector<MenuItem> TmpMenu;
 	if(E == LIST_TITLES)
@@ -431,7 +430,6 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		TmpMenu.push_back(MenuItem("Shuffle", SHUFFLE_PLAY));	
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
-		S = std::make_unique<ScrollState>(0, 2, 1);
 
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
@@ -439,6 +437,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 			std::string Title = "  " + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
+		S = std::make_unique<ScrollState>(0, 2, TmpMenu.size());
 	}
 	if(E == LIST_ALBUMS)
 	{
@@ -447,6 +446,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		{
 			TmpMenu.push_back(MenuItem(M[i].GetAlbum(), SetE, M[i]));
 		}	
+		S = std::make_unique<ScrollState>(0, 1, TmpMenu.size());
 	}
 	if(E == LIST_ARTISTS)
 	{
@@ -455,13 +455,13 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		{
 			TmpMenu.push_back(MenuItem(M[i].GetArtist(), SetE, M[i]));
 		}	
+		S = std::make_unique<ScrollState>(0, 1, TmpMenu.size());
 	}
 	if(E == LIST_TITLES_BY_TRACKNUM)
 	{
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		TmpMenu.push_back(MenuItem("Shuffle", SHUFFLE_PLAY));
 		TmpMenu.push_back(MenuItem("Play All", PLAY_ALL));
-		S = std::make_unique<ScrollState>(0, 2, 1);
 	
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
@@ -469,6 +469,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 			Title = "  " + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
+		S = std::make_unique<ScrollState>(0, 2, TmpMenu.size());
 	}
 	Object = TmpMenu;
 

@@ -16,7 +16,12 @@ ScrollState::ScrollState(int DefScroll, int DefChoosingLine, int DefLength)
 {
 	Scroll = DefScroll;
 	ChoosingLine = DefChoosingLine;
+
 	ListLength = DefLength;
+	if(DefLength <= GetCurrentLine())
+	{
+		GoEnd(DefLength);
+	}
 	return;
 }
 
