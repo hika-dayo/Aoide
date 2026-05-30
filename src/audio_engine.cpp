@@ -240,7 +240,7 @@ const std::vector<Music> GetSortedTitles(std::vector<Music> &M, const std::strin
 			}
 			if(!Repeat)
 			{
-				Music Tmp(M[i].GetPath(), M[i].GetAlbum(), M[i].GetArtist(), M[i].GetTitle(), M[i].GetTrackNum(), M[i].GetArtworkPath(), M[i].GetDiscNum());
+				Music Tmp(M[i].GetPath(), M[i].GetArtist(), M[i].GetAlbum(), M[i].GetTitle(), M[i].GetTrackNum(), M[i].GetArtworkPath(), M[i].GetDiscNum());
 				Titles.push_back(Tmp);
 			}
 		}
@@ -271,7 +271,7 @@ const std::vector<Music> GetSortedTrackNum(std::vector<Music> &M, const std::str
 			}
 			if(!Repeat)
 			{
-				Music Tmp(M[i].GetPath(), M[i].GetAlbum(), M[i].GetArtist(), M[i].GetTitle(), M[i].GetTrackNum(), M[i].GetArtworkPath(), M[i].GetDiscNum());
+				Music Tmp(M[i].GetPath(), M[i].GetArtist(), M[i].GetAlbum(), M[i].GetTitle(), M[i].GetTrackNum(), M[i].GetArtworkPath(), M[i].GetDiscNum());
 				Titles.push_back(Tmp);
 			}
 		}
