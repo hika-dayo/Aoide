@@ -97,8 +97,17 @@ int UI::Process(void)
 				DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
 			}
 		}
-			float BarY = S->GetScroll() / (float)Object.size() * (float)C.GetWindowHeight();
-			float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size() + 1) * (float)C.GetWindowHeight();
+
+		float BarY = S->GetScroll() / (float)Object.size() * (float)C.GetWindowHeight();
+		float BarHeight;
+		if(Object.size() == 0)
+		{	
+			BarHeight = C.GetWindowHeight();
+		}
+		else
+		{
+			BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size()) * (float)C.GetWindowHeight();
+		}
 			DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
 	}
 	return 0;
