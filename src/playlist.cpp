@@ -106,15 +106,19 @@ int Playlist::Process(void)
 
 int Playlist::Pause()
 {
-	if(P->isPaused())
+	if(P != nullptr)
 	{
-		P->Play();
-		return 0;
-	}
-	if(P->isPlaying())
-	{
-		P->Pause();
-		return 0;
+		if(P->isPaused())
+		{
+			P->Play();
+			return 0;
+		}
+		if(P->isPlaying())
+		{
+			P->Pause();
+			return 0;
+		}
+
 	}
 	return 0;
 }

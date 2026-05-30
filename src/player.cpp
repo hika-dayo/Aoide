@@ -58,6 +58,10 @@ bool Player::isPlaying(void)
 
 bool Player::isPaused(void)
 {
+	if(Error)
+	{
+		return false;
+	}
 	ma_uint64 Length;
 	ma_uint64 Cursor;
 	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
@@ -109,17 +113,23 @@ int Player::Stop(void)
 }
 int Player::Pause(void)
 {
-	if(ma_sound_is_playing(&Sound) == true)//変更前と変更後が同じだったら変更しない
+	if(!Error)
 	{
-		ma_sound_stop(&Sound);
+		if(ma_sound_is_playing(&Sound) == true)//変更前と変更後が同じだったら変更しない
+		{
+			ma_sound_stop(&Sound);
+		}
 	}
 	return 0;
 }
 int Player::Play(void)
 {
-	if(ma_sound_is_playing(&Sound) != true)//変更前と変更後が同じだったら変更しない
+	if(!Error)
 	{
-		ma_sound_start(&Sound);
+		if(ma_sound_is_playing(&Sound) != true)//変更前と変更後が同じだったら変更しない
+		{
+			ma_sound_start(&Sound);
+		}
 	}
 	return 0;
 }
