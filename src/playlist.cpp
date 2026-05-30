@@ -108,13 +108,11 @@ int Playlist::Pause()
 {
 	if(P->isPaused())
 	{
-		std::cout << "bb" << std::endl;
 		P->Play();
 		return 0;
 	}
 	if(P->isPlaying())
 	{
-		std::cout << "aa" << std::endl;
 		P->Pause();
 		return 0;
 	}

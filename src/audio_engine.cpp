@@ -233,7 +233,7 @@ const std::vector<Music> GetSortedTitles(std::vector<Music> &M, const std::strin
 		{
 			for(n = 0; n < Titles.size(); n++)
 			{
-				if(Titles[n].GetTitle() == M[i].GetTitle() && Titles[n].GetTrackNum() == M[i].GetTrackNum())
+				if(Titles[n] == M[i])
 				{
 					Repeat = true;
 				}
@@ -264,7 +264,7 @@ const std::vector<Music> GetSortedTrackNum(std::vector<Music> &M, const std::str
 		{
 			for(n = 0; n < Titles.size(); n++)
 			{
-				if(Titles[n].GetTitle() == M[i].GetTitle() && Titles[n].GetTrackNum() == Titles[n].GetDiscNum())
+				if(Titles[n] == M[i])
 				{
 					Repeat = true;
 				}
