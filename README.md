@@ -6,6 +6,8 @@
 - 音楽の再生停止
 - ウィンドウ表示  
 - 音楽ファイル検索機能
+- アーティスト/アルバム/曲のブラウズ
+- プレイリスト ファイル
 
 ## 基本操作
 - 上下矢印キー
@@ -113,16 +115,6 @@ $ sudo make install
 
 #### アンインストール
 ```bash
-$ cd Aoide/libraries/miniaudio/miniaudio-0.11.25
-$ sudo make uninstall
-$ cd Aoide/libraries/sdl3/SDL3-3.2.28
-$ sudo make uninstall
-$ cd Aoide/libraries/sdl3/SDL3_image-3.2.2
-$ sudo make uninstall
-$ cd Aoide/libraries/sdl3/SDL3_ttf-3.2.2
-$ sudo make uninstall
-$ cd Aoide/libraries/taglib/taglib-2.2.1/
-$ sudo make uninstall
 $ cd Aoide/
 $ sudo make uninstall
 ```
