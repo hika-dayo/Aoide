@@ -36,7 +36,8 @@ UI::UI(std::vector<Music> &MusicList)
 	TmpKey = false;
 	TmpEnter = false;
 	TmpSpace = false;
-
+	
+	PlaylistMode = false;
 
 	MList = MusicList;
 	FontColor =  0x00ffffff;
@@ -81,35 +82,25 @@ int UI::Process(void)
 		
 	List.Process();
 
-/*	for(int i = 0; i < List.GetHistory().size(); i++)
+	if(PlaylistMode != true)
 	{
-		std::cout << List.GetHistory()[i].GetTitle() << std::endl;
-	}
-	std::cout << List.GetPlayingMusic().GetTitle()<< std::endl;
-	for(int i = 0; i < List.GetPlaylist().size(); i++)
-	{
-		std::cout << List.GetPlaylist()[i].GetTitle() << std::endl;
-	}
-	std::cout << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;*/
-
-	for(int i = 0; i + S->GetScroll() < Object.size(); i++)
-	{
-		if(i == S->GetChoosingLine())
+		for(int i = 0; i + S->GetScroll() < Object.size(); i++)
 		{
-			DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
-			DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
-
+			if(i == S->GetChoosingLine())
+			{
+				DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
+				DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+	
+			}
+			else
+			{
+				DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
+			}
 		}
-		else
-		{
-			DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
-		}
+			float BarY = S->GetScroll() / (float)Object.size() * (float)C.GetWindowHeight();
+			float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size() + 1) * (float)C.GetWindowHeight();
+			DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
 	}
-		float BarY = S->GetScroll() / (float)Object.size() * (float)C.GetWindowHeight();
-		float BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size() + 1) * (float)C.GetWindowHeight();
-		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize() / 2, BarHeight, 0x00999999);
 	return 0;
 }
 
@@ -141,7 +132,6 @@ int UI::ProcessKey(void)
 		if(TmpPause == false)
 		{	
 			List.Pause();
-			std::cout << "aaa" << std::endl;
 		}
 		TmpPause = true;
 	}
@@ -169,6 +159,26 @@ int UI::ProcessKey(void)
 	else
 	{
 		TmpEnter = false;
+	}
+	
+	if(GetKey(RIGHT))
+	{
+		if(TmpRightKey == false)
+		{
+			if(PlaylistMode == false)
+			{
+				PlaylistMode = true;
+			}
+			else
+			{
+				PlaylistMode = false;
+			}
+		}
+		TmpRightKey = true;
+	}
+	else
+	{
+		TmpRightKey = false;
 	}
 	if(GetKey(LEFT))
 	{
@@ -471,118 +481,3 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 
 
 
-int ScrollState::ProcessScroll(bool Hold)
-{
-	if(0 > ChoosingLine + Scroll)
-	{
-		if(Hold)//ホールドされてるなら止まる
-		{
-			Scroll = 0;
-			ChoosingLine = 0;
-		}
-		else
-		{
-			Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
-	
-			if(Scroll < 0)
-			{
-				Scroll = 0;
-			}
-			ChoosingLine = ListLength - Scroll - 1;
-	
-		}
-	}
-
-
-	if(ListLength <= ChoosingLine + Scroll)//選択したところが範囲外なら
-	{
-		if(Hold)//ホールドされてるなら止まる
-		{
-			ChoosingLine--;
-		}
-		else
-		{
-			Scroll = 0;
-			ChoosingLine = 0;
-
-		}
-	}
-	
-
-	if(Scroll == ListLength)
-	{
-		Scroll = ListLength - 1;
-
-	}
-	if(Scroll == -1)
-	{
-		Scroll = 0;
-	}
-	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() - 1)
-	{
-		Scroll++;
-		ChoosingLine--;
-	}
-	if(ChoosingLine == -1)
-	{
-		Scroll--;
-		ChoosingLine++;
-	}
-	
-	return 0;
-}
-
-ScrollState::ScrollState(int DefScroll, int DefChoosingLine, int DefLength)
-{
-	Scroll = DefScroll;
-	ChoosingLine = DefChoosingLine;
-	ListLength = DefLength;
-	return;
-}
-
-int ScrollState::ScrollUp(int Length, bool Hold)
-{
-	ListLength = Length;
-	ChoosingLine++;
-	ProcessScroll(Hold);
-	return 0;
-}
-int ScrollState::ScrollDown(int Length, bool Hold)
-{
-	ListLength = Length;
-	ChoosingLine--;
-	ProcessScroll(Hold);
-	return 0;
-}
-int ScrollState::GetChoosingLine(void)
-{
-	return ChoosingLine;
-}
-int ScrollState::GetCurrentLine(void)
-{
-	return Scroll + ChoosingLine;
-}
-int ScrollState::GetScroll(void)
-{
-	return Scroll;
-}
-
-int ScrollState::GoBegin(int Length)
-{
-	ChoosingLine = 0;
-	Scroll = 0;
-	ProcessScroll(false);
-	return 0;
-}
-int ScrollState::GoEnd(int Length)
-{
-	Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
-
-	if(Scroll < 0)
-	{
-		Scroll = 0;
-	}
-	ChoosingLine = ListLength - Scroll - 1;
-	ProcessScroll(false);
-	return 0;
-}

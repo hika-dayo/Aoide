@@ -145,12 +145,15 @@ class UI
 
 
 
+		bool TmpRightKey;//右矢印キーが押されている間はtrue
 		bool TmpKey;//方向キーが押されている間はtrue
 		bool TmpEnter;//エンターキーが押されている間はtrue	
 		bool TmpSpace;//スペースキーが押されている間はtrue	
 
 		bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
 		bool TmpPause;//一時停止キーが押されている間はtrue	
+
+		bool PlaylistMode;
 
 		int ProcessKey(void);//キーを処理する
 		int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
