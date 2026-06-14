@@ -17,6 +17,7 @@
 #include <filesystem>
 #include <string>
 #include <fstream>
+#include <iostream>
 
 Config::Config()
 {
@@ -291,15 +292,15 @@ std::string Config::GetFontPath(void)
 	{
 		return FONT_PATH;
 	}
-	if(FileExists("/usr/local/share/aoide/unifont-17.0.03.otf"))
+	if(FileExists("assets/font/unifont-17.0.03.otf"))
 	{
-		return "/usr/local/share/aoide/unifont-17.0.03.otf";
+			return "assets/font/unifont-17.0.03.otf";
 	}
 	else
 	{
-		if(FileExists("assets/font/unifont-17.0.03.otf"))
+		if(FileExists("/usr/local/share/aoide/unifont-17.0.03.otf"))
 		{
-			return "assets/font/unifont-17.0.03.otf";
+			return "/usr/local/share/aoide/unifont-17.0.03.otf";
 		}
 		else
 		{
@@ -309,6 +310,32 @@ std::string Config::GetFontPath(void)
 
 	}
 	return "";
+}
+std::string Config::GetGraphicDir(void)
+{
+	std::filesystem::path Dir;
+	std::string Dev = "assets/graphics/";
+	Dir = Dev;
+	if(std::filesystem::exists(Dir) && std::filesystem::is_directory(Dir))
+	{
+		return Dev;
+	}
+	else
+	{
+		std::string Global = "/usr/local/share/aoide/";
+		Dir = Global;
+		if(std::filesystem::exists(Dir) && std::filesystem::is_directory(Dir))
+		{
+			return Global;
+		}
+		else
+		{
+			ReportError("graphicが保存されているディレクトリが存在しません。", CRITICAL_ERROR, __FILE__, __LINE__);
+			exit(1);
+		}
+
+	}
+
 }
 
 int Config::GetWindowWidth(void)

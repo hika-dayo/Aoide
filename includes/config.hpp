@@ -41,6 +41,7 @@ public:
 	std::string GetCacheDir(void);//キャッシュがあるディレクトリのパス
 	std::string GetConfigPath(void);//コンフィグファイルのパス
 	std::string GetFontPath(void);//フォントのパス
+	std::string GetGraphicDir(void);//グラフィックのディレクトリ
 	std::string GetSearchDir(void);//検索対象のディレクトリ
 	std::vector<std::string>GetSearchExtension();//検索対象の拡張子
 	int GetWindowWidth(void);//ウィンドウサイズ(横)	

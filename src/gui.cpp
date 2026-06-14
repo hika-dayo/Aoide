@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <iostream>
 
-UI::UI(std::vector<Music> &MusicList) : img("")
+UI::UI(std::vector<Music> &MusicList) : img(C.GetGraphicDir() + "playicon.png")
 {
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
@@ -78,7 +78,7 @@ int UI::Process(void)
 	if(PlaylistMode == true)
 	{
 		DrawStopIcon(0, 0, 24, 24, 0x0000ffff);
-//		img.DrawImage(0, 0, 24, 24);
+		img.DrawImage(0, 0, 24, 24);
 		
 	}else
 	{
