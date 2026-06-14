@@ -68,6 +68,8 @@ int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
 int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画する(X、Y、横の長さ、縦の長さ)
 
+int DrawStopIcon(int X, int Y, int W, int H, Color RectColor);
+
 class Image
 {
 private:
@@ -126,6 +128,17 @@ public:
 	int GetScroll(void);
 };
 
+class UIRender
+{
+public:
+	int DrawMenu(int ChoosingLine, int Scroll, std::vector<MenuItem> Object);
+	UIRender(void);
+private:
+	Color FontColor;
+	TTF_Font* Font;
+	std::vector<std::string> Texts;//テキスト
+};
+
 class UI
 {
 private:
@@ -134,7 +147,7 @@ private:
 	Config C;
 	
 	Playlist List;
-
+	Image img;
 	std::vector<int> PrevScroll;//前のスクロール位置の保存
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 	
@@ -142,7 +155,6 @@ private:
 
 	bool Hold;//キーが長押しされているか
 	int KeyIntervalCount;//長押しされるまでの時間のカウンタ
-
 
 
 	bool TmpRightKey;//右矢印キーが押されている間はtrue
@@ -161,20 +173,17 @@ private:
 	int ListItem(std::vector<Music> M, EVENT E, EVENT SetE);
 
 	std::vector<Music> MList;//音楽の情報を保持
-			
 	
+	std::vector<MenuItem> Object;//描画する内容
+			
+	UIRender Rend;	
 	std::vector<Image> ArtworkList;
 
 	int ShuffleTitles(std::vector<Music> &ArgMusic);
 
-	Color FontColor;
-	TTF_Font* Font;
-	std::vector<std::string> Texts;//テキスト
-	std::vector<MenuItem> Object;//描画する内容
 	std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
 public:
 	UI(std::vector<Music> &MusicLists);
 	int Process(void);
 
 };
-

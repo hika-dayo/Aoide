@@ -27,7 +27,7 @@
 #include <algorithm>
 #include <iostream>
 
-UI::UI(std::vector<Music> &MusicList)
+UI::UI(std::vector<Music> &MusicList) : img("")
 {
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
@@ -46,13 +46,6 @@ UI::UI(std::vector<Music> &MusicList)
 	PlaylistMode = false;
 
 	MList = MusicList;
-	FontColor =  0x00ffffff;
-	Font = InitFont(C.GetFontSize(), C.GetFontPath());
-	if(Font == 0)
-	{
-		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
-		exit(1);
-	}
 		for(int i = 0; i < MList.size(); i++)
 		{
 			bool tmp = false;
@@ -72,7 +65,6 @@ UI::UI(std::vector<Music> &MusicList)
 
 		}
 	
-	
 	return;
 }
 
@@ -83,34 +75,17 @@ int UI::Process(void)
 		
 	List.Process();
 
-	if(PlaylistMode != true)
+	if(PlaylistMode == true)
 	{
-		for(int i = 0; i + S->GetScroll() < Object.size(); i++)
-		{
-			if(i == S->GetChoosingLine())
-			{
-				DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
-				DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
-	
-			}
-			else
-			{
-				DrawText(Font, Object[S->GetScroll() + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
-			}
-		}
+		DrawStopIcon(0, 0, 24, 24, 0x0000ffff);
+//		img.DrawImage(0, 0, 24, 24);
+		
+	}else
+	{
+		Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
 
-		float BarY = S->GetScroll() / (float)Object.size() * (float)C.GetWindowHeight();
-		float BarHeight;
-		if(Object.size() == 0)
-		{	
-			BarHeight = C.GetWindowHeight();
-		}
-		else
-		{
-			BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size()) * (float)C.GetWindowHeight();
-		}
-			DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
 	}
+	
 	return 0;
 }
 
@@ -137,6 +112,7 @@ int UI::ProcessKey(void)
 	{
 		TmpFB = false;
 	}
+	
 	if(GetKey(PAUSE_PLAY))
 	{
 		if(TmpPause == false)
@@ -487,4 +463,44 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 }
 
 
+int UIRender::DrawMenu(int ChoosingLine, int Scroll, std::vector<MenuItem> Object)
+{
+	Config C;
+		for(int i = 0; i + Scroll < Object.size(); i++)
+		{
+			if(i == ChoosingLine)
+			{
+				DrawRect(0, C.GetFontSize() * i , C.GetWindowWidth(), C.GetFontSize(), FontColor);
+				DrawText(Font, Object[Scroll + i].GetText().c_str(), 0x00ffffff - FontColor, 0, i * C.GetFontSize());
+	
+			}
+			else
+			{
+				DrawText(Font, Object[Scroll + i].GetText().c_str(), FontColor, 0, i * C.GetFontSize());			
+			}
+		}
 
+		float BarY = Scroll / (float)Object.size() * (float)C.GetWindowHeight();
+		float BarHeight;
+		if(Object.size() == 0)
+		{	
+			BarHeight = C.GetWindowHeight();
+		}
+		else
+		{
+			BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size()) * (float)C.GetWindowHeight();
+		}
+			DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
+	return 0;
+}
+UIRender::UIRender(void)
+{
+	Config C;
+	FontColor =  0x00ffffff;
+	Font = InitFont(C.GetFontSize(), C.GetFontPath());
+	if(Font == 0)
+	{
+		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
+		exit(1);
+	}
+}
