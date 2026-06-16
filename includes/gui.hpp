@@ -57,6 +57,7 @@ enum EVENT
 	LIST_TITLES_BY_TRACKNUM,
 	BACK,
 };
+
 typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する
 
 SDL_Color ToSDLPixel(Color Arg);//符号無し32bit整数で表現された色をSDL用の表現に変換する
@@ -67,8 +68,6 @@ TTF_Font* InitFont(float Size, std::string Path);//Pathのフォントと引数�
 int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
 int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画する(X、Y、横の長さ、縦の長さ)
-
-int DrawStopIcon(int X, int Y, int W, int H, Color RectColor);
 
 class Image
 {
@@ -147,7 +146,10 @@ private:
 	Config C;
 	
 	Playlist List;
+	
 	Image img;
+	Image img2;
+
 	std::vector<int> PrevScroll;//前のスクロール位置の保存
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 	

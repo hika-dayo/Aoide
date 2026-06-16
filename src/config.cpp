@@ -8,7 +8,7 @@
 
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
-#include "../includes/gui.hpp"
+
 #include "../includes/config.hpp"
 #include "../includes/file.hpp"
 #include "../includes/error.hpp"

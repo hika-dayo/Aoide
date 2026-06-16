@@ -9,18 +9,12 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/config.hpp"
 #include "../includes/loop.hpp"
-#include "../includes/player.hpp"
 #include "../includes/audio_engine.hpp"
 #include "../includes/gui.hpp"
 #include <cstdlib>
-#include <stdio.h>
-#include <thread>
 #include <unistd.h>
 #include <iostream>
-#include <string>
-#include <vector>
 
 void Release(void)
 {
