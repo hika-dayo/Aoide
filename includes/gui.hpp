@@ -57,6 +57,7 @@ enum EVENT
 	LIST_TITLES_BY_TRACKNUM,
 	BACK,
 };
+
 typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する
 
 SDL_Color ToSDLPixel(Color Arg);//符号無し32bit整数で表現された色をSDL用の表現に変換する

@@ -10,7 +10,6 @@
   */
 
 #include "../includes/audio_engine.hpp"
-#include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_pixels.h>
@@ -22,16 +21,8 @@ int RunMainLoop(void)
 {
 	GUIInit();
 	Config C;
-/*	TTF_Font* Font = InitFont(C.GetFontSize(), C.GetFontPath());
-	if(Font == 0)
-	{
-		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
-		exit(1);
-	}
-	Color FontColor = 0x00ffffff*/
 	std::vector<Music> M = SearchDir(C.GetSearchDir().c_str());
 	UI UIobj(M);
-	int Y = 0;
 	CleanWindow();
 	while(1)
 	{
@@ -42,7 +33,6 @@ int RunMainLoop(void)
 		{
 			break;
 		}
-		//ここに処理を書く
 
 	}
 	return 0;

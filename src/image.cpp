@@ -9,11 +9,8 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/error.hpp"
-#include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 #include "../includes/file.hpp"
-#include "../includes/player.hpp"
 #include <SDL3/SDL_surface.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>

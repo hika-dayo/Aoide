@@ -26,7 +26,6 @@
 #include <taglib/fileref.h>
 #include <miniaudio/miniaudio.h>
 #include <algorithm>
-#include <ranges>
 #include <vector>
 
 static ma_engine Engine;
