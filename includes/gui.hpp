@@ -68,8 +68,6 @@ int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
 int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画する(X、Y、横の長さ、縦の長さ)
 
-int DrawStopIcon(int X, int Y, int W, int H, Color RectColor);
-
 class Image
 {
 private:
@@ -147,7 +145,10 @@ private:
 	Config C;
 	
 	Playlist List;
+	
 	Image img;
+	Image img2;
+
 	std::vector<int> PrevScroll;//前のスクロール位置の保存
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 	

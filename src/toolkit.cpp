@@ -79,11 +79,11 @@ int DrawRect(int X, int Y, int W, int H, Color RectColor)
 
 }
 
-int DrawStopIcon(int X, int Y, int W, int H, Color RectColor)
+/*int DrawStopIcon(int X, int Y, int W, int H, Color RectColor)
 {
 	Config C;
 	DrawRect(X, Y, W / 3, H, RectColor);
 	DrawRect(X + W / 3 * 2, Y, W / 3, H, RectColor);
 	return 0;	
 
-}
+}*/
