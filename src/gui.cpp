@@ -1,5 +1,4 @@
 /*
-
 	(C)Copyright 2025-2026 Hika h1ka.net 
 	   This file is part of Aoide.
 
@@ -78,7 +77,7 @@ int UI::Process(void)
 	if(PlaylistMode == true)
 	{
 		img.DrawImage(0, 0, 24, 24);
-		img2.DrawImage(50, 50, 24, 24);
+		img2.DrawImage(50,0, 24, 24);
 		
 		
 	}else
@@ -154,6 +153,15 @@ int UI::ProcessKey(void)
 		{
 			if(PlaylistMode == false)
 			{
+				for(int i = 0; i < List.GetHistory().size(); i++)
+				{
+					std::cout << List.GetHistory()[i].GetTitle() << std::endl;
+				}
+				std::cout << std::endl;
+				for(int i = 0; i < List.GetPlaylist().size(); i++)
+				{
+					std::cout << List.GetPlaylist()[i].GetTitle() << std::endl;
+				}
 				PlaylistMode = true;
 			}
 			else
