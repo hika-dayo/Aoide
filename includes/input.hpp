@@ -28,3 +28,20 @@ enum KEY
 
 bool GetKey(KEY K);
 int GetKeyCount(void);
+
+class Input
+{
+private:
+	bool TmpRightKey;//右矢印キーが押されている間はtrue
+	bool TmpKey;//方向キーが押されている間はtrue
+	bool TmpEnter;//エンターキーが押されている間はtrue	
+	bool TmpSpace;//スペースキーが押されている間はtrue	
+
+	bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
+	bool TmpPause;//一時停止キーが押されている間はtrue	
+	
+	bool Hold;//キーが長押しされているか
+	int KeyIntervalCount;//長押しされるまでの時間のカウンタ
+public:
+	int ProcessKey(void);
+};
