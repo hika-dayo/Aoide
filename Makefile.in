@@ -109,7 +109,7 @@ am_aoide_OBJECTS = main.$(OBJEXT) player.$(OBJEXT) \
 	audio_engine.$(OBJEXT) loop.$(OBJEXT) error.$(OBJEXT) \
 	gui.$(OBJEXT) sdl.$(OBJEXT) file.$(OBJEXT) config.$(OBJEXT) \
 	image.$(OBJEXT) toolkit.$(OBJEXT) playlist.$(OBJEXT) \
-	scroll.$(OBJEXT)
+	scroll.$(OBJEXT) ui.$(OBJEXT)
 aoide_OBJECTS = $(am_aoide_OBJECTS)
 aoide_DEPENDENCIES =
 AM_V_P = $(am__v_P_@AM_V@)
@@ -132,7 +132,7 @@ am__depfiles_remade = ./$(DEPDIR)/audio_engine.Po \
 	./$(DEPDIR)/gui.Po ./$(DEPDIR)/image.Po ./$(DEPDIR)/loop.Po \
 	./$(DEPDIR)/main.Po ./$(DEPDIR)/player.Po \
 	./$(DEPDIR)/playlist.Po ./$(DEPDIR)/scroll.Po \
-	./$(DEPDIR)/sdl.Po ./$(DEPDIR)/toolkit.Po
+	./$(DEPDIR)/sdl.Po ./$(DEPDIR)/toolkit.Po ./$(DEPDIR)/ui.Po
 am__mv = mv -f
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -330,7 +330,7 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-aoide_SOURCES = src/main.cpp src/player.cpp src/audio_engine.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp src/config.cpp src/image.cpp src/toolkit.cpp src/playlist.cpp src/scroll.cpp\
+aoide_SOURCES = src/main.cpp src/player.cpp src/audio_engine.cpp src/loop.cpp src/error.cpp src/gui.cpp src/sdl.cpp src/file.cpp src/config.cpp src/image.cpp src/toolkit.cpp src/playlist.cpp src/scroll.cpp src/ui.cpp\
 				includes/audio_engine.hpp includes/config.hpp includes/error.hpp includes/gui.hpp includes/input.hpp includes/loop.hpp includes/player.hpp 
 
 aoide_LDADD = -lminiaudio -lSDL3 -lSDL3_ttf -lSDL3_image -ltag
@@ -455,6 +455,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/scroll.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/sdl.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/toolkit.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ui.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -657,6 +658,20 @@ scroll.obj: src/scroll.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/scroll.cpp' object='scroll.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o scroll.obj `if test -f 'src/scroll.cpp'; then $(CYGPATH_W) 'src/scroll.cpp'; else $(CYGPATH_W) '$(srcdir)/src/scroll.cpp'; fi`
+
+ui.o: src/ui.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ui.o -MD -MP -MF $(DEPDIR)/ui.Tpo -c -o ui.o `test -f 'src/ui.cpp' || echo '$(srcdir)/'`src/ui.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ui.Tpo $(DEPDIR)/ui.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/ui.cpp' object='ui.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ui.o `test -f 'src/ui.cpp' || echo '$(srcdir)/'`src/ui.cpp
+
+ui.obj: src/ui.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -MT ui.obj -MD -MP -MF $(DEPDIR)/ui.Tpo -c -o ui.obj `if test -f 'src/ui.cpp'; then $(CYGPATH_W) 'src/ui.cpp'; else $(CYGPATH_W) '$(srcdir)/src/ui.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/ui.Tpo $(DEPDIR)/ui.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='src/ui.cpp' object='ui.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS) -c -o ui.obj `if test -f 'src/ui.cpp'; then $(CYGPATH_W) 'src/ui.cpp'; else $(CYGPATH_W) '$(srcdir)/src/ui.cpp'; fi`
 install-dist_pkgdataDATA: $(dist_pkgdata_DATA)
 	@$(NORMAL_INSTALL)
 	@list='$(dist_pkgdata_DATA)'; test -n "$(pkgdatadir)" || list=; \
@@ -972,6 +987,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/scroll.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
 	-rm -f ./$(DEPDIR)/toolkit.Po
+	-rm -f ./$(DEPDIR)/ui.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-hdr distclean-tags
@@ -1032,6 +1048,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/scroll.Po
 	-rm -f ./$(DEPDIR)/sdl.Po
 	-rm -f ./$(DEPDIR)/toolkit.Po
+	-rm -f ./$(DEPDIR)/ui.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
