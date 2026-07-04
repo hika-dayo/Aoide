@@ -12,12 +12,14 @@
 #include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 
-int Input::ProcessKey(void)
+INPUT_CODE Input::ProcessKey(void)
 {
+	INPUT_CODE In = NO_INPUT;
 	if(GetKey(PLAY_BACK))
 	{
 		if(TmpFB == false)
 		{
+//			Event = PLAY_PREV;
 //			List.PlayPrev();
 		}
 		TmpFB = true;
@@ -26,6 +28,7 @@ int Input::ProcessKey(void)
 	{
 		if(TmpFB == false)
 		{
+//			Event = PLAY_NEXT;
 //			List.PlayNext();
 		}
 		TmpFB = true;
@@ -39,6 +42,7 @@ int Input::ProcessKey(void)
 	{
 		if(TmpPause == false)
 		{	
+//			Event = PLAY_PAUSE;
 //			List.Pause();
 		}
 		TmpPause = true;
@@ -52,7 +56,7 @@ int Input::ProcessKey(void)
 	{
 		if(TmpSpace == false)
 		{
-
+//			Event = ADD_HEAD;
 		}
 //			ProcessChoice(false);
 		TmpSpace = true;
@@ -65,7 +69,7 @@ int Input::ProcessKey(void)
 	{
 		if(TmpEnter == false)
 		{
-
+//			Event = ADD_LAST;
 		}
 //			ProcessChoice();
 		TmpEnter = true;
@@ -138,5 +142,15 @@ int Input::ProcessKey(void)
 		TmpKey = false;
 		Hold = false;
 	}
-	return 0;
+	return In;
+}
+
+Input::Input(void)
+{
+	Hold = false;
+	KeyIntervalCount = 0;
+	TmpKey = false;
+	TmpEnter = false;
+	TmpSpace = false;
+	return;
 }

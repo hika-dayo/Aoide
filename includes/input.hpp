@@ -8,7 +8,9 @@
 
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
+
 #pragma once
+#include "gui.hpp"
 #include <SDL3/SDL_keycode.h>
 
 
@@ -29,6 +31,7 @@ enum KEY
 bool GetKey(KEY K);
 int GetKeyCount(void);
 
+
 class Input
 {
 private:
@@ -43,5 +46,6 @@ private:
 	bool Hold;//キーが長押しされているか
 	int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 public:
-	int ProcessKey(void);
+	INPUT_CODE ProcessKey(void);
+	Input(void);
 };

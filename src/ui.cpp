@@ -37,11 +37,6 @@ UI::UI(std::vector<Music> &MusicList) : img(C.GetGraphicDir() + "playicon.png"),
 	
 	P = nullptr;
 
-	Hold = false;
-	KeyIntervalCount = 0;
-	TmpKey = false;
-	TmpEnter = false;
-	TmpSpace = false;
 	
 	PlaylistMode = false;
 
