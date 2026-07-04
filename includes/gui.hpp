@@ -58,17 +58,6 @@ enum EVENT
 	BACK,
 };
 
-enum INPUT_CODE
-{
-	NO_INPUT,
-	PLAY_PREV,
-	PLAY_NEXT,
-	PLAY_PAUSE,
-	ADD_LAST,
-	ADD_HEAD,
-
-};
-
 
 
 typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する

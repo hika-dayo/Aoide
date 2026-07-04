@@ -16,6 +16,7 @@
 
 enum KEY
 {
+	NO_INPUT,
 	UP,
 	DOWN,
 	RIGHT,
@@ -32,7 +33,7 @@ bool GetKey(KEY K);
 int GetKeyCount(void);
 
 
-class Input
+class Input_Process
 {
 private:
 	bool TmpRightKey;//右矢印キーが押されている間はtrue
@@ -46,6 +47,7 @@ private:
 	bool Hold;//キーが長押しされているか
 	int KeyIntervalCount;//長押しされるまでの時間のカウンタ
 public:
-	INPUT_CODE ProcessKey(void);
-	Input(void);
+	KEY ProcessKey(void);
+	Input_Process(void);
 };
+

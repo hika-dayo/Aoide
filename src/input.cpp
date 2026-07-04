@@ -12,15 +12,14 @@
 #include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 
-INPUT_CODE Input::ProcessKey(void)
+KEY Input_Process::ProcessKey(void)
 {
-	INPUT_CODE In = NO_INPUT;
+	KEY K = NO_INPUT;
 	if(GetKey(PLAY_BACK))
 	{
 		if(TmpFB == false)
 		{
-//			Event = PLAY_PREV;
-//			List.PlayPrev();
+			K = PLAY_BACK;
 		}
 		TmpFB = true;
 	}
@@ -28,8 +27,7 @@ INPUT_CODE Input::ProcessKey(void)
 	{
 		if(TmpFB == false)
 		{
-//			Event = PLAY_NEXT;
-//			List.PlayNext();
+			K = PLAY_FORWARD;
 		}
 		TmpFB = true;
 	}
@@ -42,8 +40,7 @@ INPUT_CODE Input::ProcessKey(void)
 	{
 		if(TmpPause == false)
 		{	
-//			Event = PLAY_PAUSE;
-//			List.Pause();
+			K = PAUSE_PLAY;
 		}
 		TmpPause = true;
 	}
@@ -56,7 +53,7 @@ INPUT_CODE Input::ProcessKey(void)
 	{
 		if(TmpSpace == false)
 		{
-//			Event = ADD_HEAD;
+			K = SPACE;
 		}
 //			ProcessChoice(false);
 		TmpSpace = true;
@@ -69,7 +66,7 @@ INPUT_CODE Input::ProcessKey(void)
 	{
 		if(TmpEnter == false)
 		{
-//			Event = ADD_LAST;
+			K = ENTER;
 		}
 //			ProcessChoice();
 		TmpEnter = true;
@@ -83,6 +80,7 @@ INPUT_CODE Input::ProcessKey(void)
 	{
 		if(TmpRightKey == false)
 		{
+			K = RIGHT;
 /*			if(PlaylistMode == false)
 			{
 				PlaylistMode = true;
@@ -100,6 +98,7 @@ INPUT_CODE Input::ProcessKey(void)
 	}
 	if(GetKey(LEFT))
 	{
+		K = LEFT;
 //		S->GoBegin(Object.size());
 	}
 	if(GetKey(UP))
@@ -110,6 +109,7 @@ INPUT_CODE Input::ProcessKey(void)
 		}
 		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
 		{
+			K = UP;
 //			S->ScrollDown(Object.size(), Hold);
 			KeyIntervalCount = 0;
 		}
@@ -127,6 +127,7 @@ INPUT_CODE Input::ProcessKey(void)
 		}
 		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
 		{
+			K = DOWN;
 //			S->ScrollUp(Object.size(), Hold);
 			KeyIntervalCount = 0;
 		}
@@ -142,10 +143,10 @@ INPUT_CODE Input::ProcessKey(void)
 		TmpKey = false;
 		Hold = false;
 	}
-	return In;
+	return K; 
 }
 
-Input::Input(void)
+Input_Process::Input_Process(void)
 {
 	Hold = false;
 	KeyIntervalCount = 0;
