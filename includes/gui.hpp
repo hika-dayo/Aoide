@@ -13,6 +13,7 @@
 
 #include "config.hpp"
 #include "audio_engine.hpp"
+#include "input.hpp"
 #include "playlist.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -46,7 +47,7 @@ enum COLOR
 
 enum EVENT
 {
-	NOTHING,
+	NONE,
 	PLAY_MUSIC,
 	PLAY_ALL,
 	SHUFFLE_PLAY,
@@ -57,6 +58,8 @@ enum EVENT
 	LIST_TITLES_BY_TRACKNUM,
 	BACK,
 };
+
+
 
 typedef unsigned int Color;//符号無し32bit整数(00000000~FFFFFFFF)の範囲(アルファチャンネル有り)で色を表現する
 
@@ -118,8 +121,8 @@ private:
 	int ProcessScroll(bool Hold);
 public:
 	ScrollState(int DefScroll, int DefChoosingLine, int DefLength);
-	int ScrollUp(int Length, bool Hold);
-	int ScrollDown(int Length, bool Hold);
+	int ScrollUp(int Length, bool Hold = false);
+	int ScrollDown(int Length, bool Hold = false);
 	int GoBegin(int Length);
 	int GoEnd(int Length);
 	int GetCurrentLine(void);
@@ -147,25 +150,15 @@ private:
 	
 	Playlist List;
 	
-	Image img;
-	Image img2;
+	std::vector<Image> Imgs;
 
 	std::vector<int> PrevScroll;//前のスクロール位置の保存
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 	
 	std::unique_ptr<ScrollState> S;
-
-	bool Hold;//キーが長押しされているか
-	int KeyIntervalCount;//長押しされるまでの時間のカウンタ
+	Input_Process Inp;
 
 
-	bool TmpRightKey;//右矢印キーが押されている間はtrue
-	bool TmpKey;//方向キーが押されている間はtrue
-	bool TmpEnter;//エンターキーが押されている間はtrue	
-	bool TmpSpace;//スペースキーが押されている間はtrue	
-
-	bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
-	bool TmpPause;//一時停止キーが押されている間はtrue	
 
 	bool PlaylistMode;
 
