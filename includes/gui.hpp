@@ -13,6 +13,7 @@
 
 #include "config.hpp"
 #include "audio_engine.hpp"
+#include "input.hpp"
 #include "playlist.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -120,8 +121,8 @@ private:
 	int ProcessScroll(bool Hold);
 public:
 	ScrollState(int DefScroll, int DefChoosingLine, int DefLength);
-	int ScrollUp(int Length, bool Hold);
-	int ScrollDown(int Length, bool Hold);
+	int ScrollUp(int Length, bool Hold = false);
+	int ScrollDown(int Length, bool Hold = false);
 	int GoBegin(int Length);
 	int GoEnd(int Length);
 	int GetCurrentLine(void);
@@ -149,14 +150,13 @@ private:
 	
 	Playlist List;
 	
-	Image img;
-	Image img2;
+	std::vector<Image> Imgs;
 
 	std::vector<int> PrevScroll;//前のスクロール位置の保存
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 	
 	std::unique_ptr<ScrollState> S;
-
+	Input_Process Inp;
 
 
 

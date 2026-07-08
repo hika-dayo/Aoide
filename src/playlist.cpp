@@ -104,21 +104,19 @@ int Playlist::Process(void)
 	return 0;
 }
 
+int Playlist::Play()
+{
+	if(P != nullptr)
+	{
+			P->Play();
+	}
+	return 0;
+}
 int Playlist::Pause()
 {
 	if(P != nullptr)
 	{
-		if(P->isPaused())
-		{
-			P->Play();
-			return 0;
-		}
-		if(P->isPlaying())
-		{
 			P->Pause();
-			return 0;
-		}
-
 	}
 	return 0;
 }

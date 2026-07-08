@@ -10,7 +10,7 @@
   */
 
 
-#include "../includes/error.hpp"
+#include "../includes/playlist.hpp"
 #include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 #include <SDL3/SDL_surface.h>
@@ -25,16 +25,15 @@
 #include <optional>
 #include <random>
 #include <algorithm>
-#include <iostream>
 
-UI::UI(std::vector<Music> &MusicList) : img(C.GetGraphicDir() + "playicon.png"), img2(C.GetGraphicDir() + "stopicon.png")
+UI::UI(std::vector<Music> &MusicList)
 {
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
 	Object.push_back(MenuItem("Exit", EXIT));
 	S = std::make_unique<ScrollState>(0, 0, Object.size());
-	
+			
 	P = nullptr;
 
 	
@@ -65,16 +64,17 @@ UI::UI(std::vector<Music> &MusicList) : img(C.GetGraphicDir() + "playicon.png"),
 
 int UI::Process(void)
 {
-	
 	ProcessKey();
 		
 	List.Process();
 
 	if(PlaylistMode == true)
 	{
-		img.DrawImage(0, 0, 24, 24);
-		img2.DrawImage(50,0, 24, 24);
-		
+		if(C.GetWindowHeight() < C.GetWindowWidth())
+		{
+						
+
+		}
 		
 	}else
 	{
@@ -88,6 +88,62 @@ int UI::Process(void)
 
 int UI::ProcessKey(void)
 {
+	KEY Ktmp = Inp.ProcessKey();
+	if(Ktmp == NO_INPUT)
+	{
+		return 0;
+	}
+	if(Ktmp == PLAY_BACK)	
+	{
+		List.PlayPrev();
+	}
+	if(Ktmp == PLAY_FORWARD)	
+	{
+		List.PlayNext();
+	}
+	if(Ktmp == PAUSE_PLAY)
+	{
+		if(List.GetPlayer().isPaused())
+		{
+			List.Play();
+		}
+		else
+		{
+			List.Pause();
+		}
+	}
+	if(Ktmp == SPACE)
+	{
+		ProcessChoice(false);
+	}
+
+	if(Ktmp == ENTER)
+	{
+		ProcessChoice(true);
+	}
+	if(Ktmp == RIGHT)
+	{
+		if(PlaylistMode == false)
+		{
+			PlaylistMode = true;
+		}
+		else
+		{
+			PlaylistMode = false;
+		}
+	}
+	if(Ktmp == LEFT)
+	{
+		S->GoBegin(Object.size());
+	}
+	if(Ktmp == UP)
+	{
+		S->ScrollDown(Object.size());
+	}
+	if(Ktmp == DOWN)
+	{
+		S->ScrollUp(Object.size());
+	}
 	return 0;
 }
 
