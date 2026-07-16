@@ -16,6 +16,7 @@ Playlist::Playlist(void)
 {
 	PlayingMusic = new Music("");
 	P = new Player("");
+	HasQueue = 0;
 }
 
 Player& Playlist::GetPlayer(void)
@@ -78,32 +79,58 @@ std::vector<Music> Playlist::GetHistory(void)
 
 int Playlist::Process(void)
 {
-	if(P != nullptr && P->isEnded())
-	{
-		if(!List.empty())
+//	if(P != nullptr)
+//	{
+/*		if(P->isEnded())
 		{
-			History.push_back(List[0]);
-		}
-	}
-	if(P == nullptr || P->isEnded())
-	{
-		if(P != nullptr)
-		{
+			if(!List.empty())
+			{
+				History.push_back(List[0]);
+			}
 			delete P;
+			P = nullptr;
+			if(!List.empty())
+			{
+				P = new Player(List[0].GetPath().c_str());
+				*PlayingMusic = List[0];
+				List.erase(List.begin());
+				P->Play();
+			}
 		}
-		P = nullptr;
-		if(!List.empty())
-		{
-			P = new Player(List[0].GetPath().c_str());
-			*PlayingMusic = List[0];
-			List.erase(List.begin());
-			P->Play();
-		}
+	if(P->isEnded())
+	{
+	}
+	else
+	{
+
 	}
 	
+	}*/
+	if(P == nullptr)
+	{
+		PlayQueue();
+	}
+	else
+	{
+		if(P->isEnded())
+		{
+			PlayQueue();
+		}
+	}
 	return 0;
 }
-
+int Playlist::PlayQueue(void)
+{
+	if(!List.empty())
+	{
+		History.push_back(List[0]);
+		P = new Player(List[0].GetPath().c_str());
+		*PlayingMusic = List[0];
+		List.erase(List.begin());
+		P->Play();
+	}
+	return 0;
+}
 int Playlist::Play()
 {
 	if(P != nullptr)

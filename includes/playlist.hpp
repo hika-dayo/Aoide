@@ -20,7 +20,8 @@ private:
 	std::vector<Music> History;
 	Music *PlayingMusic;
 	Player *P;
-	
+	bool HasQueue;
+	int PlayQueue(void);	
 public:
 	Music GetPlayingMusic(void);
 	std::vector<Music> GetPlaylist(void);
