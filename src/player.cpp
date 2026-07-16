@@ -40,14 +40,14 @@ const char* Player::GetFilePath(void)
 //プレーヤーの状態確認する関数
 bool Player::isEnded(void)
 {
-	ma_uint64 Length;
-	ma_uint64 Cursor;
-	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
-	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
 	if(Error)
 	{
 		return true;
 	}
+	ma_uint64 Length;
+	ma_uint64 Cursor;
+	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
+	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
 	return (Length == Cursor);
 }
 

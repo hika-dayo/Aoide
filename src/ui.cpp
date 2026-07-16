@@ -112,16 +112,23 @@ int UI::ProcessKey(void)
 			List.Pause();
 		}
 	}
-	if(Ktmp == SPACE)
+/*	if(Ktmp == SPACE)
 	{
-		ProcessChoice(false);
-	}
+		if(List.GetPlayer().isPaused())
+		{
+			List.Play();
+		}
+		else
+		{
+			List.Pause();
+		}
+	}*/
 
 	if(Ktmp == ENTER)
 	{
 		ProcessChoice(true);
 	}
-	if(Ktmp == RIGHT)
+	if(Ktmp == CHOOSEBEGIN)
 	{
 		if(PlaylistMode == false)
 		{
