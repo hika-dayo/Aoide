@@ -53,7 +53,7 @@ KEY Input_Process::ProcessKey(void)
 	{
 		if(TmpSpace == false)
 		{
-			K = SPACE;
+			K = PAUSE_PLAY;
 		}
 //			ProcessChoice(false);
 		TmpSpace = true;
@@ -154,4 +154,50 @@ Input_Process::Input_Process(void)
 	TmpEnter = false;
 	TmpSpace = false;
 	return;
+}
+
+bool GetKey(KEY K)
+{
+	auto Keys = SDL_GetKeyboardState(NULL);
+	if(K == UP)
+	{
+		return Keys[SDL_SCANCODE_UP];
+	}
+	if(K == DOWN)
+	{
+		return Keys[SDL_SCANCODE_DOWN];
+	}
+	if(K == RIGHT)
+	{
+		return Keys[SDL_SCANCODE_RIGHT];
+	}
+	if(K == LEFT)
+	{
+		return Keys[SDL_SCANCODE_LEFT];
+	}
+	if(K == ENTER)
+	{
+		return Keys[SDL_SCANCODE_RETURN];
+	}
+	if(K == ESC)
+	{
+		return Keys[SDL_SCANCODE_ESCAPE];
+	}
+	if(K == SPACE)
+	{
+		return Keys[SDL_SCANCODE_SPACE];
+	}
+	if(K == PLAY_FORWARD)
+	{
+		return Keys[SDL_SCANCODE_F];
+	}
+	if(K == PLAY_BACK)
+	{
+		return Keys[SDL_SCANCODE_B];
+	}
+	if(K == PAUSE_PLAY)
+	{
+		return Keys[SDL_SCANCODE_P];
+	}
+	return false;
 }

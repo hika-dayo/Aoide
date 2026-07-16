@@ -19,6 +19,7 @@ enum KEY
 	UP,
 	DOWN,
 	RIGHT,
+	CHOOSEBEGIN,
 	LEFT,
 	ENTER,
 	ESC,
