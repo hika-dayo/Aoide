@@ -99,6 +99,7 @@ class MenuItem
 	std::string Album;
 	std::string Title;
 	std::string Path;
+	std::string ArtworkPath;
 	EVENT Event;
 public:
 	MenuItem(std::string Text,EVENT Event, std::optional<Music> M = std::nullopt);
@@ -109,6 +110,7 @@ public:
 	std::string GetAlbum(void);
 	std::string GetTitle(void);
 	std::string GetPath(void);
+	std::string GetArtworkPath(void);
 };
 
 class ScrollState
@@ -158,7 +160,7 @@ private:
 	std::unique_ptr<ScrollState> S;
 	Input_Process Inp;
 
-
+	std::string ChoosingArtist;
 
 	bool PlaylistMode;
 
@@ -173,7 +175,8 @@ private:
 			
 	UIRender Rend;	
 	std::vector<Image> ArtworkList;
-
+	
+	int DrawPlaylist(void);
 	int ShuffleTitles(std::vector<Music> &ArgMusic);
 
 	std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する

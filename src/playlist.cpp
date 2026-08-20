@@ -26,11 +26,13 @@ Player& Playlist::GetPlayer(void)
 
 int Playlist::InsertQueue(Music M)
 {
+//	std::cout<<	M.GetArtworkPath() << std::endl;
 	List.insert(List.begin(), M);
 	return 0;
 }
 int Playlist::PushQueue(Music M)
 {
+//	std::cout<<	M.GetArtworkPath() << std::endl;
 	List.push_back(M);
 	return 0;
 }
