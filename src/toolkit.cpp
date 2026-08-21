@@ -92,3 +92,36 @@ int DrawRect(int X, int Y, int W, int H, Color RectColor)
 	return 0;	
 
 }*/
+
+int CalcResizedWidth(int W, int H, int MaxSize)
+{
+	if(W == H)
+	{
+		return MaxSize;
+	}
+	if(W > H)
+	{
+		return MaxSize;
+	}
+	if(W < H)
+	{
+		return (W * MaxSize / H);
+	}
+	return 0;
+}
+int CalcResizedHeight(int W, int H, int MaxSize)
+{
+	if(W == H)
+	{
+		return MaxSize;
+	}
+	if(W > H)
+	{
+		return (H * MaxSize / W);
+	}
+	if(W < H)
+	{
+		return MaxSize;
+	}
+	return 0;
+}

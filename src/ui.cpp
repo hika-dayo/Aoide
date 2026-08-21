@@ -66,23 +66,6 @@ int UI::Process(void)
 	ProcessKey();
 	
 	List.Process();
-//	std::cout << List.GetPlayingMusic().GetArtworkPath() << std::endl;
-/*	if(List.GetPlayingMusic().GetArtworkPath() != "")
-	{
-		bool tmp = false;
-		for(int i = 0; i < Imgs.size(); i++)
-		{
-			if(Imgs[i].GetPath() == List.GetPlayingMusic().GetArtworkPath())
-			{
-				tmp = true;
-			}
-		}
-		if(!tmp)
-		{
-			Imgs.push_back(Image(List.GetPlayingMusic().GetArtworkPath()));
-		}
-
-	}*/
 	if(PlaylistMode == true)
 	{
 		DrawPlaylist();			
@@ -251,7 +234,7 @@ int UI::ProcessChoice(bool End)
 		{
 			if(!Object[i].GetPath().empty())
 			{
-				Tmp.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+				Tmp.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0, Object[i].GetArtworkPath()));
 			}
 		}
 		ShuffleTitles(Tmp);
@@ -286,11 +269,11 @@ int UI::ProcessChoice(bool End)
 	{
 		if(End)
 		{
-			List.PushQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+			List.PushQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0, Object[CurrentLine].GetArtworkPath()));
 		}
 		else
 		{
-			List.InsertQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+			List.InsertQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0, Object[CurrentLine].GetArtworkPath()));
 			List.PlayNext();
 		}
 		return 0;
@@ -372,18 +355,27 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 }
 int UI::DrawPlaylist(void)
 {
+	int i = 0;
+	for(int n = 0; n < ArtworkList.size(); n++)
+	{
+		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())
+		{
+			i = n;
+		}
+	}
 		if(C.GetWindowHeight() < C.GetWindowWidth())
 		{
-			if(Imgs.size() != 0)
+			if(ArtworkList.size() != 0)
 			{
-				Imgs[0].DrawImage(0,0,Imgs[0].GetWidth() / C.GetWindowHeight(), C.GetWindowHeight());
+				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()));
 	
 			}
 		}else
-	{
-			if(Imgs.size() != 0)
+		{
+			if(ArtworkList.size() != 0)
 			{
-				Imgs[0].DrawImage(0,0,Imgs[0].GetWidth(), C.GetWindowHeight() / C.GetWindowWidth());
+
+				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()));
 	
 			}	
 	}

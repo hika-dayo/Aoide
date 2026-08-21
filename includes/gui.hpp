@@ -72,6 +72,10 @@ int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
 int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画する(X、Y、横の長さ、縦の長さ)
 
+int CalcResizedWidth(int W, int H, int MaxSize);//長辺がMaxSizeになるようにリサイズして横幅を返す
+int CalcResizedHeight(int W, int H, int MaxSize);//長辺がMaxSizeになるようにリサイズして縦幅を返す
+
+
 class Image
 {
 private:

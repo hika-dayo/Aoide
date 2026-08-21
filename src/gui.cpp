@@ -83,6 +83,7 @@ MenuItem::MenuItem(const MenuItem &Copy)
 	Title = Copy.Title;
 	Path = Copy.Path;
 	Event = Copy.Event;
+	ArtworkPath = Copy.ArtworkPath;
 	return;
 }
 
