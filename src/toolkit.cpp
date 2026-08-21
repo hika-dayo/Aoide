@@ -35,18 +35,23 @@ float GetFontSize(TTF_Font* Font)
 }
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y)
 {
-	SDL_Surface* Image;
-	SDL_Rect Rect, Scr_Rect;
-	SDL_Color SDLColor = ToSDLPixel(FontColor);
-	Image = TTF_RenderText_Shaded(Font, Str, strlen(Str), SDLColor, SDLColor);
-	Rect.x = 0;
-	Rect.y = 0;
-	Rect.w = Image->w;
-	Rect.h = Image->h;
-	Scr_Rect.x = X;
-	Scr_Rect.y = Y;	
-	SDL_BlitSurface(Image, &Rect, GetGUISurface(), &Scr_Rect);
-	SDL_DestroySurface(Image);
+	std::string tmp = Str;
+	if(tmp != "")
+	{
+		SDL_Surface* Image;
+		SDL_Rect Rect, Scr_Rect;
+		SDL_Color SDLColor = ToSDLPixel(FontColor);
+		Image = TTF_RenderText_Shaded(Font, Str, strlen(Str), SDLColor, SDLColor);
+		Rect.x = 0;
+		Rect.y = 0;
+		Rect.w = Image->w;
+		Rect.h = Image->h;
+		Scr_Rect.x = X;
+		Scr_Rect.y = Y;	
+		SDL_BlitSurface(Image, &Rect, GetGUISurface(), &Scr_Rect);
+		SDL_DestroySurface(Image);
+
+	}
 	return 0;
 }
 int QuitFont(TTF_Font* Font)
