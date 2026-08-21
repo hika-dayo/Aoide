@@ -207,7 +207,7 @@ int UI::ProcessChoice(bool End)
 			{
 				if(!Object[i].GetPath().empty())
 				{
-						List.PushQueue(Music(Object[n].GetPath(), Object[n].GetArtist(), Object[n].GetAlbum(), Object[n].GetTitle(), 0, Object[n].GetArtworkPath()));
+						List.PushQueue(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0, Object[i].GetArtworkPath()));
 				}
 
 			}
@@ -274,7 +274,7 @@ int UI::ProcessChoice(bool End)
 		else
 		{
 			List.InsertQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0, Object[CurrentLine].GetArtworkPath()));
-			List.PlayNext();
+//			List.PlayNext();
 		}
 		return 0;
 	}
@@ -356,6 +356,7 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 int UI::DrawPlaylist(void)
 {
 	int i = -1;
+	std::cout << List.GetPlayingMusic().GetArtworkPath() << std::endl;
 	for(int n = 0; n < ArtworkList.size(); n++)
 	{
 		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())

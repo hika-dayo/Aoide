@@ -18,10 +18,11 @@ class Playlist
 private:
 	std::vector<Music> List;
 	std::vector<Music> History;
-	Music *PlayingMusic;
+	Music PlayingMusic;
 	Player *P;
 	bool HasQueue;
 	int PlayQueue(void);	
+//	Music EmptyMusic;
 public:
 	Music GetPlayingMusic(void);
 	std::vector<Music> GetPlaylist(void);
