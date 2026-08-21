@@ -179,6 +179,7 @@ private:
 			
 	UIRender Rend;	
 	std::vector<Image> ArtworkList;
+	Image UnknownArtwork;
 	
 	int DrawPlaylist(void);
 	int ShuffleTitles(std::vector<Music> &ArgMusic);

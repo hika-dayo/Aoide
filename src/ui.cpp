@@ -26,7 +26,7 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
-UI::UI(std::vector<Music> &MusicList)
+UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.png")
 {
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
@@ -139,7 +139,7 @@ int UI::ProcessKey(void)
 	}
 	if(Ktmp == RIGHT)
 	{
-		PlaylistMode = true;
+		PlaylistMode = !PlaylistMode;
 	}
 	if(Ktmp == UP)
 	{
@@ -355,7 +355,7 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 }
 int UI::DrawPlaylist(void)
 {
-	int i = 0;
+	int i = -1;
 	for(int n = 0; n < ArtworkList.size(); n++)
 	{
 		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())
@@ -365,19 +365,26 @@ int UI::DrawPlaylist(void)
 	}
 		if(C.GetWindowHeight() < C.GetWindowWidth())
 		{
-			if(ArtworkList.size() != 0)
+			if(List.GetPlayingMusic().GetArtworkPath() != "")
 			{
 				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()));
 	
+			}else
+			{
+				UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
 			}
 		}else
 		{
-			if(ArtworkList.size() != 0)
+			if(List.GetPlayingMusic().GetArtworkPath() != "")
 			{
 
 				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()));
 	
-			}	
+			}else
+			{
+				UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
+			}
+
 	}
 	return 0;
 }
