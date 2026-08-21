@@ -33,12 +33,14 @@ MenuItem::MenuItem(std::string Text,EVENT Event, std::optional<Music> M)
 	Album = "";
 	Title = "";
 	Path = "";
+	ArtworkPath = "";
 	if(M.has_value())
 	{
 		Artist = M.value().GetArtist();
 		Album = M.value().GetAlbum();
 		Title = M.value().GetTitle();
 		Path = M.value().GetPath();
+		ArtworkPath = M.value().GetArtworkPath();
 	}
 	this->Text = Text;
 	this->Event = Event;
@@ -65,6 +67,10 @@ std::string MenuItem::GetText(void)
 {
 	return Text;
 }
+std::string MenuItem::GetArtworkPath(void)
+{
+	return ArtworkPath;
+}
 EVENT MenuItem::GetEvent(void)
 {
 	return Event;
@@ -77,6 +83,7 @@ MenuItem::MenuItem(const MenuItem &Copy)
 	Title = Copy.Title;
 	Path = Copy.Path;
 	Event = Copy.Event;
+	ArtworkPath = Copy.ArtworkPath;
 	return;
 }
 

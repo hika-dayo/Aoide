@@ -25,15 +25,15 @@
 #include <optional>
 #include <random>
 #include <algorithm>
-
-UI::UI(std::vector<Music> &MusicList)
+#include <iostream>
+UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.png")
 {
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
 	Object.push_back(MenuItem("Exit", EXIT));
 	S = std::make_unique<ScrollState>(0, 0, Object.size());
-			
+		
 	P = nullptr;
 
 	
@@ -56,7 +56,6 @@ UI::UI(std::vector<Music> &MusicList)
 				Image I(MList[i].GetArtworkPath());
 				ArtworkList.push_back(I);
 			}
-
 		}
 	
 	return;
@@ -65,16 +64,11 @@ UI::UI(std::vector<Music> &MusicList)
 int UI::Process(void)
 {
 	ProcessKey();
-		
+	
 	List.Process();
-
 	if(PlaylistMode == true)
 	{
-		if(C.GetWindowHeight() < C.GetWindowWidth())
-		{
-						
-
-		}
+		DrawPlaylist();			
 		
 	}else
 	{
@@ -128,7 +122,7 @@ int UI::ProcessKey(void)
 	{
 		ProcessChoice(true);
 	}
-	if(Ktmp == CHOOSEBEGIN)
+	/*if(Ktmp == CHOOSEBEGIN)
 	{
 		if(PlaylistMode == false)
 		{
@@ -138,10 +132,14 @@ int UI::ProcessKey(void)
 		{
 			PlaylistMode = false;
 		}
-	}
+	}*/
 	if(Ktmp == LEFT)
 	{
 		S->GoBegin(Object.size());
+	}
+	if(Ktmp == RIGHT)
+	{
+		PlaylistMode = !PlaylistMode;
 	}
 	if(Ktmp == UP)
 	{
@@ -177,13 +175,19 @@ int UI::ProcessChoice(bool End)
 	}
 	if(Object[CurrentLine].GetEvent() == LIST_ALBUMS)
 	{
+		ChoosingArtist = Object[CurrentLine].GetArtist();
 		ListItem(GetSortedAlbums(MList, Object[CurrentLine].GetArtist()), LIST_ALBUMS, LIST_TITLES_BY_TRACKNUM);
 		return 0;
 	}
 
 	if(Object[CurrentLine].GetEvent() == LIST_TITLES_BY_TRACKNUM)
 	{
-		ListItem(GetSortedTrackNum(MList, Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC);
+		if(ChoosingArtist != "")
+		{
+			ChoosingArtist = Object[CurrentLine].GetArtist();
+		}
+		ListItem(GetSortedTrackNum(MList, ChoosingArtist, Object[CurrentLine].GetAlbum()), LIST_TITLES_BY_TRACKNUM, PLAY_MUSIC);
+		ChoosingArtist = "";
 		return 0;
 	}
 
@@ -203,7 +207,7 @@ int UI::ProcessChoice(bool End)
 			{
 				if(!Object[i].GetPath().empty())
 				{
-						List.PushQueue(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+						List.PushQueue(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0, Object[i].GetArtworkPath()));
 				}
 
 			}
@@ -211,7 +215,7 @@ int UI::ProcessChoice(bool End)
 			{
 				if(!Object[n].GetPath().empty())
 				{
-						List.InsertQueue(Music(Object[n].GetPath(), Object[n].GetArtist(), Object[n].GetAlbum(), Object[n].GetTitle(), 0));
+						List.InsertQueue(Music(Object[n].GetPath(), Object[n].GetArtist(), Object[n].GetAlbum(), Object[n].GetTitle(), 0, Object[n].GetArtworkPath()));
 				}
 			}
 		}
@@ -230,7 +234,7 @@ int UI::ProcessChoice(bool End)
 		{
 			if(!Object[i].GetPath().empty())
 			{
-				Tmp.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0));
+				Tmp.push_back(Music(Object[i].GetPath(), Object[i].GetArtist(), Object[i].GetAlbum(), Object[i].GetTitle(), 0, Object[i].GetArtworkPath()));
 			}
 		}
 		ShuffleTitles(Tmp);
@@ -265,12 +269,12 @@ int UI::ProcessChoice(bool End)
 	{
 		if(End)
 		{
-			List.PushQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
+			List.PushQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0, Object[CurrentLine].GetArtworkPath()));
 		}
 		else
 		{
-			List.InsertQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0));
-			List.PlayNext();
+			List.InsertQueue(Music(Object[CurrentLine].GetPath(), Object[CurrentLine].GetArtist(), Object[CurrentLine].GetAlbum(), Object[CurrentLine].GetTitle(), 0, Object[CurrentLine].GetArtworkPath()));
+//			List.PlayNext();
 		}
 		return 0;
 	}
@@ -347,5 +351,41 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 	std::random_device Rd;
 	std::default_random_engine Engine(Rd());
 	std::shuffle(ArgMusic.begin(), ArgMusic.end(), Engine);
+	return 0;
+}
+int UI::DrawPlaylist(void)
+{
+	int i = -1;
+	std::cout << List.GetPlayingMusic().GetArtworkPath() << std::endl;
+	for(int n = 0; n < ArtworkList.size(); n++)
+	{
+		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())
+		{
+			i = n;
+		}
+	}
+		if(C.GetWindowHeight() < C.GetWindowWidth())
+		{
+			if(List.GetPlayingMusic().GetArtworkPath() != "")
+			{
+				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()));
+	
+			}else
+			{
+				UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
+			}
+		}else
+		{
+			if(List.GetPlayingMusic().GetArtworkPath() != "")
+			{
+
+				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()));
+	
+			}else
+			{
+				UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
+			}
+
+	}
 	return 0;
 }

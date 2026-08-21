@@ -72,6 +72,10 @@ int CleanWindow(void);//黒で画面を塗り潰す
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y); //InitFontの返り値をFontにセットして、Strに文字列、FontColorに色、X、Y、を指定する
 int DrawRect(int X, int Y, int W, int H, Color RectColor);//四角形を描画する(X、Y、横の長さ、縦の長さ)
 
+int CalcResizedWidth(int W, int H, int MaxSize);//長辺がMaxSizeになるようにリサイズして横幅を返す
+int CalcResizedHeight(int W, int H, int MaxSize);//長辺がMaxSizeになるようにリサイズして縦幅を返す
+
+
 class Image
 {
 private:
@@ -99,6 +103,7 @@ class MenuItem
 	std::string Album;
 	std::string Title;
 	std::string Path;
+	std::string ArtworkPath;
 	EVENT Event;
 public:
 	MenuItem(std::string Text,EVENT Event, std::optional<Music> M = std::nullopt);
@@ -109,6 +114,7 @@ public:
 	std::string GetAlbum(void);
 	std::string GetTitle(void);
 	std::string GetPath(void);
+	std::string GetArtworkPath(void);
 };
 
 class ScrollState
@@ -158,7 +164,7 @@ private:
 	std::unique_ptr<ScrollState> S;
 	Input_Process Inp;
 
-
+	std::string ChoosingArtist;
 
 	bool PlaylistMode;
 
@@ -173,7 +179,9 @@ private:
 			
 	UIRender Rend;	
 	std::vector<Image> ArtworkList;
-
+	Image UnknownArtwork;
+	
+	int DrawPlaylist(void);
 	int ShuffleTitles(std::vector<Music> &ArgMusic);
 
 	std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する

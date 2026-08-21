@@ -12,11 +12,10 @@
 #include "../includes/playlist.hpp"
 #include <iostream>
 
-Playlist::Playlist(void)
+Playlist::Playlist(void) : PlayingMusic("")
 {
-	PlayingMusic = new Music("");
+//	PlayingMusic = &EmptyMusic;
 	P = new Player("");
-	HasQueue = 0;
 }
 
 Player& Playlist::GetPlayer(void)
@@ -26,43 +25,56 @@ Player& Playlist::GetPlayer(void)
 
 int Playlist::InsertQueue(Music M)
 {
-	List.insert(List.begin(), M);
+	if(M.GetPath() != "")
+	{
+		List.insert(List.begin(), M);
+	}
 	return 0;
 }
 int Playlist::PushQueue(Music M)
 {
-	List.push_back(M);
+	if(M.GetPath() != "")
+	{
+		List.push_back(M);
+	}
 	return 0;
 }
 
 int Playlist::PlayNext(void)
 {
+	if(PlayingMusic.GetPath() != "")
+	{
+		History.push_back(PlayingMusic);
+
+	}
+	PlayingMusic = Music("");
 	if(!List.empty())
 	{
-		if(PlayingMusic->GetPath() != "")
+		if(!List.empty())
 		{
-			History.push_back(*PlayingMusic);
+			PlayingMusic = List[0];
+			List.erase(List.begin());
 		}
-		*PlayingMusic = List[0];
 	}
-	delete P;
-	P = nullptr;
 	return 0;
 }
 
 int Playlist::PlayPrev(void)
 {
-	if(!History.empty())
+	if(History.size() > 0)
 	{
-		if(PlayingMusic->GetPath() != "")
-		{
-			InsertQueue(*PlayingMusic);
-			InsertQueue(History[History.size() - 1]);
-			*PlayingMusic = History[History.size() - 1];
-			History.pop_back();
-		}
+		
+		InsertQueue(PlayingMusic);
+		PlayingMusic = History.back();
+		History.pop_back();
 		delete P;
 		P = nullptr;
+		
+	}
+	else
+	{
+		InsertQueue(PlayingMusic);
+		PlayingMusic = Music("");
 	}
 	return 0;
 }
@@ -79,55 +91,61 @@ std::vector<Music> Playlist::GetHistory(void)
 
 int Playlist::Process(void)
 {
-//	if(P != nullptr)
+//	if(P == nullptr)
 //	{
-/*		if(P->isEnded())
+//		PlayQueue();
+//	}
+//	else
+//	{
+//		if(P->isEnded())
+//		{
+//			PlayQueue();
+//		}
+//	}
+	PlayQueue();
+		std::cout << std::endl;
+		for(int i = 0; i < History.size(); i++)
 		{
-			if(!List.empty())
-			{
-				History.push_back(List[0]);
-			}
-			delete P;
-			P = nullptr;
-			if(!List.empty())
-			{
-				P = new Player(List[0].GetPath().c_str());
-				*PlayingMusic = List[0];
-				List.erase(List.begin());
-				P->Play();
-			}
+		  std::cout << History[i].GetTitle() << std::endl;
 		}
-	if(P->isEnded())
-	{
-	}
-	else
-	{
-
-	}
-	
-	}*/
-	if(P == nullptr)
-	{
-		PlayQueue();
-	}
-	else
-	{
-		if(P->isEnded())
+	  	std::cout << std::endl;
+		std::cout << PlayingMusic.GetTitle() << std::endl;
+	  	std::cout << std::endl;
+		for(int i = 0; i < List.size(); i++)
 		{
-			PlayQueue();
+		  std::cout << List[i].GetTitle() << std::endl;
 		}
-	}
+	  	std::cout << std::endl;
 	return 0;
 }
 int Playlist::PlayQueue(void)
 {
-	if(!List.empty())
+	if(P == nullptr)
 	{
-		History.push_back(List[0]);
-		P = new Player(List[0].GetPath().c_str());
-		*PlayingMusic = List[0];
-		List.erase(List.begin());
-		P->Play();
+		if(PlayingMusic.GetPath() != "")
+		{
+			P = new Player(PlayingMusic.GetPath().c_str());
+			P->Play();
+		}
+		
+	}else
+	{
+		if(P->GetFilePath() != PlayingMusic.GetPath())
+		{
+			delete P;
+			P = new Player(PlayingMusic.GetPath().c_str());
+			P->Play();
+		}else
+	{
+			if(P->isEnded())
+			{
+				History.push_back(PlayingMusic);
+				PlayNext();
+				delete P;
+				P = new Player(PlayingMusic.GetPath().c_str());
+				P->Play();
+			}
+		}
 	}
 	return 0;
 }
@@ -154,14 +172,9 @@ Playlist::~Playlist(void)
 		delete P;
 		P = nullptr;
 	}
-	if(PlayingMusic != nullptr)
-	{
-		delete PlayingMusic;
-		PlayingMusic = nullptr;
-	}
 	return;
 }
 Music Playlist::GetPlayingMusic(void)
 {
-	return *PlayingMusic;
+	return PlayingMusic;
 }

@@ -7,4 +7,5 @@ EXTRA_DIST = libraries licenses
 dist_pkgdata_DATA = assets/font/unifont-17.0.03.otf
 dist_pkgdata_DATA = assets/graphics/playicon.png
 dist_pkgdata_DATA = assets/graphics/stopicon.png
+dist_pkgdata_DATA = assets/graphics/unknown.png
 
