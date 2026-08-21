@@ -103,19 +103,20 @@ int Playlist::Process(void)
 //		}
 //	}
 	PlayQueue();
-		std::cout << std::endl;
-		for(int i = 0; i < History.size(); i++)
-		{
-		  std::cout << History[i].GetTitle() << std::endl;
-		}
-	  	std::cout << std::endl;
-		std::cout << PlayingMusic.GetTitle() << std::endl;
-	  	std::cout << std::endl;
-		for(int i = 0; i < List.size(); i++)
-		{
-		  std::cout << List[i].GetTitle() << std::endl;
-		}
-	  	std::cout << std::endl;
+
+//	std::cout << std::endl;
+//	for(int i = 0; i < History.size(); i++)
+//	{
+//	  std::cout << History[i].GetTitle() << std::endl;
+//	}
+//  	std::cout << std::endl;
+//	std::cout << PlayingMusic.GetTitle() << std::endl;
+//  	std::cout << std::endl;
+//	for(int i = 0; i < List.size(); i++)
+//	{
+//	  std::cout << List[i].GetTitle() << std::endl;
+//	}
+//  	std::cout << std::endl;
 	return 0;
 }
 int Playlist::PlayQueue(void)
@@ -139,7 +140,6 @@ int Playlist::PlayQueue(void)
 	{
 			if(P->isEnded())
 			{
-				History.push_back(PlayingMusic);
 				PlayNext();
 				delete P;
 				P = new Player(PlayingMusic.GetPath().c_str());
