@@ -97,7 +97,7 @@ double Player::GetAudioPosition(void)
 	{
 		return 0;
 	}
-	return (Cursor / Length);
+	return ((double)Cursor / Length);
 }
 
 

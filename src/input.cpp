@@ -103,11 +103,11 @@ KEY Input_Process::ProcessKey(void)
 	}
 	if(GetKey(UP))
 	{
-		if(KeyIntervalCount > WAIT_TIME_FOR_HOLD)
+		if(KeyIntervalCount >= WAIT_TIME_FOR_HOLD)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
+		if(TmpKey == false || (KeyIntervalCount >= HOLD_DELAY && Hold))
 		{
 			K = UP;
 //			S->ScrollDown(Object.size(), Hold);
@@ -121,11 +121,11 @@ KEY Input_Process::ProcessKey(void)
 	}
 	else if(GetKey(DOWN))
 	{
-		if(KeyIntervalCount > WAIT_TIME_FOR_HOLD)
+		if(KeyIntervalCount >= WAIT_TIME_FOR_HOLD)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount > HOLD_DELAY && Hold))
+		if(TmpKey == false || (KeyIntervalCount >= HOLD_DELAY && Hold))
 		{
 			K = DOWN;
 //			S->ScrollUp(Object.size(), Hold);
@@ -153,6 +153,8 @@ Input_Process::Input_Process(void)
 	TmpKey = false;
 	TmpEnter = false;
 	TmpSpace = false;
+	TmpFB = false;
+	TmpPause = false;
 	return;
 }
 

@@ -108,7 +108,7 @@ class MenuItem
 public:
 	MenuItem(std::string Text,EVENT Event, std::optional<Music> M = std::nullopt);
 	MenuItem(const MenuItem &Copy);//コピーコンストラクタ
-	std::string GetText(void);
+	std::string GetText(void) const;
 	EVENT GetEvent(void);
 	std::string GetArtist(void);
 	std::string GetAlbum(void);
@@ -139,7 +139,7 @@ public:
 class UIRender
 {
 public:
-	int DrawMenu(int ChoosingLine, int Scroll, std::vector<MenuItem> Object);
+	int DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object);
 	UIRender(void);
 private:
 	Color FontColor;
