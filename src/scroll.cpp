@@ -108,7 +108,6 @@ int ScrollState::ProcessScroll(bool Hold)
 
 		}
 	}
-	std::cout << Scroll << " " << ChoosingLine<< std::endl;	
 
 	if(Scroll == ListLength)
 	{
