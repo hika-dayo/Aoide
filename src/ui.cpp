@@ -302,7 +302,13 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
-			std::string Title = "  " + M[i].GetTitle();
+			std::string Tmp = std::to_string(M[i].GetTrackNum()) + " ";
+			if(Tmp.size() == 2)
+			{
+				Tmp += " ";
+			}
+			Title = Tmp + M[i].GetTitle();
+//			std::string Title = " " + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
 		S = std::make_unique<ScrollState>(0, 2, TmpMenu.size());
@@ -334,7 +340,12 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
-			Title = "  " + M[i].GetTitle();
+			std::string Tmp = std::to_string(M[i].GetTrackNum()) + " ";
+			if(Tmp.size() == 2)
+			{
+				Tmp += " ";
+			}
+			Title = Tmp + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
 		S = std::make_unique<ScrollState>(0, 2, TmpMenu.size());
@@ -356,7 +367,6 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 int UI::DrawPlaylist(void)
 {
 	int i = -1;
-	std::cout << List.GetPlayingMusic().GetArtworkPath() << std::endl;
 	for(int n = 0; n < ArtworkList.size(); n++)
 	{
 		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())
