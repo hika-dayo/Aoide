@@ -27,8 +27,7 @@ int RunMainLoop(void)
 	while(1)
 	{
 //		SDL_Delay(14);
-		UIobj.Process();
-		if(ProcessMessage())
+		if(ProcessMessage(UIobj.Process()))
 		{
 			break;
 		}

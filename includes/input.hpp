@@ -49,5 +49,6 @@ private:
 public:
 	KEY ProcessKey(void);
 	Input_Process(void);
+	bool GetHoldStatus(void);
 };
 

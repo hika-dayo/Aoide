@@ -158,6 +158,12 @@ Input_Process::Input_Process(void)
 	return;
 }
 
+bool Input_Process::GetHoldStatus()
+{
+	return Hold;
+}
+
+
 bool GetKey(KEY K)
 {
 	auto Keys = SDL_GetKeyboardState(NULL);

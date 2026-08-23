@@ -18,7 +18,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
-
+#include <iostream>
 static SDL_Event E;
 static SDL_Window *Window = NULL;
 static SDL_Renderer *Renderer = NULL;
@@ -68,7 +68,7 @@ SDL_Window* GetWindow(void)
 {
 	return Window;
 }
-bool ProcessMessage(void)
+bool ProcessMessage(bool Hold)
 {
 	if(!Initialized)
 	{
@@ -76,16 +76,18 @@ bool ProcessMessage(void)
 	}
 	bool Quit = false;
 	SDL_UpdateWindowSurface(Window);
-	if(SDL_WaitEventTimeout(&E, 33))
+	int i = 30;
+	i += !Hold * 500;
+	if(SDL_WaitEventTimeout(&E, i))
 	{
-		while(SDL_PollEvent(&E))
-		{
+		do{
 			if(E.type == SDL_EVENT_QUIT)
 			{
 				Quit = true;
 	
 			}
 		}
+		while(SDL_PollEvent(&E));
 
 	}
 

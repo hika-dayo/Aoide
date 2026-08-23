@@ -33,7 +33,7 @@ UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
 	Object.push_back(MenuItem("Exit", EXIT));
 	S = std::make_unique<ScrollState>(0, 0, Object.size());
-		
+	First = true;		
 	P = nullptr;
 
 	
@@ -63,6 +63,12 @@ UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.
 
 int UI::Process(void)
 {
+	if(First)
+	{
+		CleanWindow();
+		Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+		First = false;
+	}
 	ProcessKey();
 	
 	List.Process();
@@ -73,8 +79,14 @@ int UI::Process(void)
 		DrawPlaylist();
 		
 	}
-	
-	return 0;
+/*	if(GetKey(SPACE))
+	{
+	CleanWindow();	
+	S->ScrollDown(Object.size());
+	Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+
+	}*/
+	return Inp.GetHoldStatus();
 }
 
 

@@ -26,14 +26,14 @@
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
 
-const int WAIT_TIME_FOR_HOLD = 20;
+const int WAIT_TIME_FOR_HOLD = 5;
 const int HOLD_DELAY = 1;
 
 
 bool isSDLInitialized(void);//SDLが初期化されているか
 int GUIInit(void);//GUIを初期化
 int GUIRelease(void);//SDLをリリース
-bool ProcessMessage(void);//ウィンドウのメッセージを処理。
+bool ProcessMessage(bool Hold);//ウィンドウのメッセージを処理。
 						  //この関数を定期的に呼びだす必要がある。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
 SDL_Window* GetWindow(void);//ウィンドウを得る
@@ -167,7 +167,7 @@ private:
 	std::string ChoosingArtist;
 
 	bool PlaylistMode;
-
+	bool First;
 	int ProcessKey(void);//キーを処理する
 	int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
 	
