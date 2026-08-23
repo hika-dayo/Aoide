@@ -21,7 +21,6 @@
 #include <iostream>
 static SDL_Event E;
 static SDL_Window *Window = NULL;
-static SDL_Renderer *Renderer = NULL;
 static SDL_Surface *Surface = NULL;
 static bool Initialized = false;
 bool isSDLInitialized(void)
@@ -100,7 +99,6 @@ int GUIRelease(void)
 {
 	if(isSDLInitialized())
 	{
-		SDL_DestroyRenderer(Renderer);
 		SDL_DestroySurface(Surface);
 		SDL_DestroyWindow(Window);
 		SDL_Quit();
