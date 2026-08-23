@@ -23,7 +23,8 @@ class Player
 		ma_sound Sound;
 		//VLCの読み込み
 		std::string FilePath;
-		bool Error;		
+		bool Error;	
+		bool Initialized;
 	public:
 		~Player();
 		Player(const char* Path);

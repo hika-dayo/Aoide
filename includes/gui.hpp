@@ -26,8 +26,8 @@
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
 
-const int WAIT_TIME_FOR_HOLD = 40;
-const int HOLD_DELAY = 2;
+const int WAIT_TIME_FOR_HOLD = 20;
+const int HOLD_DELAY = 1;
 
 
 bool isSDLInitialized(void);//SDLが初期化されているか

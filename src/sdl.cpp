@@ -76,13 +76,17 @@ bool ProcessMessage(void)
 	}
 	bool Quit = false;
 	SDL_UpdateWindowSurface(Window);
-	while(SDL_PollEvent(&E))
+	if(SDL_WaitEventTimeout(&E, 33))
 	{
-		if(E.type == SDL_EVENT_QUIT)
+		while(SDL_PollEvent(&E))
 		{
-			Quit = true;
-
+			if(E.type == SDL_EVENT_QUIT)
+			{
+				Quit = true;
+	
+			}
 		}
+
 	}
 
 	return Quit;

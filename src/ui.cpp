@@ -66,6 +66,13 @@ int UI::Process(void)
 	ProcessKey();
 	
 	List.Process();
+
+	if(PlaylistMode == true)
+	{
+		CleanWindow();
+		DrawPlaylist();
+		
+	}
 	
 	return 0;
 }
@@ -112,6 +119,12 @@ int UI::ProcessKey(void)
 	if(Ktmp == ENTER)
 	{
 		ProcessChoice(true);
+		CleanWindow();
+		if(PlaylistMode != true)
+		{
+			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+			
+		}
 	}
 	/*if(Ktmp == CHOOSEBEGIN)
 	{
