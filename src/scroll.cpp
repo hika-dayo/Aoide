@@ -11,7 +11,7 @@
   */
 
 #include "../includes/gui.hpp"
-
+#include <iostream>
 ScrollState::ScrollState(int DefScroll, int DefChoosingLine, int DefLength)
 {
 	Scroll = DefScroll;
@@ -61,7 +61,7 @@ int ScrollState::GoBegin(int Length)
 }
 int ScrollState::GoEnd(int Length)
 {
-	Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
+	Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize() / 3 * 2);
 
 	if(Scroll < 0)
 	{
@@ -82,13 +82,14 @@ int ScrollState::ProcessScroll(bool Hold)
 		}
 		else
 		{
-			Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
-	
-			if(Scroll < 0)
-			{
-				Scroll = 0;
-			}
-			ChoosingLine = ListLength - Scroll - 1;
+			GoEnd(ListLength);
+//			Scroll = ListLength - (C.GetWindowHeight() / C.GetFontSize());
+//	
+//			if(Scroll < 0)
+//			{
+//				Scroll = 0;
+//			}
+//			ChoosingLine = ListLength - Scroll - 1;
 	
 		}
 	}
@@ -107,26 +108,25 @@ int ScrollState::ProcessScroll(bool Hold)
 
 		}
 	}
-	
 
 	if(Scroll == ListLength)
 	{
 		Scroll = ListLength - 1;
 
 	}
-	if(Scroll == -1)
-	{
-		Scroll = 0;
-	}
-	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() - 1)
+	if(ChoosingLine > C.GetWindowHeight() / C.GetFontSize() / 3 * 2 - 1)
 	{
 		Scroll++;
 		ChoosingLine--;
 	}
-	if(ChoosingLine == -1)
+	if(ChoosingLine < 0)
 	{
 		Scroll--;
 		ChoosingLine++;
+	}
+	if(Scroll == -1)
+	{
+		Scroll = 0;
 	}
 	
 	return 0;

@@ -18,10 +18,9 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
-
+#include <iostream>
 static SDL_Event E;
 static SDL_Window *Window = NULL;
-static SDL_Renderer *Renderer = NULL;
 static SDL_Surface *Surface = NULL;
 static bool Initialized = false;
 bool isSDLInitialized(void)
@@ -68,7 +67,7 @@ SDL_Window* GetWindow(void)
 {
 	return Window;
 }
-bool ProcessMessage(void)
+bool ProcessMessage(bool Hold)
 {
 	if(!Initialized)
 	{
@@ -76,13 +75,19 @@ bool ProcessMessage(void)
 	}
 	bool Quit = false;
 	SDL_UpdateWindowSurface(Window);
-	while(SDL_PollEvent(&E))
+	int i = 30;
+	i += !Hold * 500;
+	if(SDL_WaitEventTimeout(&E, i))
 	{
-		if(E.type == SDL_EVENT_QUIT)
-		{
-			Quit = true;
-
+		do{
+			if(E.type == SDL_EVENT_QUIT)
+			{
+				Quit = true;
+	
+			}
 		}
+		while(SDL_PollEvent(&E));
+
 	}
 
 	return Quit;
@@ -94,7 +99,6 @@ int GUIRelease(void)
 {
 	if(isSDLInitialized())
 	{
-		SDL_DestroyRenderer(Renderer);
 		SDL_DestroySurface(Surface);
 		SDL_DestroyWindow(Window);
 		SDL_Quit();

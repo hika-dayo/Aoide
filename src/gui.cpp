@@ -63,7 +63,7 @@ std::string MenuItem::GetPath(void)
 {
 	return Path;
 }
-std::string MenuItem::GetText(void)
+std::string MenuItem::GetText(void) const
 {
 	return Text;
 }
@@ -87,10 +87,10 @@ MenuItem::MenuItem(const MenuItem &Copy)
 	return;
 }
 
-int UIRender::DrawMenu(int ChoosingLine, int Scroll, std::vector<MenuItem> Object)
+int UIRender::DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object)
 {
 	Config C;
-		for(int i = 0; i + Scroll < Object.size(); i++)
+		for(int i = 0; i < C.GetWindowHeight() / C.GetFontSize() && Scroll + i < Object.size(); i++)
 		{
 			if(i == ChoosingLine)
 			{

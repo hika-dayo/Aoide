@@ -33,7 +33,7 @@ UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
 	Object.push_back(MenuItem("Exit", EXIT));
 	S = std::make_unique<ScrollState>(0, 0, Object.size());
-		
+	First = true;		
 	P = nullptr;
 
 	
@@ -63,20 +63,30 @@ UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.
 
 int UI::Process(void)
 {
+	if(First)
+	{
+		CleanWindow();
+		Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+		First = false;
+	}
 	ProcessKey();
 	
 	List.Process();
+
 	if(PlaylistMode == true)
 	{
-		DrawPlaylist();			
+		CleanWindow();
+		DrawPlaylist();
 		
-	}else
-	{
-		Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-
 	}
-	
-	return 0;
+/*	if(GetKey(SPACE))
+	{
+	CleanWindow();	
+	S->ScrollDown(Object.size());
+	Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+
+	}*/
+	return Inp.GetHoldStatus();
 }
 
 
@@ -121,6 +131,12 @@ int UI::ProcessKey(void)
 	if(Ktmp == ENTER)
 	{
 		ProcessChoice(true);
+		CleanWindow();
+		if(PlaylistMode != true)
+		{
+			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+			
+		}
 	}
 	/*if(Ktmp == CHOOSEBEGIN)
 	{
@@ -136,18 +152,42 @@ int UI::ProcessKey(void)
 	if(Ktmp == LEFT)
 	{
 		S->GoBegin(Object.size());
+		CleanWindow();
+		if(PlaylistMode != true)
+		{
+			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+			
+		}
 	}
 	if(Ktmp == RIGHT)
 	{
 		PlaylistMode = !PlaylistMode;
+		CleanWindow();
+		if(PlaylistMode != true)
+		{
+			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+			
+		}
 	}
 	if(Ktmp == UP)
 	{
 		S->ScrollDown(Object.size());
+		CleanWindow();
+		if(PlaylistMode != true)
+		{
+			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+			
+		}
 	}
 	if(Ktmp == DOWN)
 	{
 		S->ScrollUp(Object.size());
+		CleanWindow();
+		if(PlaylistMode != true)
+		{
+			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
+			
+		}
 	}
 	return 0;
 }
@@ -302,7 +342,7 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
-			std::string Title = "  " + M[i].GetTitle();
+			std::string Title = " " + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
 		S = std::make_unique<ScrollState>(0, 2, TmpMenu.size());
@@ -312,7 +352,8 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		for(int i = 0; i < M.size(); i++)
 		{
-			TmpMenu.push_back(MenuItem(M[i].GetAlbum(), SetE, M[i]));
+			std::string Tmp = " " + M[i].GetAlbum();
+			TmpMenu.push_back(MenuItem(Tmp.c_str(), SetE, M[i]));
 		}	
 		S = std::make_unique<ScrollState>(0, 1, TmpMenu.size());
 	}
@@ -321,7 +362,8 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		TmpMenu.push_back(MenuItem("< Back", BACK));
 		for(int i = 0; i < M.size(); i++)
 		{
-			TmpMenu.push_back(MenuItem(M[i].GetArtist(), SetE, M[i]));
+			std::string Tmp = " " + M[i].GetArtist();
+			TmpMenu.push_back(MenuItem(Tmp.c_str(), SetE, M[i]));
 		}	
 		S = std::make_unique<ScrollState>(0, 1, TmpMenu.size());
 	}
@@ -334,7 +376,12 @@ int UI::ListItem(std::vector<Music> M, EVENT E, EVENT SetE)
 		std::string Title;
 		for(int i = 0; i < M.size(); i++)
 		{
-			Title = "  " + M[i].GetTitle();
+			std::string Tmp = std::to_string(M[i].GetTrackNum()) + " ";
+			if(Tmp.size() == 2)
+			{
+				Tmp += " ";
+			}
+			Title = Tmp + M[i].GetTitle();
 			TmpMenu.push_back(MenuItem(Title, SetE, M[i]));
 		}	
 		S = std::make_unique<ScrollState>(0, 2, TmpMenu.size());
@@ -356,7 +403,6 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 int UI::DrawPlaylist(void)
 {
 	int i = -1;
-	std::cout << List.GetPlayingMusic().GetArtworkPath() << std::endl;
 	for(int n = 0; n < ArtworkList.size(); n++)
 	{
 		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())
@@ -364,27 +410,29 @@ int UI::DrawPlaylist(void)
 			i = n;
 		}
 	}
-		if(C.GetWindowHeight() < C.GetWindowWidth())
+	if(C.GetWindowHeight() < C.GetWindowWidth())//横長の場合
+	{
+		if(List.GetPlayingMusic().GetArtworkPath() != "")
 		{
-			if(List.GetPlayingMusic().GetArtworkPath() != "")
-			{
-				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()));
-	
-			}else
-			{
-				UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
-			}
+			ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()));
+
 		}else
 		{
-			if(List.GetPlayingMusic().GetArtworkPath() != "")
-			{
+			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
+		}
+	}else//縦長&正方形の場合
+	{
+		if(List.GetPlayingMusic().GetArtworkPath() != "")
+		{
 
-				ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()));
+			ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()));
+
+		}else
+		{
+			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
+		}
+		
 	
-			}else
-			{
-				UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
-			}
 
 	}
 	return 0;

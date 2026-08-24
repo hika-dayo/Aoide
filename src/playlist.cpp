@@ -17,7 +17,6 @@ Playlist::Playlist(void) : PlayingMusic("")
 //	PlayingMusic = &EmptyMusic;
 	P = new Player("");
 }
-
 Player& Playlist::GetPlayer(void)
 {
 	return *P;

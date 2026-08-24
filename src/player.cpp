@@ -18,17 +18,44 @@
 //プレーヤークラスの関数
 Player::Player(const char* Path)
 {
+	Initialized = false;
 	Error = false;
-	Error = !FileExists(Path);
+	if(!FileExists(Path))
+	{
+		Error = true;
+	}
 	FilePath = Path;
+	if(FilePath == "")
+	{
+		Error = true;
+	}
+	if(!Error)
+	{
+		Engine = GetMiniaudioEngine();
+		if(Engine == nullptr)
+		{
+			Error = true;
+		}
+		if(!Error)
+		{
+			if(!SoundInitFromFile(FilePath.c_str(), &Sound))
+			{
+				Initialized = true;
+			}else
+			{
+				Error = true;
+			}
 
-	Engine = GetMiniaudioEngine();
-	SoundInitFromFile(FilePath.c_str(), &Sound);
+		}
+	}
 	return;
 }
 Player::~Player()
 {
-	ma_sound_uninit(&Sound);
+	if(Initialized)
+	{	
+		ma_sound_uninit(&Sound);
+	}
 	return;
 }
 
@@ -97,7 +124,7 @@ double Player::GetAudioPosition(void)
 	{
 		return 0;
 	}
-	return (Cursor / Length);
+	return ((double)Cursor / Length);
 }
 
 
