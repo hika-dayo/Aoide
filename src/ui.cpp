@@ -107,14 +107,7 @@ int UI::ProcessKey(void)
 	}
 	if(Ktmp == PAUSE_PLAY)
 	{
-		if(List.GetPlayer().isPaused())
-		{
 			List.Play();
-		}
-		else
-		{
-			List.Pause();
-		}
 	}
 /*	if(Ktmp == SPACE)
 	{
@@ -420,6 +413,7 @@ int UI::DrawPlaylist(void)
 		{
 			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
 		}
+		DrawRect(0, C.GetWindowHeight() - 16, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, 16, 0xffffff);
 	}else//縦長&正方形の場合
 	{
 		if(List.GetPlayingMusic().GetArtworkPath() != "")
@@ -432,6 +426,8 @@ int UI::DrawPlaylist(void)
 			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
 		}
 		
+//		DrawRect(0, 100, List.GetPlayer().GetAudioTime() / 1000, 16, 0xffffff);
+		DrawRect(0, C.GetWindowHeight() - 16, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, 16, 0xffffff);
 	
 
 	}

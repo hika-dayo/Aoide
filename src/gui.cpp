@@ -106,15 +106,20 @@ int UIRender::DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>
 
 		float BarY = Scroll / (float)Object.size() * (float)C.GetWindowHeight();
 		float BarHeight;
-		if(Object.size() == 0)
+		//if(Object.size() < C.GetWindowHeight() / C.GetFontSize() / 3 * 2)
+		if(Object.size() == 0)		
 		{	
 			BarHeight = C.GetWindowHeight();
 		}
 		else
 		{
-			BarHeight = (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size()) * (float)C.GetWindowHeight();
-		}
-			DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
+			BarHeight =  C.GetWindowHeight() * (C.GetWindowHeight() / C.GetFontSize()) / ((float)Object.size());
+			if(BarHeight > C.GetWindowHeight())
+			{
+				BarHeight = C.GetWindowHeight();
+			}
+		}		
+		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
 	return 0;
 }
 UIRender::UIRender(void)
