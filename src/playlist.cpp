@@ -15,7 +15,7 @@
 Playlist::Playlist(void) : PlayingMusic("")
 {
 //	PlayingMusic = &EmptyMusic;
-	P = new Player("");
+	P = nullptr;
 }
 Player& Playlist::GetPlayer(void)
 {
@@ -126,6 +126,9 @@ int Playlist::PlayQueue(void)
 		{
 			P = new Player(PlayingMusic.GetPath().c_str());
 			P->Play();
+		}else
+	{
+			PlayNext();
 		}
 		
 	}else
@@ -152,7 +155,14 @@ int Playlist::Play()
 {
 	if(P != nullptr)
 	{
+		if(P->isPaused())
+		{
 			P->Play();
+		}
+		else
+		{
+			Pause();
+		}
 	}
 	return 0;
 }
@@ -176,4 +186,36 @@ Playlist::~Playlist(void)
 Music Playlist::GetPlayingMusic(void)
 {
 	return PlayingMusic;
+}
+
+int Playlist::GetTrackLength(void)
+{
+	if(P != nullptr)
+	{
+		return P->GetAudioLength();
+	}
+		return 0;
+
+}
+int Playlist::GetPlaybackTime(void)
+{
+	if(P != nullptr)
+	{
+		return P->GetAudioTime();
+	}
+	return 0;
+
+}
+int Playlist::GetPlaybackPosition(void)
+{
+	if(P != nullptr)
+	{
+		if(P->GetAudioLength() != 0)
+		{
+			return 1000 * P->GetAudioTime() / P->GetAudioLength();
+
+		}
+	}
+	return 0;
+
 }

@@ -15,6 +15,7 @@
 #include "audio_engine.hpp"
 #include "input.hpp"
 #include "playlist.hpp"
+#include "menu.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <optional>
@@ -45,19 +46,6 @@ enum COLOR
 	BLUE,
 };
 
-enum EVENT
-{
-	NONE,
-	PLAY_MUSIC,
-	PLAY_ALL,
-	SHUFFLE_PLAY,
-	EXIT,
-	LIST_ARTISTS,
-	LIST_ALBUMS,
-	LIST_TITLES,
-	LIST_TITLES_BY_TRACKNUM,
-	BACK,
-};
 
 
 
@@ -96,51 +84,17 @@ public:
 
 
 
-class MenuItem
-{
-	std::string Text;
-	std::string Artist;
-	std::string Album;
-	std::string Title;
-	std::string Path;
-	std::string ArtworkPath;
-	EVENT Event;
-public:
-	MenuItem(std::string Text,EVENT Event, std::optional<Music> M = std::nullopt);
-	MenuItem(const MenuItem &Copy);//コピーコンストラクタ
-	std::string GetText(void) const;
-	EVENT GetEvent(void);
-	std::string GetArtist(void);
-	std::string GetAlbum(void);
-	std::string GetTitle(void);
-	std::string GetPath(void);
-	std::string GetArtworkPath(void);
-};
 
-class ScrollState
-{
-private:
-	Config C;
-	int Scroll;//スクロール位置の保存
-	int ListLength;//リストの長さ
-	int ChoosingLine;//画面の何行目を選択しているか(0〜一画面に何行入るかまでの範囲しかならない)
-	int ProcessScroll(bool Hold);
-public:
-	ScrollState(int DefScroll, int DefChoosingLine, int DefLength);
-	int ScrollUp(int Length, bool Hold = false);
-	int ScrollDown(int Length, bool Hold = false);
-	int GoBegin(int Length);
-	int GoEnd(int Length);
-	int GetCurrentLine(void);
-	int GetChoosingLine(void);
-	int GetScroll(void);
-};
 
 class UIRender
 {
 public:
+	
+	std::vector<Image> ArtworkList;
+	Image UnknownArtwork;
 	int DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object);
-	UIRender(void);
+	UIRender(std::vector<Music> &MusicList);
+	int DrawControler(Playlist &List);
 private:
 	Color FontColor;
 	TTF_Font* Font;
@@ -166,7 +120,7 @@ private:
 
 	std::string ChoosingArtist;
 
-	bool PlaylistMode;
+	bool ControlMode;
 	bool First;
 	int ProcessKey(void);//キーを処理する
 	int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
@@ -178,15 +132,14 @@ private:
 	std::vector<MenuItem> Object;//描画する内容
 			
 	UIRender Rend;	
-	std::vector<Image> ArtworkList;
-	Image UnknownArtwork;
 	
-	int DrawPlaylist(void);
 	int ShuffleTitles(std::vector<Music> &ArgMusic);
+	
+	int Render(void);//描画処理
 
 	std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
 public:
-	UI(std::vector<Music> &MusicLists);
+	UI(std::vector<Music> &MusicList);
 	int Process(void);
 
 };
