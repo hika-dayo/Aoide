@@ -89,8 +89,12 @@ public:
 class UIRender
 {
 public:
+	
+	std::vector<Image> ArtworkList;
+	Image UnknownArtwork;
 	int DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object);
-	UIRender(void);
+	UIRender(std::vector<Music> &MusicList);
+	int DrawControler(Playlist &List);
 private:
 	Color FontColor;
 	TTF_Font* Font;
@@ -116,7 +120,7 @@ private:
 
 	std::string ChoosingArtist;
 
-	bool PlaylistMode;
+	bool ControlMode;
 	bool First;
 	int ProcessKey(void);//キーを処理する
 	int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
@@ -128,15 +132,14 @@ private:
 	std::vector<MenuItem> Object;//描画する内容
 			
 	UIRender Rend;	
-	std::vector<Image> ArtworkList;
-	Image UnknownArtwork;
 	
-	int DrawPlaylist(void);
 	int ShuffleTitles(std::vector<Music> &ArgMusic);
+	
+	int Render(void);//描画処理
 
 	std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
 public:
-	UI(std::vector<Music> &MusicLists);
+	UI(std::vector<Music> &MusicList);
 	int Process(void);
 
 };

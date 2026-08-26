@@ -26,7 +26,8 @@
 #include <random>
 #include <algorithm>
 #include <iostream>
-UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.png")
+
+UI::UI(std::vector<Music> &MusicList) : Rend(MusicList)
 {
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
 	Object.push_back(MenuItem("Albums", LIST_ALBUMS));
@@ -37,26 +38,9 @@ UI::UI(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.
 	P = nullptr;
 
 	
-	PlaylistMode = false;
+	ControlMode = false;
 
 	MList = MusicList;
-		for(int i = 0; i < MList.size(); i++)
-		{
-			bool tmp = false;
-			for(int j = 0; j < ArtworkList.size(); j++)
-			{
-				if(ArtworkList[j].GetPath() == MList[i].GetArtworkPath())
-				{
-					tmp = true;
-				}
-			}
-		
-			if(!tmp)
-			{
-				Image I(MList[i].GetArtworkPath());
-				ArtworkList.push_back(I);
-			}
-		}
 	
 	return;
 }
@@ -72,20 +56,7 @@ int UI::Process(void)
 	ProcessKey();
 	
 	List.Process();
-
-	if(PlaylistMode == true)
-	{
-		CleanWindow();
-		DrawPlaylist();
-		
-	}
-/*	if(GetKey(SPACE))
-	{
-	CleanWindow();	
-	S->ScrollDown(Object.size());
-	Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-
-	}*/
+	Render();
 	return Inp.GetHoldStatus();
 }
 
@@ -109,78 +80,31 @@ int UI::ProcessKey(void)
 	{
 			List.Play();
 	}
-/*	if(Ktmp == SPACE)
-	{
-		if(List.GetPlayer().isPaused())
-		{
-			List.Play();
-		}
-		else
-		{
-			List.Pause();
-		}
-	}*/
 
 	if(Ktmp == ENTER)
 	{
 		ProcessChoice(true);
-		CleanWindow();
-		if(PlaylistMode != true)
-		{
-			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-			
-		}
+		Render();
 	}
-	/*if(Ktmp == CHOOSEBEGIN)
-	{
-		if(PlaylistMode == false)
-		{
-			PlaylistMode = true;
-		}
-		else
-		{
-			PlaylistMode = false;
-		}
-	}*/
 	if(Ktmp == LEFT)
 	{
 		S->GoBegin(Object.size());
-		CleanWindow();
-		if(PlaylistMode != true)
-		{
-			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-			
-		}
+		Render();
 	}
 	if(Ktmp == RIGHT)
 	{
-		PlaylistMode = !PlaylistMode;
-		CleanWindow();
-		if(PlaylistMode != true)
-		{
-			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-			
-		}
+		ControlMode = !ControlMode;
+		Render();
 	}
 	if(Ktmp == UP)
 	{
 		S->ScrollDown(Object.size());
-		CleanWindow();
-		if(PlaylistMode != true)
-		{
-			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-			
-		}
+		Render();
 	}
 	if(Ktmp == DOWN)
 	{
 		S->ScrollUp(Object.size());
-		CleanWindow();
-		if(PlaylistMode != true)
-		{
-			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-			
-		}
+		Render();
 	}
 	return 0;
 }
@@ -393,43 +317,16 @@ int UI::ShuffleTitles(std::vector<Music> &ArgMusic)
 	std::shuffle(ArgMusic.begin(), ArgMusic.end(), Engine);
 	return 0;
 }
-int UI::DrawPlaylist(void)
+int UI::Render(void)
 {
-	int i = -1;
-	for(int n = 0; n < ArtworkList.size(); n++)
+	CleanWindow();
+	if(ControlMode == true)
 	{
-		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())
-		{
-			i = n;
-		}
+		Rend.DrawControler(List);
+	}else
+	{
+		Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
 	}
-	if(C.GetWindowHeight() < C.GetWindowWidth())//横長の場合
-	{
-		if(List.GetPlayingMusic().GetArtworkPath() != "")
-		{
-			ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()));
-
-		}else
-		{
-			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
-		}
-		DrawRect(0, C.GetWindowHeight() - 16, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, 16, 0xffffff);
-	}else//縦長&正方形の場合
-	{
-		if(List.GetPlayingMusic().GetArtworkPath() != "")
-		{
-
-			ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()));
-
-		}else
-		{
-			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
-		}
 		
-//		DrawRect(0, 100, List.GetPlayer().GetAudioTime() / 1000, 16, 0xffffff);
-		DrawRect(0, C.GetWindowHeight() - 16, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, 16, 0xffffff);
-	
-
-	}
 	return 0;
 }
