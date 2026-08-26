@@ -28,7 +28,7 @@
 #define SDL_VIDEO_DRIVER_X11 1
 
 const int WAIT_TIME_FOR_HOLD = 5;
-const int HOLD_DELAY = 1;
+const int HOLD_DELAY = 0;
 
 
 bool isSDLInitialized(void);//SDLが初期化されているか

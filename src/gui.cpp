@@ -171,7 +171,6 @@ int UIRender::DrawControler(Playlist &List)
 		{
 			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
 		}
-		DrawRect(0, C.GetWindowHeight() - 16, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, 16, 0xffffff);
 	}else//縦長&正方形の場合
 	{
 		if(List.GetPlayingMusic().GetArtworkPath() != "")
@@ -183,8 +182,32 @@ int UIRender::DrawControler(Playlist &List)
 		{
 			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
 		}
+		DrawText(Font, List.GetPlayingMusic().GetTitle().c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth());
+		DrawText(Font, List.GetPlayingMusic().GetArtist().c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth() + C.GetFontSize());
 		
-//		DrawRect(0, 100, List.GetPlayer().GetAudioTime() / 1000, 16, 0xffffff);
+		std::string Tmp = std::to_string(List.GetPlaybackTime() % 60000 / 1000);
+		if(Tmp.size() == 1)
+		{
+			Tmp = "0" + Tmp;
+		}
+		std::string Time = std::to_string(List.GetPlaybackTime() / 60000) + ":" + Tmp;
+
+		Tmp = std::to_string(List.GetTrackLength() % 60000 / 1000);
+		if(Tmp.size() == 1)
+		{
+			Tmp = "0" + Tmp;
+		}
+		std::string Length = std::to_string(List.GetTrackLength() / 60000) + ":" + Tmp;
+
+		if(List.GetPlayingMusic().GetPath() == "")
+		{
+			Time = "0:00";
+			Length = "0:00";
+		}
+
+		DrawText(Font, Time.c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth() + C.GetFontSize() * 2);
+		DrawText(Font, Length.c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth() + C.GetFontSize() * 3);
+
 		DrawRect(0, C.GetWindowHeight() - 16, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, 16, 0xffffff);
 	
 
