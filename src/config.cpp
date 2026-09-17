@@ -286,6 +286,27 @@ std::string Config::GetCacheDir(void)
 {
 	return CacheDir;
 }
+std::string Config::GetUnknownArtworkPath(void)
+{
+	if(FileExists("assets/graphics/unknown.png"))
+	{
+			return "assets/graphics/unknown.png";
+	}
+	else
+	{
+		if(FileExists("/usr/local/share/aoide/unknown.png"))
+		{
+			return "/usr/local/share/aoide/unknown.png";
+		}
+		else
+		{
+			ReportError("不明なアートワークの画像ファイルが存在しません。", CRITICAL_ERROR, __FILE__, __LINE__);
+			exit(1);
+		}
+
+	}
+	return "";
+}
 std::string Config::GetFontPath(void)
 {
 	if(FONT_PATH != "")

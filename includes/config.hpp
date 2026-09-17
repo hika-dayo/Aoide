@@ -38,14 +38,15 @@ private:
 	int LoadSearchExtension(std::string Line, int LineNum);
 public:
 	Config();
-	std::string GetCacheDir(void);//キャッシュがあるディレクトリのパス
-	std::string GetConfigPath(void);//コンフィグファイルのパス
-	std::string GetFontPath(void);//フォントのパス
-	std::string GetGraphicDir(void);//グラフィックのディレクトリ
-	std::string GetSearchDir(void);//検索対象のディレクトリ
-	std::vector<std::string>GetSearchExtension();//検索対象の拡張子
-	int GetWindowWidth(void);//ウィンドウサイズ(横)	
-	int GetWindowHeight(void);//ウィンドウサイズ(縦)
-	float GetFontSize(void);//フォントのサイズ
-	bool DidConfigLoad(void);//コンフィグファイルが読み込まれたか(インストラクタで読み込むからほとんど使う用が無い)
+	static std::string GetCacheDir(void);//キャッシュがあるディレクトリのパス
+	static std::string GetConfigPath(void);//コンフィグファイルのパス
+	static std::string GetFontPath(void);//フォントのパス
+	static std::string GetUnknownArtworkPath(void);//フォントのパス
+	static std::string GetGraphicDir(void);//グラフィックのディレクトリ
+	static std::string GetSearchDir(void);//検索対象のディレクトリ
+	static std::vector<std::string>GetSearchExtension();//検索対象の拡張子
+	static int GetWindowWidth(void);//ウィンドウサイズ(横)	
+	static int GetWindowHeight(void);//ウィンドウサイズ(縦)
+	static float GetFontSize(void);//フォントのサイズ
+	static bool DidConfigLoad(void);//コンフィグファイルが読み込まれたか(インストラクタで読み込むからほとんど使う用が無い)
 };

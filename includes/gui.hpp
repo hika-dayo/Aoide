@@ -96,6 +96,7 @@ public:
 	UIRender(std::vector<Music> &MusicList);
 	int DrawControler(Playlist &List);
 private:
+	Config C;
 	Color FontColor;
 	TTF_Font* Font;
 	std::vector<std::string> Texts;//テキスト

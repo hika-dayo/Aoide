@@ -122,9 +122,8 @@ int UIRender::DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>
 		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
 	return 0;
 }
-UIRender::UIRender(std::vector<Music> &MusicList) : UnknownArtwork("assets/graphics/unknown.png")
+UIRender::UIRender(std::vector<Music> &MusicList) : UnknownArtwork(C.GetUnknownArtworkPath())
 {
-	Config C;
 	FontColor =  0x00ffffff;
 	Font = InitFont(C.GetFontSize(), C.GetFontPath());
 	for(int i = 0; i < MusicList.size(); i++)
