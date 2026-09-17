@@ -219,3 +219,11 @@ int Playlist::GetPlaybackPosition(void)
 	return 0;
 
 }
+int Playlist::GetPlayerStatus(void)
+{
+	if(P != nullptr)
+	{
+		return P->isPlaying();
+	}
+	return 0;
+}

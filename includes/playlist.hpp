@@ -40,4 +40,5 @@ public:
 	int GetTrackLength(void);//ミリ秒で曲の長さを返す
 	int GetPlaybackTime(void);//ミリ秒で現在の再生時間を返す
 	int GetPlaybackPosition(void);//0~1000で現在の再生時間の位置を返す
+	int GetPlayerStatus(void);
 };

@@ -205,10 +205,10 @@ int UIRender::DrawControler(Playlist &List)
 			Length = "0:00";
 		}
 
-		DrawText(Font, Time.c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth() + C.GetFontSize() * 2);
-		DrawText(Font, Length.c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth() + C.GetFontSize() * 3);
-
-		DrawRect(0, C.GetWindowHeight() - 16, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, 16, 0xffffff);
+		DrawRect(0, C.GetWindowWidth() + C.GetFontSize() * 2, C.GetWindowWidth(), C.GetFontSize(), 0xaaaaaa);
+		DrawRect(0, C.GetWindowWidth() + C.GetFontSize() * 2, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, C.GetFontSize(), 0xffffff);
+		DrawText(Font, Time.c_str(), 0xffffff, 0, C.GetWindowWidth() + C.GetFontSize() * 3);
+		DrawText(Font, Length.c_str(), 0xffffff, C.GetWindowWidth() - C.GetFontSize() * 2, C.GetWindowWidth() + C.GetFontSize() * 3);
 	
 
 	}
