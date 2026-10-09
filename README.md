@@ -97,9 +97,9 @@ $ cmake ..
 $ make
 $ sudo make install
 ```
-#### TagLibのインストール
+#### tagLibのインストール
 ```bash
-$ cd aoide/libraries/Taglib
+$ cd aoide/libraries/taglib
 $ tar xf taglib-2.2.1.tar.gz
 $ cd taglib-2.2.1/
 $ mkdir build
@@ -112,6 +112,7 @@ $ sudo make install
 #### 本ソフトのインストール
 ```bash
 $ cd aoide
+$ autoreconf -i
 $ ./configure
 $ make
 $ sudo make install
