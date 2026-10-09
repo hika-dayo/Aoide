@@ -170,6 +170,35 @@ int UIRender::DrawControler(Playlist &List)
 		{
 			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
 		}
+		
+		DrawText(Font, List.GetPlayingMusic().GetTitle().c_str(), 0xffffff, C.GetWindowHeight(), 0);
+		DrawText(Font, List.GetPlayingMusic().GetArtist().c_str(), 0xffffff, C.GetWindowHeight(), C.GetFontSize());
+		
+		std::string Tmp = std::to_string(List.GetPlaybackTime() % 60000 / 1000);
+		if(Tmp.size() == 1)
+		{
+			Tmp = "0" + Tmp;
+		}
+		std::string Time = std::to_string(List.GetPlaybackTime() / 60000) + ":" + Tmp;
+
+		Tmp = std::to_string(List.GetTrackLength() % 60000 / 1000);
+		if(Tmp.size() == 1)
+		{
+			Tmp = "0" + Tmp;
+		}
+		std::string Length = std::to_string(List.GetTrackLength() / 60000) + ":" + Tmp;
+
+		if(List.GetPlayingMusic().GetPath() == "")
+		{
+			Time = "0:00";
+			Length = "0:00";
+		}
+
+		DrawRect(C.GetWindowHeight(), C.GetFontSize() * 2, C.GetWindowWidth() - C.GetWindowHeight(), C.GetFontSize(), 0xaaaaaa);
+		DrawRect(C.GetWindowHeight(), C.GetFontSize() * 2, (C.GetWindowWidth() - C.GetWindowHeight()) * List.GetPlaybackPosition() / 1000, C.GetFontSize(), 0xffffff);
+		DrawText(Font, Time.c_str(), 0xffffff, C.GetWindowHeight(), C.GetFontSize() * 3);
+		DrawText(Font, Length.c_str(), 0xffffff, C.GetWindowWidth() - C.GetFontSize() * 2, C.GetFontSize() * 3);
+
 	}else//縦長&正方形の場合
 	{
 		if(List.GetPlayingMusic().GetArtworkPath() != "")
