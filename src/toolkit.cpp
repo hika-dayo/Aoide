@@ -35,6 +35,7 @@ float GetFontSize(TTF_Font* Font)
 }
 int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y)
 {
+	Config C;
 	std::string tmp = Str;
 	if(tmp != "")
 	{
@@ -47,7 +48,7 @@ int DrawText(TTF_Font* Font, const char* Str, Color FontColor, int X, int Y)
 		Rect.w = Image->w;
 		Rect.h = Image->h;
 		Scr_Rect.x = X;
-		Scr_Rect.y = Y;	
+		Scr_Rect.y = Y - C.GetFontOffsetY();	
 		SDL_BlitSurface(Image, &Rect, GetGUISurface(), &Scr_Rect);
 		SDL_DestroySurface(Image);
 

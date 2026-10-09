@@ -27,7 +27,8 @@ private:
 	static std::string SEARCH_DIR;//$HOME
 	static bool LoadConfig;//false
 	static std::string ConfigPath;//$HOME/.config/aoide/aoide.conf
-	static std::string CacheDir;//$HOME/.cache/aoide/searched
+	static std::string CacheDir;//$HOME/.cache/aoide/
+	static int FONT_OFFSET_Y;
 	int ReadConf(void);//コンフィグファイルを読む
 	int MakeConfAndCacheDir(void);
 	int InitConf(void);//コンフィグファイルの初期化
@@ -35,6 +36,7 @@ private:
 	int LoadWindowHeight(std::string Line, int LineNum);
 	int LoadFontSize(std::string Line, int LineNum);
 	int LoadFontPath(std::string Line, int LineNum);
+	int LoadFontOffsetY(std::string Line, int LineNum);
 	int LoadSearchExtension(std::string Line, int LineNum);
 public:
 	Config();
@@ -48,5 +50,6 @@ public:
 	static int GetWindowWidth(void);//ウィンドウサイズ(横)	
 	static int GetWindowHeight(void);//ウィンドウサイズ(縦)
 	static float GetFontSize(void);//フォントのサイズ
+	static int GetFontOffsetY(void);//検索対象のディレクトリ
 	static bool DidConfigLoad(void);//コンフィグファイルが読み込まれたか(インストラクタで読み込むからほとんど使う用が無い)
 };

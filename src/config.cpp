@@ -35,14 +35,11 @@ Config::Config()
 }
 
 
-/*int Config::WINDOW_WIDTH = 640;
-int Config::WINDOW_HEIGHT = 480;
-float Config::FONT_SIZE = 16;
-bool Config::ReadConfig = false;*/
 
-int Config::WINDOW_WIDTH = 640;
-int Config::WINDOW_HEIGHT = 480;
-float Config::FONT_SIZE = 16;
+int Config::WINDOW_WIDTH = DEFAULT_WINDOW_WIDTH;
+int Config::WINDOW_HEIGHT = DEFAULT_WINDOW_HEIGHT;
+float Config::FONT_SIZE = DEFAULT_FONT_SIZE;
+int Config::FONT_OFFSET_Y = 0;
 std::string Config::FONT_PATH = "";
 std::string Config::SEARCH_DIR = getenv("HOME");
 bool Config::LoadConfig = false;
@@ -133,6 +130,8 @@ int Config::InitConf(void)
 		DefaultConf << "\n";
 		DefaultConf << "#フォントファイルのパス(未設定の場合unifontが選択されます)\n";
 		DefaultConf << "#FontPath=/usr/local/share/aoide/unifont-17.0.03.otf\n";
+		DefaultConf << "#フォントを何px上にずらすか(フォントの高さが合わない時に変更したください)\n";
+		DefaultConf << "#FontOffsetY=0\n";
 		DefaultConf.close();
 	}	
 	else
@@ -170,6 +169,36 @@ int Config::LoadWindowWidth(std::string Line, int LineNum)
 	if(WINDOW_WIDTH == 0)
 	{
 		std::string Error = std::to_string(LineNum) + "行目のウィンドウの横幅の設定がされていません。";
+		ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
+	}
+	return 0;
+}
+int Config::LoadFontOffsetY(std::string Line, int LineNum)
+{
+	if(Line.find("FontOffsetY") + 2 >= Line.length())
+	{
+		std::string Error = std::to_string(LineNum) + "行目の設定がされていません。";
+		ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
+		return 1;
+	}
+	try{FONT_OFFSET_Y= stoi(Line.substr(Line.find("=") + 1, Line.length()));}
+	catch(const std::invalid_argument& e)
+	{
+		std::string Error = "設定(" + Line.substr(Line.find("=") + 1) + ")が数値以外の文字を含んでいます。";
+		ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
+		FONT_OFFSET_Y= 0;
+		return 1;
+	}
+	catch(const std::out_of_range& e)
+	{
+		std::string Error = "設定(" + Line.substr(Line.find("=") + 1)+ ")の値が大きすぎます。";
+		ReportError(Error.c_str(), GENERAL_ERROR, __FILE__,__LINE__,__func__);
+		FONT_OFFSET_Y = 0;
+		return 1;
+	}
+	if(FONT_OFFSET_Y == 0)
+	{
+		std::string Error = std::to_string(LineNum) + "行目のフォントのYオフセットの設定がされていません。";
 		ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
 	}
 	return 0;
@@ -371,7 +400,10 @@ float Config::GetFontSize(void)
 {
 	return FONT_SIZE;
 }
-
+int Config::GetFontOffsetY(void)
+{
+	return FONT_OFFSET_Y;
+}
 
 bool Config::DidConfigLoad(void)
 {
@@ -427,7 +459,10 @@ int Config::ReadConf(void)
 									{
 										LoadSearchExtension(Line, LineNum);
 									}
-									else
+									else if(Line.find("FontOffsetY") != std::string::npos)
+									{
+										LoadFontOffsetY(Line, LineNum);
+									}else
 									{
 										std::string Error = std::to_string(LineNum) + "行目に不明な設定(" + Line + ")があります。";
 										ReportError(Error.c_str(), GENERAL_ERROR, __FILE__, __LINE__, __func__);
