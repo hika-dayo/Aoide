@@ -95,6 +95,8 @@ public:
 	int DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object);
 	UIRender(std::vector<Music> &MusicList);
 	int DrawControler(Playlist &List);
+	int DrawUI(int X, int Y, int Width, Playlist &List);//UIを表示する
+	
 private:
 	Config C;
 	Color FontColor;

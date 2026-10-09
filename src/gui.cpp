@@ -171,33 +171,7 @@ int UIRender::DrawControler(Playlist &List)
 			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
 		}
 		
-		DrawText(Font, List.GetPlayingMusic().GetTitle().c_str(), 0xffffff, C.GetWindowHeight(), 0);
-		DrawText(Font, List.GetPlayingMusic().GetArtist().c_str(), 0xffffff, C.GetWindowHeight(), C.GetFontSize());
-		
-		std::string Tmp = std::to_string(List.GetPlaybackTime() % 60000 / 1000);
-		if(Tmp.size() == 1)
-		{
-			Tmp = "0" + Tmp;
-		}
-		std::string Time = std::to_string(List.GetPlaybackTime() / 60000) + ":" + Tmp;
-
-		Tmp = std::to_string(List.GetTrackLength() % 60000 / 1000);
-		if(Tmp.size() == 1)
-		{
-			Tmp = "0" + Tmp;
-		}
-		std::string Length = std::to_string(List.GetTrackLength() / 60000) + ":" + Tmp;
-
-		if(List.GetPlayingMusic().GetPath() == "")
-		{
-			Time = "0:00";
-			Length = "0:00";
-		}
-
-		DrawRect(C.GetWindowHeight(), C.GetFontSize() * 2, C.GetWindowWidth() - C.GetWindowHeight(), C.GetFontSize(), 0xaaaaaa);
-		DrawRect(C.GetWindowHeight(), C.GetFontSize() * 2, (C.GetWindowWidth() - C.GetWindowHeight()) * List.GetPlaybackPosition() / 1000, C.GetFontSize(), 0xffffff);
-		DrawText(Font, Time.c_str(), 0xffffff, C.GetWindowHeight(), C.GetFontSize() * 3);
-		DrawText(Font, Length.c_str(), 0xffffff, C.GetWindowWidth() - C.GetFontSize() * 2, C.GetFontSize() * 3);
+		DrawUI(C.GetWindowHeight(), 0, C.GetWindowWidth() - C.GetWindowHeight(), List);
 
 	}else//縦長&正方形の場合
 	{
@@ -210,35 +184,40 @@ int UIRender::DrawControler(Playlist &List)
 		{
 			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
 		}
-		DrawText(Font, List.GetPlayingMusic().GetTitle().c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth());
-		DrawText(Font, List.GetPlayingMusic().GetArtist().c_str(), 0xffffff, C.GetFontSize(), C.GetWindowWidth() + C.GetFontSize());
-		
-		std::string Tmp = std::to_string(List.GetPlaybackTime() % 60000 / 1000);
-		if(Tmp.size() == 1)
-		{
-			Tmp = "0" + Tmp;
-		}
-		std::string Time = std::to_string(List.GetPlaybackTime() / 60000) + ":" + Tmp;
-
-		Tmp = std::to_string(List.GetTrackLength() % 60000 / 1000);
-		if(Tmp.size() == 1)
-		{
-			Tmp = "0" + Tmp;
-		}
-		std::string Length = std::to_string(List.GetTrackLength() / 60000) + ":" + Tmp;
-
-		if(List.GetPlayingMusic().GetPath() == "")
-		{
-			Time = "0:00";
-			Length = "0:00";
-		}
-
-		DrawRect(0, C.GetWindowWidth() + C.GetFontSize() * 2, C.GetWindowWidth(), C.GetFontSize(), 0xaaaaaa);
-		DrawRect(0, C.GetWindowWidth() + C.GetFontSize() * 2, C.GetWindowWidth() * List.GetPlaybackPosition() / 1000, C.GetFontSize(), 0xffffff);
-		DrawText(Font, Time.c_str(), 0xffffff, 0, C.GetWindowWidth() + C.GetFontSize() * 3);
-		DrawText(Font, Length.c_str(), 0xffffff, C.GetWindowWidth() - C.GetFontSize() * 2, C.GetWindowWidth() + C.GetFontSize() * 3);
+		DrawUI(0, C.GetWindowWidth(), C.GetWindowWidth(), List);
 	
 
 	}
+	return 0;
+}
+
+int UIRender::DrawUI(int X, int Y, int Width, Playlist &List)
+{
+	DrawText(Font, List.GetPlayingMusic().GetTitle().c_str(), 0xffffff, X + C.GetFontSize(), Y);
+	DrawText(Font, List.GetPlayingMusic().GetArtist().c_str(), 0xffffff, X + C.GetFontSize(), Y + C.GetFontSize());
+	
+	std::string Tmp = std::to_string(List.GetPlaybackTime() % 60000 / 1000);
+	if(Tmp.size() == 1)
+	{
+		Tmp = "0" + Tmp;
+	}
+	std::string Time = std::to_string(List.GetPlaybackTime() / 60000) + ":" + Tmp;
+
+	Tmp = std::to_string(List.GetTrackLength() % 60000 / 1000);
+	if(Tmp.size() == 1)
+	{
+		Tmp = "0" + Tmp;
+	}
+	std::string Length = std::to_string(List.GetTrackLength() / 60000) + ":" + Tmp;
+
+	if(List.GetPlayingMusic().GetPath() == "")
+	{
+		Time = "0:00";
+		Length = "0:00";
+	}
+	DrawRect(X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2, Width - C.GetFontSize(), C.GetFontSize(), 0xaaaaaa);
+	DrawRect(X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2, (Width - C.GetFontSize() / 2) * List.GetPlaybackPosition() / 1000, C.GetFontSize(), 0xffffff);
+	DrawText(Font, Time.c_str(), 0xffffff, X + C.GetFontSize() / 2, Y + C.GetFontSize() * 3);
+	DrawText(Font, Length.c_str(), 0xffffff, Width - C.GetFontSize() * 2.5, Y + C.GetFontSize() * 3);
 	return 0;
 }
