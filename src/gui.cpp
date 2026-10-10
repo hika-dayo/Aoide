@@ -164,11 +164,21 @@ int UIRender::DrawControler(Playlist &List)
 	{
 		if(List.GetPlayingMusic().GetArtworkPath() != "")
 		{
-			ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight()));
+			int ArtworkWidth = CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight());
+			int ArtworkHeight = CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight());
+			if(ArtworkHeight < ArtworkWidth)
+			{
+				ArtworkList[i].DrawImage(0, (ArtworkWidth - ArtworkHeight) / 2, ArtworkWidth, ArtworkHeight);
+			}else
+			{
+				ArtworkList[i].DrawImage((ArtworkHeight - ArtworkWidth) / 2, 0, ArtworkWidth, ArtworkHeight);
+			}
 
 		}else
 		{
-			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight()));
+			int ArtworkWidth = CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight());
+			int ArtworkHeight = CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight());
+			UnknownArtwork.DrawImage(0,0, ArtworkWidth, ArtworkHeight);
 		}
 		
 		DrawUI(C.GetWindowHeight(), 0, C.GetWindowWidth() - C.GetWindowHeight(), List);
@@ -177,12 +187,21 @@ int UIRender::DrawControler(Playlist &List)
 	{
 		if(List.GetPlayingMusic().GetArtworkPath() != "")
 		{
-
-			ArtworkList[i].DrawImage(0,0,CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()), CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth()));
+			int ArtworkWidth = CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth());
+			int ArtworkHeight = CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth());
+			if(ArtworkHeight < ArtworkWidth)
+			{
+				ArtworkList[i].DrawImage(0, (ArtworkWidth - ArtworkHeight) / 2, ArtworkWidth, ArtworkHeight);
+			}else
+			{
+				ArtworkList[i].DrawImage((ArtworkHeight - ArtworkWidth) / 2, 0, ArtworkWidth, ArtworkHeight);
+			}
 
 		}else
 		{
-			UnknownArtwork.DrawImage(0,0,CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()), CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth()));
+			int ArtworkWidth = CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth());
+			int ArtworkHeight = CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth());
+			UnknownArtwork.DrawImage(0,0, ArtworkWidth, ArtworkHeight);
 		}
 		DrawUI(0, C.GetWindowWidth(), C.GetWindowWidth(), List);
 	
