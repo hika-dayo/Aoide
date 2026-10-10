@@ -173,7 +173,7 @@ int UIRender::DrawControler(Playlist &List)
 		
 		DrawUI(C.GetWindowHeight(), 0, C.GetWindowWidth() - C.GetWindowHeight(), List);
 
-	}else//縦長&正方形の場合
+	}else//縦長の場合
 	{
 		if(List.GetPlayingMusic().GetArtworkPath() != "")
 		{
@@ -215,9 +215,9 @@ int UIRender::DrawUI(int X, int Y, int Width, Playlist &List)
 		Time = "0:00";
 		Length = "0:00";
 	}
-	DrawRect(X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2, Width - C.GetFontSize(), C.GetFontSize(), 0xaaaaaa);
-	DrawRect(X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2, (Width - C.GetFontSize() / 2) * List.GetPlaybackPosition() / 1000, C.GetFontSize(), 0xffffff);
-	DrawText(Font, Time.c_str(), 0xffffff, X + C.GetFontSize() / 2, Y + C.GetFontSize() * 3);
-	DrawText(Font, Length.c_str(), 0xffffff, Width - C.GetFontSize() * 2.5, Y + C.GetFontSize() * 3);
+	DrawRect(X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2, Width - C.GetFontSize(), C.GetFontSize() / 2, 0xaaaaaa);
+	DrawRect(X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2, (Width - C.GetFontSize()) * List.GetPlaybackPosition() / 1000, C.GetFontSize() / 2, 0xffffff);
+	DrawText(Font, Time.c_str(), 0xffffff, X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2.5);
+	DrawText(Font, Length.c_str(), 0xffffff, X + Width - C.GetFontSize() * 2.5, Y + C.GetFontSize() * 2.5);
 	return 0;
 }
