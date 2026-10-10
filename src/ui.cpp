@@ -67,6 +67,29 @@ int UI::ProcessKey(void)
 	{
 		return 0;
 	}
+	if(!ControlMode)
+	{	
+		if(Ktmp == ENTER)
+		{
+			ProcessChoice(true);
+			Render();
+		}
+		if(Ktmp == LEFT)
+		{
+			S->GoBegin(Object.size());
+			Render();
+		}
+		if(Ktmp == UP)
+		{
+			S->ScrollDown(Object.size());
+			Render();
+		}
+		if(Ktmp == DOWN)
+		{
+			S->ScrollUp(Object.size());
+			Render();
+		}
+	}
 	if(Ktmp == PLAY_BACK)	
 	{
 		List.PlayPrev();
@@ -80,29 +103,9 @@ int UI::ProcessKey(void)
 			List.Play();
 	}
 
-	if(Ktmp == ENTER)
-	{
-		ProcessChoice(true);
-		Render();
-	}
-	if(Ktmp == LEFT)
-	{
-		S->GoBegin(Object.size());
-		Render();
-	}
 	if(Ktmp == RIGHT)
 	{
 		ControlMode = !ControlMode;
-		Render();
-	}
-	if(Ktmp == UP)
-	{
-		S->ScrollDown(Object.size());
-		Render();
-	}
-	if(Ktmp == DOWN)
-	{
-		S->ScrollUp(Object.size());
 		Render();
 	}
 	return 0;
