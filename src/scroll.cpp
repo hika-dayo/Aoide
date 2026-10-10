@@ -11,7 +11,7 @@
   */
 
 #include "../includes/gui.hpp"
-#include <iostream>
+
 ScrollState::ScrollState(int DefScroll, int DefChoosingLine, int DefLength)
 {
 	Scroll = DefScroll;

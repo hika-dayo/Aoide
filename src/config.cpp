@@ -130,7 +130,7 @@ int Config::InitConf(void)
 		DefaultConf << "\n";
 		DefaultConf << "#フォントファイルのパス(未設定の場合unifontが選択されます)\n";
 		DefaultConf << "#FontPath=/usr/local/share/aoide/unifont-17.0.03.otf\n";
-		DefaultConf << "#フォントを何px上にずらすか(フォントの高さが合わない時に変更したください)\n";
+		DefaultConf << "#フォントを何px上にずらすか(フォントの高さが合わない時に変更してください)\n";
 		DefaultConf << "#FontOffsetY=0\n";
 		DefaultConf.close();
 	}	

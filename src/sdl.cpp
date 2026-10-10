@@ -11,14 +11,13 @@
 
 #include "../includes/gui.hpp"
 #include "../includes/error.hpp"
-#include "../includes/input.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
-#include <iostream>
+
 static SDL_Event E;
 static SDL_Window *Window = NULL;
 static SDL_Surface *Surface = NULL;

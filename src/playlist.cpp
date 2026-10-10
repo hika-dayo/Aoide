@@ -10,7 +10,6 @@
   */
 
 #include "../includes/playlist.hpp"
-#include <iostream>
 
 Playlist::Playlist(void) : PlayingMusic("")
 {

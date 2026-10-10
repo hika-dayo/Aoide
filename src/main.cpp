@@ -14,7 +14,6 @@
 #include "../includes/gui.hpp"
 #include <cstdlib>
 #include <unistd.h>
-#include <iostream>
 
 void Release(void)
 {

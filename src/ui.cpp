@@ -25,7 +25,6 @@
 #include <optional>
 #include <random>
 #include <algorithm>
-#include <iostream>
 
 UI::UI(std::vector<Music> &MusicList) : Rend(MusicList)
 {

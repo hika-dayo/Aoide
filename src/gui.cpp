@@ -10,21 +10,16 @@
   */
 
 #include "../includes/error.hpp"
-#include "../includes/input.hpp"
 #include "../includes/gui.hpp"
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <SDL3_image/SDL_image.h>
-#include <memory>
 #include <string>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <vector>
 #include <optional>
-#include <random>
-#include <algorithm>
-#include <iostream>
 
 
 MenuItem::MenuItem(std::string Text,EVENT Event, std::optional<Music> M)

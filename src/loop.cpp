@@ -14,7 +14,6 @@
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_timer.h>
-#include <iostream>
 int RunMainLoop(void)
 {
 	GUIInit();
