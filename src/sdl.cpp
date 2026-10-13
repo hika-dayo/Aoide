@@ -75,7 +75,7 @@ bool ProcessMessage(bool Hold)
 	bool Quit = false;
 	SDL_UpdateWindowSurface(Window);
 	int i = 30;
-	i += !Hold * 500;
+	i += !Hold * 470;
 	if(SDL_WaitEventTimeout(&E, i))
 	{
 		do{

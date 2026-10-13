@@ -13,16 +13,12 @@
 
 #include "config.hpp"
 #include "audio_engine.hpp"
-#include "input.hpp"
 #include "playlist.hpp"
 #include "menu.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <optional>
 #include <string>
 #include <vector>
-#include <optional>
-#include <memory>
 
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
@@ -104,45 +100,3 @@ private:
 	std::vector<std::string> Texts;//テキスト
 };
 
-class UI
-{
-private:
-	std::unique_ptr<Player> P;
-
-	Config C;
-	
-	Playlist List;
-	
-	std::vector<Image> Imgs;
-
-	std::vector<int> PrevScroll;//前のスクロール位置の保存
-	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
-	
-	std::unique_ptr<ScrollState> S;
-	Input_Process Inp;
-
-	std::string ChoosingArtist;
-
-	bool ControlMode;
-	bool First;
-	int ProcessKey(void);//キーを処理する
-	int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
-	
-	int ListItem(std::vector<Music> M, EVENT E, EVENT SetE);
-
-	std::vector<Music> MList;//音楽の情報を保持
-	
-	std::vector<MenuItem> Object;//描画する内容
-			
-	UIRender Rend;	
-	
-	int ShuffleTitles(std::vector<Music> &ArgMusic);
-	
-	int Render(void);//描画処理
-
-	std::vector<std::vector<MenuItem>> ObjectBuf;//進んだ場合にObjectをpushして戻る場合にpopしてObjectに代入する
-public:
-	UI(std::vector<Music> &MusicList);
-	int Process(void);
-
-};

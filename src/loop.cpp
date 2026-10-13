@@ -10,7 +10,7 @@
   */
 
 #include "../includes/audio_engine.hpp"
-#include "../includes/gui.hpp"
+#include "../includes/ui.hpp"
 #include <SDL3/SDL_gpu.h>
 #include <SDL3/SDL_pixels.h>
 #include <SDL3/SDL_timer.h>

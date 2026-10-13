@@ -20,7 +20,7 @@
 #include <sys/stat.h>
 #include <vector>
 #include <optional>
-
+#include <iostream>
 
 MenuItem::MenuItem(std::string Text,EVENT Event, std::optional<Music> M)
 {

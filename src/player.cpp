@@ -112,6 +112,10 @@ int Player::GetAudioTime(void)
 {
 	ma_uint64 Cursor;
 	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
+	if(Error)
+	{
+		return 0;
+	}
 	return Cursor * 1000 / ma_engine_get_sample_rate(Engine);
 }
 double Player::GetAudioPosition(void)

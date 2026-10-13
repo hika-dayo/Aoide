@@ -53,7 +53,7 @@ KEY Input_Process::ProcessKey(void)
 	{
 		if(TmpSpace == false)
 		{
-			K = PAUSE_PLAY;
+			K = SPACE;
 		}
 //			ProcessChoice(false);
 		TmpSpace = true;
