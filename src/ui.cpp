@@ -12,7 +12,7 @@
 
 #include "../includes/playlist.hpp"
 #include "../includes/input.hpp"
-#include "../includes/gui.hpp"
+#include "../includes/ui.hpp"
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_timer.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -33,11 +33,11 @@ UI::UI(std::vector<Music> &MusicList) : Rend(MusicList)
 	Object.push_back(MenuItem("Songs", LIST_TITLES));
 	Object.push_back(MenuItem("Exit", EXIT));
 	S = std::make_unique<ScrollState>(0, 0, Object.size());
-	First = true;		
 	P = nullptr;
 
 	
 	ControlMode = false;
+	HistoryOrPlaylistMode = 0;
 
 	MList = MusicList;
 	
@@ -46,12 +46,6 @@ UI::UI(std::vector<Music> &MusicList) : Rend(MusicList)
 
 int UI::Process(void)
 {
-	if(First)
-	{
-		CleanWindow();
-		Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
-		First = false;
-	}
 	ProcessKey();
 	
 	List.Process();
@@ -67,8 +61,34 @@ int UI::ProcessKey(void)
 	{
 		return 0;
 	}
-	if(!ControlMode)
+	if(ControlMode)
 	{	
+		if(Ktmp == ENTER)
+		{
+			List.Play();
+		}
+		if(Ktmp == RIGHT)
+		{
+			List.PlayNext();
+		}
+		if(Ktmp == LEFT)
+		{
+			List.PlayPrev();
+		}
+		if(HistoryOrPlaylistMode == 0)
+		{
+			if(Ktmp == UP)
+			{
+				HistoryOrPlaylistMode = 1;
+			}
+			if(Ktmp == DOWN)
+			{
+				HistoryOrPlaylistMode = 2;
+			}
+		}
+	}
+	else
+	{
 		if(Ktmp == ENTER)
 		{
 			ProcessChoice(true);
@@ -89,6 +109,12 @@ int UI::ProcessKey(void)
 			S->ScrollUp(Object.size());
 			Render();
 		}
+		if(Ktmp == RIGHT)
+		{
+			ControlMode = !ControlMode;
+			Render();
+		}
+		
 	}
 	if(Ktmp == PLAY_BACK)	
 	{
@@ -102,12 +128,12 @@ int UI::ProcessKey(void)
 	{
 			List.Play();
 	}
-
-	if(Ktmp == RIGHT)
+	if(Ktmp == SPACE)
 	{
 		ControlMode = !ControlMode;
 		Render();
 	}
+
 	return 0;
 }
 
@@ -324,7 +350,14 @@ int UI::Render(void)
 	CleanWindow();
 	if(ControlMode == true)
 	{
-		Rend.DrawControler(List);
+		if(HistoryOrPlaylistMode == 0)
+		{
+			Rend.DrawControler(List);
+		}else
+		{
+
+		}
+			
 	}else
 	{
 		Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), Object);
