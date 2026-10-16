@@ -13,7 +13,7 @@
 
 #include "config.hpp"
 #include "audio_engine.hpp"
-#include "playlist.hpp"
+#include "queue.hpp"
 #include "menu.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -90,8 +90,8 @@ public:
 	Image UnknownArtwork;
 	int DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object);
 	UIRender(std::vector<Music> &MusicList);
-	int DrawControler(Playlist &List);
-	int DrawUI(int X, int Y, int Width, Playlist &List);//UIを表示する
+	int DrawControler(PlaybackQueue &List);
+	int DrawUI(int X, int Y, int Width, PlaybackQueue &List);//UIを表示する
 	
 private:
 	Config C;

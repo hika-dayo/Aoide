@@ -10,7 +10,7 @@
   */
 
 
-#include "../includes/playlist.hpp"
+#include "../includes/queue.hpp"
 #include "../includes/input.hpp"
 #include "../includes/ui.hpp"
 #include <SDL3/SDL_surface.h>
@@ -37,7 +37,7 @@ UI::UI(std::vector<Music> &MusicList) : Rend(MusicList)
 
 	
 	ControlMode = false;
-	HistoryOrPlaylistMode = 0;
+	HistoryOrQueueMode = 0;
 
 	MList = MusicList;
 	
@@ -75,15 +75,15 @@ int UI::ProcessKey(void)
 		{
 			List.PlayPrev();
 		}
-		if(HistoryOrPlaylistMode == 0)
+		if(HistoryOrQueueMode == 0)
 		{
 			if(Ktmp == UP)
 			{
-				HistoryOrPlaylistMode = 1;
+				HistoryOrQueueMode = 1;
 			}
 			if(Ktmp == DOWN)
 			{
-				HistoryOrPlaylistMode = 2;
+				HistoryOrQueueMode = 2;
 			}
 		}
 	}
@@ -350,7 +350,7 @@ int UI::Render(void)
 	CleanWindow();
 	if(ControlMode == true)
 	{
-		if(HistoryOrPlaylistMode == 0)
+		if(HistoryOrQueueMode == 0)
 		{
 			Rend.DrawControler(List);
 		}else

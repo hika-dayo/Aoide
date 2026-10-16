@@ -144,7 +144,7 @@ UIRender::UIRender(std::vector<Music> &MusicList) : UnknownArtwork(C.GetUnknownA
 		exit(1);
 	}
 }
-int UIRender::DrawControler(Playlist &List)
+int UIRender::DrawControler(PlaybackQueue &List)
 {
 	Config C;
 	int i = -1;
@@ -205,7 +205,7 @@ int UIRender::DrawControler(Playlist &List)
 	return 0;
 }
 
-int UIRender::DrawUI(int X, int Y, int Width, Playlist &List)
+int UIRender::DrawUI(int X, int Y, int Width, PlaybackQueue &List)
 {
 	DrawText(Font, List.GetPlayingMusic().GetTitle().c_str(), 0xffffff, X + C.GetFontSize(), Y);
 	DrawText(Font, List.GetPlayingMusic().GetArtist().c_str(), 0xffffff, X + C.GetFontSize(), Y + C.GetFontSize());

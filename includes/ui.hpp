@@ -13,7 +13,7 @@
 
 #include "config.hpp"
 #include "audio_engine.hpp"
-#include "playlist.hpp"
+#include "queue.hpp"
 #include "gui.hpp"
 #include "input.hpp"
 #include <vector>
@@ -26,7 +26,7 @@ private:
 
 	Config C;
 	
-	Playlist List;
+	PlaybackQueue List;
 	
 	std::vector<Image> Imgs;
 
@@ -39,7 +39,7 @@ private:
 	std::string ChoosingArtist;
 
 	bool ControlMode;
-	int HistoryOrPlaylistMode;
+	int HistoryOrQueueMode;
 	bool First;
 	int ProcessKey(void);//キーを処理する
 	int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
