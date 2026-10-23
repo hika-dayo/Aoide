@@ -30,7 +30,7 @@ const int HOLD_DELAY = 1;
 bool isSDLInitialized(void);//SDLが初期化されているか
 int GUIInit(void);//GUIを初期化
 int GUIRelease(void);//SDLをリリース
-bool ProcessMessage(bool Hold);//ウィンドウのメッセージを処理。
+bool ProcessMessage(bool Hold, PlaybackQueue &QB);//ウィンドウのメッセージを処理。
 						  //この関数を定期的に呼びだす必要がある。成功の場合0を返します。エラー発生、若しくはウィンドウが閉じられたときには1を返します。
 SDL_Surface* GetGUISurface(void);//ウィンドウのサーフェスを取得する。
 SDL_Window* GetWindow(void);//ウィンドウを得る
