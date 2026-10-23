@@ -60,5 +60,6 @@ private:
 public:
 	UI(std::vector<Music> &MusicList);
 	int Process(void);
+	PlaybackQueue& GetQueue(void);
 
 };

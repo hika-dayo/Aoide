@@ -365,3 +365,7 @@ int UI::Render(void)
 		
 	return 0;
 }
+PlaybackQueue& UI::GetQueue(void)
+{
+	return List;
+}

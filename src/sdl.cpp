@@ -17,7 +17,7 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_surface.h>
 #include <SDL3/SDL_video.h>
-
+#include <iostream>
 static SDL_Event E;
 static SDL_Window *Window = NULL;
 static SDL_Surface *Surface = NULL;
@@ -75,7 +75,19 @@ bool ProcessMessage(bool Hold, PlaybackQueue &PQ)
 	bool Quit = false;
 	SDL_UpdateWindowSurface(Window);
 	int i = 30;
-	//i += !Hold * 470;
+	if(PQ.GetTrackLength() - PQ.GetPlaybackTime() > 500)
+	{
+		i += !Hold * 470;	
+	}else
+	{
+		if(PQ.GetTrackLength() == 0)
+		{
+			i += !Hold * 470;	
+		}else
+		{
+		i += !Hold * (PQ.GetTrackLength() - PQ.GetPlaybackTime());	
+		}
+	}
 	if(SDL_WaitEventTimeout(&E, i))
 	{
 		do{
