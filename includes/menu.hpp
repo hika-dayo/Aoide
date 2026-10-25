@@ -69,3 +69,4 @@ public:
 	int GetChoosingLine(void);
 	int GetScroll(void);
 };
+std::vector<MenuItem> ConvertMusicListToMenu(std::vector<Music> & ArgMusic);//DrawMenuでキューと履歴を表示するためにMusicのベクター型をMenuItemのベクター型へ変換

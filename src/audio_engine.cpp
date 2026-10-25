@@ -51,7 +51,7 @@ ma_engine *GetMiniaudioEngine(void)
 int SoundInitFromFile(const char* Path, ma_sound* S)
 {
 	ma_engine *E = GetMiniaudioEngine();
-	return -(ma_sound_init_from_file(E, Path, 0, NULL, NULL, S) != MA_SUCCESS);
+	return -(ma_sound_init_from_file(E, Path, MA_SOUND_FLAG_STREAM, NULL, NULL, S) != MA_SUCCESS);
 }
 int ReleaseSound(ma_sound* S)
 {

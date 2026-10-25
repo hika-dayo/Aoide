@@ -92,30 +92,26 @@ int UI::ProcessKey(void)
 		if(Ktmp == ENTER)
 		{
 			ProcessChoice(true);
-			Render();
 		}
 		if(Ktmp == LEFT)
 		{
 			S->GoBegin(Object.size());
-			Render();
 		}
 		if(Ktmp == UP)
 		{
 			S->ScrollDown(Object.size());
-			Render();
 		}
 		if(Ktmp == DOWN)
 		{
 			S->ScrollUp(Object.size());
-			Render();
 		}
 		if(Ktmp == RIGHT)
 		{
 			ControlMode = !ControlMode;
-			Render();
 		}
 		
 	}
+	Render();
 	if(Ktmp == PLAY_BACK)	
 	{
 		List.PlayPrev();
@@ -352,10 +348,10 @@ int UI::Render(void)
 	{
 		if(HistoryOrQueueMode == 0)
 		{
-			Rend.DrawControler(List);
+			Rend.DrawController(List);
 		}else
 		{
-
+			Rend.DrawMenu(S->GetChoosingLine(), S->GetScroll(), ConvertMusicListToMenu(List.GetHistory()));
 		}
 			
 	}else
@@ -368,4 +364,14 @@ int UI::Render(void)
 PlaybackQueue& UI::GetQueue(void)
 {
 	return List;
+}
+
+std::vector<MenuItem> ConvertMusicListToMenu(std::vector<Music> & ArgMusic)//DrawMenuでキューと履歴を表示するためにMusicのベクター型をMenuItemのベクター型へ変換
+{
+	std::vector<MenuItem> Tmp;
+	for(int i = 0; i < ArgMusic.size(); i++)
+	{
+		Tmp.push_back(MenuItem(ArgMusic[i].GetTitle(), NONE));
+	}
+	return Tmp;
 }

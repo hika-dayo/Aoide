@@ -71,11 +71,7 @@ bool Player::isEnded(void)
 	{
 		return true;
 	}
-	ma_uint64 Length;
-	ma_uint64 Cursor;
-	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
-	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
-	return (Length == Cursor);
+	return ma_sound_at_end(&Sound);
 }
 
 bool Player::isPlaying(void)
@@ -89,11 +85,7 @@ bool Player::isPaused(void)
 	{
 		return false;
 	}
-	ma_uint64 Length;
-	ma_uint64 Cursor;
-	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
-	ma_sound_get_cursor_in_pcm_frames(&Sound, &Cursor);
-	return (Length != Cursor) && !ma_sound_is_playing(&Sound);
+	return ma_sound_at_end(&Sound) && !ma_sound_is_playing(&Sound);
 }
 
 bool Player::hasError(void)
@@ -105,6 +97,10 @@ int Player::GetAudioLength(void)
 {
 	ma_uint64 Length;
 	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
+	if(Error)
+	{
+		return 0;
+	}
 	return Length * 1000 / ma_engine_get_sample_rate(Engine);
 }
 

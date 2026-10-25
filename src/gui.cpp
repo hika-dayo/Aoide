@@ -134,8 +134,8 @@ UIRender::UIRender(std::vector<Music> &MusicList) : UnknownArtwork(C.GetUnknownA
 	
 		if(!tmp)
 		{
-			Image I(MusicList[i].GetArtworkPath());
-			ArtworkList.push_back(I);
+		//	Image I(MusicList[i].GetArtworkPath());
+		//	ArtworkList.push_back(I);
 		}
 	}
 	if(Font == 0)
@@ -144,7 +144,7 @@ UIRender::UIRender(std::vector<Music> &MusicList) : UnknownArtwork(C.GetUnknownA
 		exit(1);
 	}
 }
-int UIRender::DrawControler(PlaybackQueue &List)
+int UIRender::DrawController(PlaybackQueue &List)
 {
 	Config C;
 	int i = -1;
@@ -157,7 +157,7 @@ int UIRender::DrawControler(PlaybackQueue &List)
 	}
 	if(C.GetWindowHeight() < C.GetWindowWidth())//横長の場合
 	{
-		if(List.GetPlayingMusic().GetArtworkPath() != "")
+		if(List.GetPlayingMusic().GetArtworkPath() != "" && i != -1)
 		{
 			int ArtworkWidth = CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight());
 			int ArtworkHeight = CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight());
@@ -180,7 +180,7 @@ int UIRender::DrawControler(PlaybackQueue &List)
 
 	}else//縦長の場合
 	{
-		if(List.GetPlayingMusic().GetArtworkPath() != "")
+		if(List.GetPlayingMusic().GetArtworkPath() != "" && i != -1)
 		{
 			int ArtworkWidth = CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth());
 			int ArtworkHeight = CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth());

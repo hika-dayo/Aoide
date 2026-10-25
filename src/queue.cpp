@@ -77,11 +77,11 @@ int PlaybackQueue::PlayPrev(void)
 	return 0;
 }
 
-std::vector<Music> PlaybackQueue::GetPlaybackQueue(void)
+std::vector<Music> &PlaybackQueue::GetPlaybackQueue(void)
 {
 	return List;
 }
-std::vector<Music> PlaybackQueue::GetHistory(void)
+std::vector<Music> &PlaybackQueue::GetHistory(void)
 {
 	return History;
 }
@@ -89,32 +89,7 @@ std::vector<Music> PlaybackQueue::GetHistory(void)
 
 int PlaybackQueue::Process(void)
 {
-//	if(P == nullptr)
-//	{
-//		PlayQueue();
-//	}
-//	else
-//	{
-//		if(P->isEnded())
-//		{
-//			PlayQueue();
-//		}
-//	}
 	PlayQueue();
-
-//	std::cout << std::endl;
-//	for(int i = 0; i < History.size(); i++)
-//	{
-//	  std::cout << History[i].GetTitle() << std::endl;
-//	}
-//  	std::cout << std::endl;
-//	std::cout << PlayingMusic.GetTitle() << std::endl;
-//  	std::cout << std::endl;
-//	for(int i = 0; i < List.size(); i++)
-//	{
-//	  std::cout << List[i].GetTitle() << std::endl;
-//	}
-//  	std::cout << std::endl;
 	return 0;
 }
 int PlaybackQueue::PlayQueue(void)

@@ -25,8 +25,8 @@ private:
 //	Music EmptyMusic;
 public:
 	Music GetPlayingMusic(void);
-	std::vector<Music> GetPlaybackQueue(void);
-	std::vector<Music> GetHistory(void);
+	std::vector<Music> &GetPlaybackQueue(void);
+	std::vector<Music> &GetHistory(void);
 	Player &GetPlayer(void);
 	PlaybackQueue(void);
 	~PlaybackQueue(void);

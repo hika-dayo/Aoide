@@ -90,7 +90,7 @@ public:
 	Image UnknownArtwork;
 	int DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object);
 	UIRender(std::vector<Music> &MusicList);
-	int DrawControler(PlaybackQueue &List);
+	int DrawController(PlaybackQueue &List);
 	int DrawUI(int X, int Y, int Width, PlaybackQueue &List);//UIを表示する
 	
 private:
