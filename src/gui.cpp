@@ -20,7 +20,6 @@
 #include <sys/stat.h>
 #include <vector>
 #include <optional>
-#include <iostream>
 
 MenuItem::MenuItem(std::string Text,EVENT Event, std::optional<Music> M)
 {
@@ -147,57 +146,32 @@ UIRender::UIRender(std::vector<Music> &MusicList) : UnknownArtwork(C.GetUnknownA
 int UIRender::DrawController(PlaybackQueue &List)
 {
 	Config C;
-	int i = -1;
-	for(int n = 0; n < ArtworkList.size(); n++)
-	{
-		if(ArtworkList[n].GetPath() == List.GetPlayingMusic().GetArtworkPath())
-		{
-			i = n;
-		}
-	}
 	if(C.GetWindowHeight() < C.GetWindowWidth())//横長の場合
 	{
-		if(List.GetPlayingMusic().GetArtworkPath() != "" && i != -1)
+		int ArtworkWidth = CalcResizedWidth(List.GetArtwork().GetWidth(), List.GetArtwork().GetHeight(), C.GetWindowHeight());
+		int ArtworkHeight = CalcResizedHeight(List.GetArtwork().GetWidth(), List.GetArtwork().GetHeight(), C.GetWindowHeight());
+		if(ArtworkHeight < ArtworkWidth)
 		{
-			int ArtworkWidth = CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight());
-			int ArtworkHeight = CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowHeight());
-			if(ArtworkHeight < ArtworkWidth)
-			{
-				ArtworkList[i].DrawImage(0, (ArtworkWidth - ArtworkHeight) / 2, ArtworkWidth, ArtworkHeight);
-			}else
-			{
-				ArtworkList[i].DrawImage((ArtworkHeight - ArtworkWidth) / 2, 0, ArtworkWidth, ArtworkHeight);
-			}
-
+			List.GetArtwork().DrawImage(0, (ArtworkWidth - ArtworkHeight) / 2, ArtworkWidth, ArtworkHeight);
 		}else
 		{
-			int ArtworkWidth = CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight());
-			int ArtworkHeight = CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowHeight());
-			UnknownArtwork.DrawImage(0,0, ArtworkWidth, ArtworkHeight);
+			List.GetArtwork().DrawImage((ArtworkHeight - ArtworkWidth) / 2, 0, ArtworkWidth, ArtworkHeight);
 		}
-		
+
 		DrawUI(C.GetWindowHeight(), 0, C.GetWindowWidth() - C.GetWindowHeight(), List);
 
 	}else//縦長の場合
 	{
-		if(List.GetPlayingMusic().GetArtworkPath() != "" && i != -1)
+		int ArtworkWidth = CalcResizedWidth(List.GetArtwork().GetWidth(), List.GetArtwork().GetHeight(), C.GetWindowWidth());
+		int ArtworkHeight = CalcResizedHeight(List.GetArtwork().GetWidth(), List.GetArtwork().GetHeight(), C.GetWindowWidth());
+		if(ArtworkHeight < ArtworkWidth)
 		{
-			int ArtworkWidth = CalcResizedWidth(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth());
-			int ArtworkHeight = CalcResizedHeight(ArtworkList[i].GetWidth(), ArtworkList[i].GetHeight(), C.GetWindowWidth());
-			if(ArtworkHeight < ArtworkWidth)
-			{
-				ArtworkList[i].DrawImage(0, (ArtworkWidth - ArtworkHeight) / 2, ArtworkWidth, ArtworkHeight);
-			}else
-			{
-				ArtworkList[i].DrawImage((ArtworkHeight - ArtworkWidth) / 2, 0, ArtworkWidth, ArtworkHeight);
-			}
-
+			List.GetArtwork().DrawImage(0, (ArtworkWidth - ArtworkHeight) / 2, ArtworkWidth, ArtworkHeight);
 		}else
 		{
-			int ArtworkWidth = CalcResizedWidth(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth());
-			int ArtworkHeight = CalcResizedHeight(UnknownArtwork.GetWidth(), UnknownArtwork.GetHeight(), C.GetWindowWidth());
-			UnknownArtwork.DrawImage(0,0, ArtworkWidth, ArtworkHeight);
+			List.GetArtwork().DrawImage((ArtworkHeight - ArtworkWidth) / 2, 0, ArtworkWidth, ArtworkHeight);
 		}
+
 		DrawUI(0, C.GetWindowWidth(), C.GetWindowWidth(), List);
 	
 

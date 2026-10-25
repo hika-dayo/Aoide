@@ -10,9 +10,13 @@
   */
 
 #pragma once
+
 #include <vector>
 #include "player.hpp"
 #include "audio_engine.hpp"
+
+class Image;
+
 class PlaybackQueue
 {
 private:
@@ -21,8 +25,9 @@ private:
 	Music PlayingMusic;
 	Player *P;
 	bool HasQueue;
-	int PlayQueue(void);	
-//	Music EmptyMusic;
+	int PlayQueue(void);
+	Image *Artwork;	
+	Image *UnknownArtwork;
 public:
 	Music GetPlayingMusic(void);
 	std::vector<Music> &GetPlaybackQueue(void);
@@ -41,4 +46,5 @@ public:
 	int GetPlaybackTime(void);//ミリ秒で現在の再生時間を返す
 	int GetPlaybackPosition(void);//0~1000で現在の再生時間の位置を返す
 	int GetPlayerStatus(void);
+	Image &GetArtwork(void);
 };

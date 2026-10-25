@@ -10,11 +10,17 @@
   */
 
 #include "../includes/queue.hpp"
+#include "../includes/config.hpp"
+#include "../includes/gui.hpp"
+#include <iostream>
 
 PlaybackQueue::PlaybackQueue(void) : PlayingMusic("")
 {
+	Config C;
 //	PlayingMusic = &EmptyMusic;
+	UnknownArtwork = new Image(C.GetUnknownArtworkPath());
 	P = nullptr;
+	Artwork = nullptr;
 }
 Player& PlaybackQueue::GetPlayer(void)
 {
@@ -60,8 +66,7 @@ int PlaybackQueue::PlayNext(void)
 int PlaybackQueue::PlayPrev(void)
 {
 	if(History.size() > 0)
-	{
-		
+	{		
 		InsertQueue(PlayingMusic);
 		PlayingMusic = History.back();
 		History.pop_back();
@@ -89,6 +94,29 @@ std::vector<Music> &PlaybackQueue::GetHistory(void)
 
 int PlaybackQueue::Process(void)
 {
+	if(Artwork == nullptr)
+	{
+		if(PlayingMusic.GetArtworkPath() != "")
+		{
+			Artwork = new Image(PlayingMusic.GetArtworkPath());
+		}
+	}
+	if(Artwork != nullptr)
+	{
+		if(PlayingMusic.GetArtworkPath() == "")
+		{
+			delete Artwork;
+			Artwork = nullptr;
+		}else
+		{
+			if(Artwork->GetPath() != PlayingMusic.GetArtworkPath())
+			{
+				delete Artwork;
+				Artwork = new Image(PlayingMusic.GetArtworkPath());
+			}
+
+		}
+	}
 	PlayQueue();
 	return 0;
 }
@@ -200,4 +228,12 @@ int PlaybackQueue::GetPlayerStatus(void)
 		return P->isPlaying();
 	}
 	return 0;
+}
+Image &PlaybackQueue::GetArtwork(void)
+{
+	if(Artwork == nullptr)
+	{
+		return *UnknownArtwork;
+	}
+	return *Artwork;
 }

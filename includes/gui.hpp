@@ -13,12 +13,12 @@
 
 #include "config.hpp"
 #include "audio_engine.hpp"
-#include "queue.hpp"
 #include "menu.hpp"
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 #include <vector>
+#include "queue.hpp"
 
 #define SDL_VIDEO_DRIVER_WAYLAND 1//WaylandとX11の両対応
 #define SDL_VIDEO_DRIVER_X11 1
