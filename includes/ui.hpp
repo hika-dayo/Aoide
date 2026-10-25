@@ -34,6 +34,7 @@ private:
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 	
 	std::unique_ptr<ScrollState> S;
+	std::unique_ptr<ScrollState> HOQS;//HistoryOrQueueScrollStateの略
 	Input_Process Inp;
 
 	std::string ChoosingArtist;

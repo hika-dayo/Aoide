@@ -28,6 +28,7 @@ enum EVENT
 	LIST_TITLES,
 	LIST_TITLES_BY_TRACKNUM,
 	BACK,
+	ERASE_ALL,
 };
 
 class MenuItem

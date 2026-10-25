@@ -81,14 +81,6 @@ KEY Input_Process::ProcessKey(void)
 		if(TmpRightKey == false)
 		{
 			K = RIGHT;
-/*			if(PlaylistMode == false)
-			{
-				PlaylistMode = true;
-			}
-			else
-			{
-				PlaylistMode = false;
-			}*/
 		}
 		TmpRightKey = true;
 	}
@@ -98,16 +90,24 @@ KEY Input_Process::ProcessKey(void)
 	}
 	if(GetKey(LEFT))
 	{
-		K = LEFT;
-//		S->GoBegin(Object.size());
+		if(TmpLeftKey == false)
+		{
+			K = LEFT;
+		}
+		TmpLeftKey = true;
 	}
+	else
+	{
+		TmpLeftKey= false;
+	}
+	
 	if(GetKey(UP))
 	{
 		if(KeyIntervalCount >= WAIT_TIME_FOR_HOLD)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount >= HOLD_DELAY && Hold))
+		if(TmpUpDownKey == false || (KeyIntervalCount >= HOLD_DELAY && Hold))
 		{
 			K = UP;
 //			S->ScrollDown(Object.size(), Hold);
@@ -117,7 +117,7 @@ KEY Input_Process::ProcessKey(void)
 		{
 			KeyIntervalCount++;
 		}
-		TmpKey = true;
+		TmpUpDownKey = true;
 	}
 	else if(GetKey(DOWN))
 	{
@@ -125,7 +125,7 @@ KEY Input_Process::ProcessKey(void)
 		{
 			Hold = true;
 		}
-		if(TmpKey == false || (KeyIntervalCount >= HOLD_DELAY && Hold))
+		if(TmpUpDownKey == false || (KeyIntervalCount >= HOLD_DELAY && Hold))
 		{
 			K = DOWN;
 //			S->ScrollUp(Object.size(), Hold);
@@ -135,12 +135,12 @@ KEY Input_Process::ProcessKey(void)
 		{
 			KeyIntervalCount++;
 		}
-		TmpKey = true;
+		TmpUpDownKey = true;
 	}
 	else
 	{
 		KeyIntervalCount = 0;
-		TmpKey = false;
+		TmpUpDownKey = false;
 		Hold = false;
 	}
 	return K; 
@@ -150,7 +150,7 @@ Input_Process::Input_Process(void)
 {
 	Hold = false;
 	KeyIntervalCount = 0;
-	TmpKey = false;
+	TmpUpDownKey = false;
 	TmpEnter = false;
 	TmpSpace = false;
 	TmpFB = false;

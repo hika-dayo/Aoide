@@ -10,7 +10,7 @@
     You should have received a copy of the GNU General Public License along with Aoide. If not, see <https://www.gnu.org/licenses/>. 
   */
 
-#include "../includes/gui.hpp"
+#include "../includes/menu.hpp"
 
 ScrollState::ScrollState(int DefScroll, int DefChoosingLine, int DefLength)
 {

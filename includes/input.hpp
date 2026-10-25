@@ -37,7 +37,8 @@ class Input_Process
 {
 private:
 	bool TmpRightKey;//右矢印キーが押されている間はtrue
-	bool TmpKey;//方向キーが押されている間はtrue
+	bool TmpLeftKey;//左矢印キーが押されている間はtrue
+	bool TmpUpDownKey;//方向キーが押されている間はtrue
 	bool TmpEnter;//エンターキーが押されている間はtrue	
 	bool TmpSpace;//スペースキーが押されている間はtrue	
 	bool TmpFB;//曲を送る/戻すキーが押されている間はtrue	
