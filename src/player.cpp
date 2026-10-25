@@ -85,7 +85,7 @@ bool Player::isPaused(void)
 	{
 		return false;
 	}
-	return ma_sound_at_end(&Sound) && !ma_sound_is_playing(&Sound);
+	return !ma_sound_at_end(&Sound) && !ma_sound_is_playing(&Sound);
 }
 
 bool Player::hasError(void)
