@@ -26,6 +26,8 @@
 #include <random>
 #include <algorithm>
 
+#include <iostream>
+
 UI::UI(std::vector<Music> &MusicList) : Rend(MusicList)
 {
 	Object.push_back(MenuItem("Artists", LIST_ARTISTS));
@@ -41,14 +43,13 @@ UI::UI(std::vector<Music> &MusicList) : Rend(MusicList)
 	HistoryOrQueueMode = 0;
 
 	MList = MusicList;
-	
+	Rendering = false;
 	return;
 }
 
 int UI::Process(void)
 {
-	ProcessKey();
-	
+	ProcessKey();	
 	List.Process();
 	Render();
 	return Inp.GetHoldStatus();
@@ -157,8 +158,8 @@ int UI::ProcessKey(void)
 		ControlMode = !ControlMode;
 		HistoryOrQueueMode = 0;
 	}
-	Render();
 
+	
 	return 0;
 }
 
@@ -382,16 +383,37 @@ int UI::Render(void)
 		{
 			if(HistoryOrQueueMode == 1)
 			{
-				std::vector<MenuItem>TmpMenuMusicList = ConvertMusicListToMenu(List.GetHistory());
-				TmpMenuMusicList.push_back(MenuItem("Erase All", ERASE_ALL));
-				TmpMenuMusicList.push_back(MenuItem("< Back", BACK));
-				Rend.DrawMenu(HOQS->GetChoosingLine(), HOQS->GetScroll(), TmpMenuMusicList);
+				if(MenuMusicList.size() > 0)
+				{
+					if(MenuMusicList[MenuMusicList.size() - 1].GetPath() != List.GetPlayingMusic().GetPath())
+					{
+						MenuMusicList = ConvertMusicListToMenu(List.GetHistory());
+					}
+				}else
+				{
+					MenuMusicList = ConvertMusicListToMenu(List.GetHistory());
+				}
+				std::vector<MenuItem>Tmp = MenuMusicList;
+				Tmp.push_back(MenuItem("Erase All", ERASE_ALL));
+				Tmp.push_back(MenuItem("< Back", BACK));
+				Rend.DrawMenu(HOQS->GetChoosingLine(), HOQS->GetScroll(), Tmp);
 			}else
 			{
-				std::vector<MenuItem>TmpMenuMusicList = ConvertMusicListToMenu(List.GetPlaybackQueue());
-				TmpMenuMusicList.insert(TmpMenuMusicList.begin(), MenuItem("Erase All", ERASE_ALL));
-				TmpMenuMusicList.insert(TmpMenuMusicList.begin(), MenuItem("< Back", BACK));
-				Rend.DrawMenu(HOQS->GetChoosingLine(), HOQS->GetScroll(), TmpMenuMusicList);
+				if(MenuMusicList.size() > 0)
+				{
+					if(MenuMusicList[MenuMusicList.size() - 1].GetPath() != List.GetPlayingMusic().GetPath())
+					{
+						MenuMusicList = ConvertMusicListToMenu(List.GetPlaybackQueue());
+					}
+				}else
+				{
+					MenuMusicList = ConvertMusicListToMenu(List.GetPlaybackQueue());
+				}
+
+				std::vector<MenuItem>Tmp = MenuMusicList;
+				Tmp.insert(Tmp.begin(), MenuItem("Erase All", ERASE_ALL));
+				Tmp.insert(Tmp.begin(), MenuItem("< Back", BACK));
+				Rend.DrawMenu(HOQS->GetChoosingLine(), HOQS->GetScroll(), Tmp);
 			}
 		}
 			
@@ -412,7 +434,8 @@ std::vector<MenuItem> ConvertMusicListToMenu(std::vector<Music> & ArgMusic)//Dra
 	std::vector<MenuItem> Tmp;
 	for(int i = 0; i < ArgMusic.size(); i++)
 	{
-		Tmp.push_back(MenuItem(ArgMusic[i].GetTitle(), NONE));
+		std::string TmpStr = std::to_string(i) + " " + ArgMusic[i].GetTitle();
+		Tmp.push_back(MenuItem(ArgMusic[i].GetTitle(), PLAY_MUSIC, ArgMusic[i]));
 	}
 	return Tmp;
 }

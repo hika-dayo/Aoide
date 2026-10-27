@@ -24,17 +24,17 @@ class UI
 private:
 	std::unique_ptr<Player> P;
 
-	Config C;
-	
+	Config C;	
 	PlaybackQueue List;
 	
 	std::vector<Image> Imgs;
 
 	std::vector<int> PrevScroll;//前のスクロール位置の保存
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
-	
+	bool Rendering;
 	std::unique_ptr<ScrollState> S;
 	std::unique_ptr<ScrollState> HOQS;//HistoryOrQueueScrollStateの略
+	std::vector<MenuItem>MenuMusicList;
 	Input_Process Inp;
 
 	std::string ChoosingArtist;
