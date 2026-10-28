@@ -193,13 +193,13 @@ int UIRender::DrawUI(int X, int Y, int Width, PlaybackQueue &List)
 	DrawText(Font, Time.c_str(), 0xffffff, X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2.5);
 	DrawText(Font, Length.c_str(), 0xffffff, X + Width - C.GetFontSize() * 2.5, Y + C.GetFontSize() * 2.5);
 
-	int IconSize = 20;
+	int IconSize = C.GetFontSize() * 2;
 	if(List.GetPlayerStatus())
 	{
-		PlayIcon.DrawImage(X + Width / 2 - IconSize, Y + C.GetFontSize() * 4, IconSize, IconSize);
+		PlayIcon.DrawImage(X + Width / 2 - IconSize / 2, Y + C.GetFontSize() * 3.5, IconSize, IconSize);
 	}else
 	{
-		StopIcon.DrawImage(X + Width / 2 - IconSize, Y + C.GetFontSize() * 4, IconSize, IconSize);
+		StopIcon.DrawImage(X + Width / 2 - IconSize / 2, Y + C.GetFontSize() * 3.5, IconSize, IconSize);
 	}
 
 	return 0;
