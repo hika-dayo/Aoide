@@ -94,6 +94,7 @@ std::vector<Music> &PlaybackQueue::GetHistory(void)
 
 int PlaybackQueue::Process(void)
 {
+	PlayQueue();
 	if(Artwork == nullptr)
 	{
 		if(PlayingMusic.GetArtworkPath() != "")
@@ -117,7 +118,6 @@ int PlaybackQueue::Process(void)
 
 		}
 	}
-	PlayQueue();
 	return 0;
 }
 int PlaybackQueue::PlayQueue(void)
