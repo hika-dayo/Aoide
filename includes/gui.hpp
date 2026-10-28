@@ -87,7 +87,8 @@ class UIRender
 public:
 	
 	std::vector<Image> ArtworkList;
-	Image UnknownArtwork;
+	Image PlayIcon;
+	Image StopIcon;
 	int DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>& Object);
 	UIRender(std::vector<Music> &MusicList);
 	int DrawController(PlaybackQueue &List);

@@ -21,6 +21,8 @@
 #include <vector>
 #include <optional>
 
+#include <iostream>
+
 MenuItem::MenuItem(std::string Text,EVENT Event, std::optional<Music> M)
 {
 	Artist = "";
@@ -116,27 +118,10 @@ int UIRender::DrawMenu(int ChoosingLine, int Scroll, const std::vector<MenuItem>
 		DrawRect(C.GetWindowWidth() - C.GetFontSize() / 2, BarY, C.GetFontSize(), BarHeight, 0x00999999);	
 	return 0;
 }
-UIRender::UIRender(std::vector<Music> &MusicList) : UnknownArtwork(C.GetUnknownArtworkPath())
+UIRender::UIRender(std::vector<Music> &MusicList) : PlayIcon(C.GetGraphicDir() + "/playicon.png"), StopIcon(C.GetGraphicDir() + "/stopicon.png")
 {
 	FontColor =  0x00ffffff;
 	Font = InitFont(C.GetFontSize(), C.GetFontPath());
-	for(int i = 0; i < MusicList.size(); i++)
-	{
-		bool tmp = false;
-		for(int j = 0; j < ArtworkList.size(); j++)
-		{
-			if(ArtworkList[j].GetPath() == MusicList[i].GetArtworkPath())
-			{
-				tmp = true;
-			}
-		}
-	
-		if(!tmp)
-		{
-		//	Image I(MusicList[i].GetArtworkPath());
-		//	ArtworkList.push_back(I);
-		}
-	}
 	if(Font == 0)
 	{
 		ReportError("フォントの初期化に失敗しました", CRITICAL_ERROR, __FILE__, __LINE__);
@@ -207,5 +192,15 @@ int UIRender::DrawUI(int X, int Y, int Width, PlaybackQueue &List)
 	DrawRect(X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2, (Width - C.GetFontSize()) * List.GetPlaybackPosition() / 1000, C.GetFontSize() / 2, 0xffffff);
 	DrawText(Font, Time.c_str(), 0xffffff, X + C.GetFontSize() / 2, Y + C.GetFontSize() * 2.5);
 	DrawText(Font, Length.c_str(), 0xffffff, X + Width - C.GetFontSize() * 2.5, Y + C.GetFontSize() * 2.5);
+
+	int IconSize = 20;
+	if(List.GetPlayerStatus())
+	{
+		PlayIcon.DrawImage(X + Width / 2 - IconSize, Y + C.GetFontSize() * 4, IconSize, IconSize);
+	}else
+	{
+		StopIcon.DrawImage(X + Width / 2 - IconSize, Y + C.GetFontSize() * 4, IconSize, IconSize);
+	}
+
 	return 0;
 }
