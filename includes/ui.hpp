@@ -19,6 +19,9 @@
 #include <vector>
 #include <memory>
 
+const int HISTORY_MODE = 1;
+const int PLAYBACKQUEUE_MODE = 2;
+
 class UI
 {
 private:
@@ -32,6 +35,7 @@ private:
 	std::vector<int> PrevScroll;//前のスクロール位置の保存
 	std::vector<int> PrevChoosingLine;//前のスクロール位置の保存
 	bool Rendering;
+
 	std::unique_ptr<ScrollState> S;
 	std::unique_ptr<ScrollState> HOQS;//HistoryOrQueueScrollStateの略
 	std::vector<MenuItem>MenuMusicList;
@@ -45,6 +49,7 @@ private:
 	int ProcessKey(void);//キーを処理する
 	int ProcessChoice(bool End = true);//選択したときの処理を行う(最後尾に並ぶか、先頭に挿入するか)
 	
+	int HOQSProcessChoice(void);
 	int ListItem(std::vector<Music> M, EVENT E, EVENT SetE);
 
 	std::vector<Music> MList;//音楽の情報を保持

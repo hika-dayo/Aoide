@@ -95,12 +95,12 @@ bool Player::hasError(void)
 
 int Player::GetAudioLength(void)
 {
-	ma_uint64 Length;
-	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
 	if(Error)
 	{
 		return 0;
 	}
+	ma_uint64 Length;
+	ma_sound_get_length_in_pcm_frames(&Sound, &Length);
 	return Length * 1000 / ma_engine_get_sample_rate(Engine);
 }
 

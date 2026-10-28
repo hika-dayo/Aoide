@@ -83,13 +83,13 @@ int UI::ProcessKey(void)
 			{
 				HOQS->GoBegin(List.GetHistory().size() + 2);
 				HOQS->ScrollDown(List.GetHistory().size() + 2);
-				HistoryOrQueueMode = 1;
+				HistoryOrQueueMode = HISTORY_MODE;
 				
 			}
 			if(Ktmp == DOWN)
 			{
 				HOQS->GoBegin(List.GetPlaybackQueue().size() + 2);
-				HistoryOrQueueMode = 2;
+				HistoryOrQueueMode = PLAYBACKQUEUE_MODE;
 			}
 		}else
 		{
@@ -113,6 +113,10 @@ int UI::ProcessKey(void)
 			if(Ktmp == LEFT)
 			{
 				HistoryOrQueueMode = 0;
+			}
+			if(Ktmp == ENTER)
+			{
+				ProcessChoice(true);
 			}
 
 		}
@@ -165,7 +169,26 @@ int UI::ProcessKey(void)
 
 
 int UI::ProcessChoice(bool End)
-{ 
+{
+	if(ControlMode == true && HistoryOrQueueMode != 0)
+	{
+		int CurrentLine = HOQS->GetCurrentLine();
+		std::cout << CurrentLine << std::endl;	
+		std::cout << MenuMusicList.size() << std::endl;	
+		if(MenuMusicList[CurrentLine].GetEvent() == ERASE_ALL)
+		{
+			if(HistoryOrQueueMode == HISTORY_MODE)
+			{
+				
+			}
+
+		}
+		if(MenuMusicList[CurrentLine].GetEvent() == BACK)
+		{
+			HistoryOrQueueMode = 0;
+		}
+		return 0;
+	}
 	int CurrentLine = S->GetCurrentLine();
 	if(Object[CurrentLine].GetEvent() == BACK)
 	{
@@ -381,7 +404,7 @@ int UI::Render(void)
 			Rend.DrawController(List);
 		}else
 		{
-			if(HistoryOrQueueMode == 1)
+			if(HistoryOrQueueMode == HISTORY_MODE)
 			{
 				if(MenuMusicList.size() > 0)
 				{
@@ -435,7 +458,7 @@ std::vector<MenuItem> ConvertMusicListToMenu(std::vector<Music> & ArgMusic)//Dra
 	for(int i = 0; i < ArgMusic.size(); i++)
 	{
 		std::string TmpStr = std::to_string(i) + " " + ArgMusic[i].GetTitle();
-		Tmp.push_back(MenuItem(ArgMusic[i].GetTitle(), PLAY_MUSIC, ArgMusic[i]));
+		Tmp.push_back(MenuItem(TmpStr, PLAY_MUSIC, Music("", "", "", "", i + 1)));//トラック番号の場所にキュー・履歴の番号が入る
 	}
 	return Tmp;
 }
